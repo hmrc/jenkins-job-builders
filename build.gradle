@@ -1,5 +1,4 @@
 apply plugin: 'groovy'
-version = '0.1.0-SNAPSHOT'
 
 buildscript {
     repositories {
@@ -29,14 +28,15 @@ dependencies {
 
 import uk.gov.hmrc.gitstamp.JGitStamp
 Map<String, String> attrs = new HashMap<>(JGitStamp.gitStamp())
-attrs.putAll([
-        'Specification-Title': project.name,
-        'Specification-Version': version,
-        'Specification-Vendor': 'uk.gov.hmrc',
-        'Implementation-Title': project.name,
-        'Implementation-Version': version,
-        'Implementation-Vendor': 'uk.gov.hmrc',
-        'Implementation-Vendor-Id': 'uk.gov.hmrc'])
+attrs.putAll(['Specification-Title': project.name,
+              'Specification-Version': version,
+              'Specification-Vendor': 'uk.gov.hmrc',
+              'Implementation-Title': project.name,
+              'Implementation-Version': version,
+              'Implementation-Vendor': 'uk.gov.hmrc',
+              'Implementation-Vendor-Id': 'uk.gov.hmrc'])
+
+version = attrs.get('Git-Describe')
 
 jar {
     manifest {
