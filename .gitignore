@@ -1,4 +1,5 @@
 .gradle
+.gitconfig
 .idea
 *.ipr
 *.iws
