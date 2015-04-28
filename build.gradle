@@ -1,4 +1,15 @@
 apply plugin: 'groovy'
+version = '0.1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        maven { url 'http://jcenter.bintray.com'}
+        maven { url 'http://dl.bintray.com/hmrc/releases'}
+    }
+    dependencies {
+        classpath 'uk.gov.hmrc:git-stamp_2.10:0.3.0'
+    }
+}
 
 repositories {
     maven { url 'http://jcenter.bintray.com'}
@@ -13,14 +24,26 @@ dependencies {
         exclude module: 'ivy'
     }
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
-    testCompile('org.jenkins-ci:version-number:1.1')
+    testCompile 'org.jenkins-ci:version-number:1.1'
+}
+
+import uk.gov.hmrc.gitstamp.JGitStamp
+Map<String, String> mymap = new HashMap<>(JGitStamp.gitStamp())
+mymap.putAll([
+        'Specification-Title': project.name,
+        'Specification-Version': version,
+        'Specification-Vendor': 'uk.gov.hmrc',
+        'Implementation-Title': project.name,
+        'Implementation-Version': version,
+        'Implementation-Vendor': 'uk.gov.hmrc',
+        'Implementation-Vendor-Id': 'uk.gov.hmrc'])
+
+jar {
+    manifest {
+        attributes(mymap)
+    }
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.10'
-}
-
-task workspace(type: Copy) {
-    from 'src/main/groovy'
-    into 'build/workspace'
 }
