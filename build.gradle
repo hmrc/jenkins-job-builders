@@ -28,8 +28,8 @@ dependencies {
 }
 
 import uk.gov.hmrc.gitstamp.JGitStamp
-Map<String, String> mymap = new HashMap<>(JGitStamp.gitStamp())
-mymap.putAll([
+Map<String, String> attrs = new HashMap<>(JGitStamp.gitStamp())
+attrs.putAll([
         'Specification-Title': project.name,
         'Specification-Version': version,
         'Specification-Vendor': 'uk.gov.hmrc',
@@ -40,7 +40,7 @@ mymap.putAll([
 
 jar {
     manifest {
-        attributes(mymap)
+        attributes(attrs)
     }
 }
 
