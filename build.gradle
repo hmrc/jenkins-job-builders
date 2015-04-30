@@ -39,12 +39,19 @@ gitStampInfo.putAll(['Specification-Title': project.name,
               'Implementation-Vendor': 'uk.gov.hmrc',
               'Implementation-Vendor-Id': 'uk.gov.hmrc'])
 
-version = gitStampInfo.get('Git-Describe').drop(1)
+String gitDescribe = gitStampInfo.get('Git-Describe')
+version = gitDescribe.startsWith('v') ? gitDescribe.drop(1) : gitDescribe
+
+
 
 jar {
     manifest {
         attributes(gitStampInfo)
     }
+}
+
+artifacts {
+    file("build/libs/${project.name}-${version}.jar")
 }
 
 configurations {
@@ -59,6 +66,10 @@ bintray {
         repo = 'release-candidates'
         name = project.name
         userOrg = 'hmrc'
+        version {
+            name = version
+            vcsTag = 'None'
+        }
     }
     publish = true
 }
