@@ -51,7 +51,7 @@ jar {
 }
 
 artifacts {
-    file("build/libs/${project.name}-${version}.jar")
+    file("build/libs/${project.name}-${this.version}.jar")
 }
 
 configurations {
@@ -64,10 +64,10 @@ bintray {
     configurations = ['published']
     pkg {
         repo = 'release-candidates'
-        name = project.name
+        name = this.project.name
         userOrg = 'hmrc'
         version {
-            name = version
+            name = this.version
             vcsTag = 'None'
         }
     }
