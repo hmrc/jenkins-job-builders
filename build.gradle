@@ -1,3 +1,5 @@
+import uk.gov.hmrc.gitstamp.JGitStamp
+
 apply plugin: 'groovy'
 apply plugin: "com.jfrog.bintray"
 
@@ -28,9 +30,8 @@ dependencies {
     testCompile 'org.jenkins-ci:version-number:1.1'
 }
 
-import uk.gov.hmrc.gitstamp.JGitStamp
-Map<String, String> attrs = new HashMap<>(JGitStamp.gitStamp())
-attrs.putAll(['Specification-Title': project.name,
+Map<String, String> gitStampInfo = new HashMap<>(JGitStamp.gitStamp())
+gitStampInfo.putAll(['Specification-Title': project.name,
               'Specification-Version': version,
               'Specification-Vendor': 'uk.gov.hmrc',
               'Implementation-Title': project.name,
@@ -38,14 +39,34 @@ attrs.putAll(['Specification-Title': project.name,
               'Implementation-Vendor': 'uk.gov.hmrc',
               'Implementation-Vendor-Id': 'uk.gov.hmrc'])
 
-version = attrs.get('Git-Describe')
+version = gitStampInfo.get('Git-Describe').drop(1)
 
 jar {
     manifest {
-        attributes(attrs)
+        attributes(gitStampInfo)
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.10'
+configurations {
+    published
+}
+
+bintray {
+    user = credentials('user')
+    key = credentials('password')
+    configurations = ['published']
+    pkg {
+        repo = 'release-candidates'
+        name = project.name
+        userOrg = 'hmrc'
+    }
+    publish = true
+}
+
+def credentials(String key) {
+    def file = new File(System.properties['user.home'], '/.bintray/.credentials')
+    if (!file.exists()) throw new InvalidUserDataException("${file} not found")
+    def credentials = new Properties()
+    credentials.load(file.newDataInputStream())
+    credentials.get(key)
 }
