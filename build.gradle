@@ -51,7 +51,7 @@ jar {
 }
 
 artifacts {
-    file("build/libs/${project.name}-${this.version}.jar")
+    archives file("build/libs/${project.name}-${this.version}.jar")
 }
 
 configurations {
