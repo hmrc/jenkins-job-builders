@@ -1,6 +1,7 @@
 import uk.gov.hmrc.gitstamp.JGitStamp
 
 apply plugin: 'groovy'
+apply plugin: 'maven-publish'
 apply plugin: "com.jfrog.bintray"
 
 buildscript {
@@ -33,16 +34,15 @@ dependencies {
 Map<String, String> gitStampInfo = new HashMap<>(JGitStamp.gitStamp())
 gitStampInfo.putAll(['Specification-Title': project.name,
               'Specification-Version': version,
-              'Specification-Vendor': 'uk.gov.hmrc',
+              'Specification-Vendor': group,
               'Implementation-Title': project.name,
               'Implementation-Version': version,
-              'Implementation-Vendor': 'uk.gov.hmrc',
-              'Implementation-Vendor-Id': 'uk.gov.hmrc'])
+              'Implementation-Vendor': group,
+              'Implementation-Vendor-Id': group])
 
 String gitDescribe = gitStampInfo.get('Git-Describe')
 version = gitDescribe.startsWith('v') ? gitDescribe.drop(1) : gitDescribe
-
-
+group = 'uk.gov.hmrc'
 
 jar {
     manifest {
@@ -50,18 +50,18 @@ jar {
     }
 }
 
-artifacts {
-    archives file("build/libs/${project.name}-${this.version}.jar")
-}
-
-configurations {
-    published
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
 }
 
 bintray {
     user = credentials('user')
     key = credentials('password')
-    configurations = ['published']
+    publications = ['mavenJava']
     pkg {
         repo = 'release-candidates'
         name = this.project.name
