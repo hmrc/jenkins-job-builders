@@ -41,7 +41,7 @@ gitStampInfo.putAll(['Specification-Title': project.name,
               'Implementation-Vendor-Id': group])
 
 String gitDescribe = gitStampInfo.get('Git-Describe')
-version = gitDescribe.startsWith('v') ? gitDescribe.drop(1) : gitDescribe
+version = '1.0.0'
 group = 'uk.gov.hmrc'
 
 jar {
@@ -68,7 +68,7 @@ bintray {
         userOrg = 'hmrc'
         version {
             name = this.version
-            vcsTag = 'None'
+            vcsTag = '1.0.0'
         }
     }
     publish = true
