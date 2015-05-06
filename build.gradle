@@ -41,7 +41,7 @@ gitStampInfo.putAll(['Specification-Title': project.name,
               'Implementation-Vendor-Id': group])
 
 String gitDescribe = gitStampInfo.get('Git-Describe')
-version = '1.0.0'
+version = gitDescribe.startsWith('v') ? gitDescribe.drop(1) : gitDescribe
 group = 'uk.gov.hmrc'
 
 jar {
@@ -63,12 +63,12 @@ bintray {
     key = credentials('password')
     publications = ['mavenJava']
     pkg {
-        repo = 'releases'
+        repo = 'release-candidates'
         name = this.project.name
         userOrg = 'hmrc'
         version {
             name = this.version
-            vcsTag = '1.0.0'
+            vcsTag = 'None'
         }
     }
     publish = true
