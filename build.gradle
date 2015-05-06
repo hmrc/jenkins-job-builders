@@ -63,7 +63,7 @@ bintray {
     key = credentials('password')
     publications = ['mavenJava']
     pkg {
-        repo = 'release-candidates'
+        repo = 'releases'
         name = this.project.name
         userOrg = 'hmrc'
         version {
