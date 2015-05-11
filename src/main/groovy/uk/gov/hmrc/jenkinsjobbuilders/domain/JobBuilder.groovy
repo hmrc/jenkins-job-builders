@@ -21,6 +21,7 @@ final class JobBuilder implements Builder<Job> {
     private final List<Publisher> publishers = new ArrayList(asList(claimBrokenBuildsPublisher()))
     private final List<Plugin> plugins = new ArrayList()
     private String labelExpression
+    private Parameters params
 
     JobBuilder(String name, String description, int daysToKeep, int numToKeep, Scm scm) {
         this.name = name
@@ -36,7 +37,12 @@ final class JobBuilder implements Builder<Job> {
     }
 
     JobBuilder withShellCommands(String ... shellCommands) {
-        this.shellCommands.addAll(asList(shellCommands));
+        this.shellCommands.addAll(asList(shellCommands))
+        this
+    }
+
+    JobBuilder withParameters(Parameters parameters) {
+        this.params = parameters
         this
     }
 
@@ -69,6 +75,10 @@ final class JobBuilder implements Builder<Job> {
             it.name this.name
             it.description this.description
             logRotator(daysToKeep, numToKeep)
+
+            if (this.params != null) {
+                parameters(this.params.toDsl())
+            }
 
             if (labelExpression != null) {
                 label labelExpression

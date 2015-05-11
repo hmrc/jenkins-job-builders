@@ -4,6 +4,8 @@ import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
 import uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.XvfbBuildPlugin
 
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.Parameters.parameters
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.XvfbBuildPlugin.xvfbBuildPlugin
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ArtifactsPublisher.artifactsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.HtmlReportsPublisher.htmlReportsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.JUnitReportsPublisher.jUnitReportsPublisher
@@ -21,11 +23,12 @@ class JobBuilderSpec extends Specification {
                                                withScmTriggers(cronScmTrigger('test-cron'), gitHubScmTrigger()).
                                                withShellCommands('test-shell1', 'test-shell2').
                                                withLabel('single-executor').
+                                               withParameters(parameters(['NAME': 'TEST-PARAM'])).
                                                withPublishers(jUnitReportsPublisher('test-junit'),
                                                               htmlReportsPublisher(['target/test-reports/html-report': 'HTML Report']),
                                                               artifactsPublisher('test-artifacts'),
                                                               jobsTriggerPublisher('test-jobs')).
-                                               withPlugins(XvfbBuildPlugin.xvfbBuildPlugin())
+                                               withPlugins(xvfbBuildPlugin())
 
         when:
         Job job = jobBuilder.build(jobParent())
@@ -33,12 +36,16 @@ class JobBuilderSpec extends Specification {
         then:
         job.name == 'test-job'
 
+        println job.node
+
         with(job.node) {
             name() == 'project'
             description.text() == 'test-job-description'
             logRotator.daysToKeep.text() == '14'
             logRotator.numToKeep.text() == '10'
             assignedNode.text() == 'single-executor'
+            properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'.name.text() == 'NAME'
+            properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'.defaultValue.text() == 'TEST-PARAM'
             scm.userRemoteConfigs.'hudson.plugins.git.UserRemoteConfig'.url.text() == 'git@github.com:example/example-repo.git'
             scm.branches.'hudson.plugins.git.BranchSpec'.name.text() == 'master'
             triggers.'com.cloudbees.jenkins.gitHubPushTrigger'.spec.text() == ''
