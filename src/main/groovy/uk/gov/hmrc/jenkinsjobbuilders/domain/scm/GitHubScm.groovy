@@ -31,12 +31,12 @@ final class GitHubScm implements Scm {
             git {
                 remote {
                     github(repository, protocol, host)
-                }
-                if (this.refspec != null) {
-                    refspec(this.refspec)
-                }
-                if (this.credentials != null) {
-                    credentials(this.credentials)
+                    if (this.refspec != null) {
+                        refspec(this.refspec)
+                    }
+                    if (this.credentials != null) {
+                        credentials(this.credentials)
+                    }
                 }
 
                 branch(this.branch)
