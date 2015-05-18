@@ -6,6 +6,7 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.Plugin
 import uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.Publisher
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.Scm
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.ScmTrigger
+import uk.gov.hmrc.jenkinsjobbuilders.domain.step.Step
 
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ClaimBrokenBuildsPublisher.claimBrokenBuildsPublisher
@@ -17,7 +18,7 @@ final class JobBuilder implements Builder<Job> {
     private final int daysToKeep
     private final int numToKeep
     private final List<ScmTrigger> scmTriggers = new ArrayList()
-    private final List<String> shellCommands = new ArrayList()
+    private final List<Step> steps = new ArrayList()
     private final List<Publisher> publishers = new ArrayList(asList(claimBrokenBuildsPublisher()))
     private final List<Plugin> plugins = new ArrayList()
     private String labelExpression
@@ -36,8 +37,8 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
-    JobBuilder withShellCommands(String ... shellCommands) {
-        this.shellCommands.addAll(asList(shellCommands))
+    JobBuilder withSteps(Step ... steps) {
+        this.steps.addAll(steps)
         this
     }
 
@@ -95,12 +96,8 @@ final class JobBuilder implements Builder<Job> {
                 preBuildCleanup()
             }
 
-            if (!shellCommands.isEmpty()) {
-                steps {
-                    shellCommands.each { shellCommand ->
-                        shell(shellCommand)
-                    }
-                }
+            this.steps.each { step ->
+                steps(step.toDsl())
             }
 
             this.publishers.each { publisher ->

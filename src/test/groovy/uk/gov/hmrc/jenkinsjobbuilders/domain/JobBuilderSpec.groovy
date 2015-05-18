@@ -3,6 +3,7 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
 import uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.XvfbBuildPlugin
+import uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep
 
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.Parameters.parameters
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.XvfbBuildPlugin.xvfbBuildPlugin
@@ -13,6 +14,7 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.JobsTriggerPublish
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.CronScmTrigger.cronScmTrigger
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubComScm.gitHubComScm
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubScmTrigger.gitHubScmTrigger
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
 
 @Mixin(JobParents)
 class JobBuilderSpec extends Specification {
@@ -21,7 +23,7 @@ class JobBuilderSpec extends Specification {
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description', 14, 10, gitHubComScm('example/example-repo')).
                                                withScmTriggers(cronScmTrigger('test-cron'), gitHubScmTrigger()).
-                                               withShellCommands('test-shell1', 'test-shell2').
+                                               withSteps(shellStep('test-shell1'), shellStep('test-shell2')).
                                                withLabel('single-executor').
                                                withParameters(parameters(['NAME': 'TEST-PARAM'])).
                                                withPublishers(jUnitReportsPublisher('test-junit'),
@@ -35,8 +37,6 @@ class JobBuilderSpec extends Specification {
 
         then:
         job.name == 'test-job'
-
-        println job.node
 
         with(job.node) {
             name() == 'project'
