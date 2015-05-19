@@ -2,12 +2,13 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
-import uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.XvfbBuildPlugin
-import uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep
 
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.Parameters.parameters
+import static java.util.Arrays.asList
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.ChoiceParameter.choiceParameter
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.StringParameter.stringParameter
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.XvfbBuildPlugin.xvfbBuildPlugin
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ArtifactsPublisher.artifactsPublisher
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.BuildDescriptionPublisher.buildDescriptionByRegexPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.HtmlReportsPublisher.htmlReportsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.JUnitReportsPublisher.jUnitReportsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.JobsTriggerPublisher.jobsTriggerPublisher
@@ -26,11 +27,12 @@ class JobBuilderSpec extends Specification {
                                                withScmTriggers(cronScmTrigger('test-cron'), gitHubScmTrigger()).
                                                withSteps(shellStep('test-shell1'), shellStep('test-shell2')).
                                                withLabel('single-executor').
-                                               withParameters(parameters(['NAME': 'TEST-PARAM'])).
+                                               withParameters(stringParameter('STRING-PARAM', 'STRING-VALUE'), choiceParameter('CHOICE-PARAM', asList('CHOICE-VALUE-1', 'CHOICE-VALUE-2'), 'CHOICE-DESC')).
                                                withPublishers(jUnitReportsPublisher('test-junit'),
                                                               htmlReportsPublisher(['target/test-reports/html-report': 'HTML Report']),
                                                               artifactsPublisher('test-artifacts'),
-                                                              jobsTriggerPublisher('test-jobs')).
+                                                              jobsTriggerPublisher('test-jobs'),
+                                                              buildDescriptionByRegexPublisher('test-regex')).
                                                withPlugins(xvfbBuildPlugin())
 
         when:
@@ -45,8 +47,11 @@ class JobBuilderSpec extends Specification {
             logRotator.daysToKeep.text() == '14'
             logRotator.numToKeep.text() == '10'
             assignedNode.text() == 'single-executor'
-            properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'.name.text() == 'NAME'
-            properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'.defaultValue.text() == 'TEST-PARAM'
+            properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'.name.text() == 'STRING-PARAM'
+            properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'.defaultValue.text() == 'STRING-VALUE'
+            properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.ChoiceParameterDefinition'.name.text() == 'CHOICE-PARAM'
+            properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.ChoiceParameterDefinition'.description.text() == 'CHOICE-DESC'
+            properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.ChoiceParameterDefinition'.choices.isEmpty() == false
             scm.userRemoteConfigs.'hudson.plugins.git.UserRemoteConfig'.url.text() == 'git@github.com:example/example-repo.git'
             scm.branches.'hudson.plugins.git.BranchSpec'.name.text() == 'master'
             triggers.'com.cloudbees.jenkins.gitHubPushTrigger'.spec.text() == ''
@@ -62,6 +67,7 @@ class JobBuilderSpec extends Specification {
             publishers.'hudson.tasks.ArtifactArchiver'.artifacts.text() == 'test-artifacts'
             publishers.'hudson.plugins.parameterizedtrigger.BuildTrigger'.configs.'hudson.plugins.parameterizedtrigger.BuildTriggerConfig' [0].projects.text() == 'test-jobs'
             publishers.'hudson.plugins.parameterizedtrigger.BuildTrigger'.configs.'hudson.plugins.parameterizedtrigger.BuildTriggerConfig' [0].condition.text() == 'SUCCESS'
+            publishers.'hudson.plugins.descriptionsetter.DescriptionSetterPublisher'.regexp.text() == 'test-regex'
         }
     }
 }

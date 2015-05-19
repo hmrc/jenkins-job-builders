@@ -2,6 +2,7 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain
 
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
+import uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.Parameter
 import uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.Plugin
 import uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.Publisher
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.Scm
@@ -16,13 +17,13 @@ final class JobBuilder implements Builder<Job> {
     private final String description
     private final int daysToKeep
     private final int numToKeep
+    private final List<Parameter> parameters = new ArrayList()
     private final List<ScmTrigger> scmTriggers = new ArrayList()
     private final List<Step> steps = new ArrayList()
     private final List<Publisher> publishers = new ArrayList(asList(claimBrokenBuildsPublisher()))
     private final List<Plugin> plugins = new ArrayList()
     private Scm scm
     private String labelExpression
-    private Parameters params
 
     JobBuilder(String name, String description, int daysToKeep, int numToKeep) {
         this.name = name
@@ -46,8 +47,8 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
-    JobBuilder withParameters(Parameters parameters) {
-        this.params = parameters
+    JobBuilder withParameters(Parameter ... parameters) {
+        this.parameters.addAll(parameters)
         this
     }
 
@@ -81,8 +82,8 @@ final class JobBuilder implements Builder<Job> {
             it.description this.description
             logRotator(daysToKeep, numToKeep)
 
-            if (this.params != null) {
-                parameters(this.params.toDsl())
+            this.parameters.each { parameter ->
+                parameters(parameter.toDsl())
             }
 
             if (labelExpression != null) {
