@@ -13,7 +13,6 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ClaimBrokenBuildsP
 
 final class JobBuilder implements Builder<Job> {
     private final String name
-    private final Scm scm
     private final String description
     private final int daysToKeep
     private final int numToKeep
@@ -21,15 +20,20 @@ final class JobBuilder implements Builder<Job> {
     private final List<Step> steps = new ArrayList()
     private final List<Publisher> publishers = new ArrayList(asList(claimBrokenBuildsPublisher()))
     private final List<Plugin> plugins = new ArrayList()
+    private Scm scm
     private String labelExpression
     private Parameters params
 
-    JobBuilder(String name, String description, int daysToKeep, int numToKeep, Scm scm) {
+    JobBuilder(String name, String description, int daysToKeep, int numToKeep) {
         this.name = name
         this.description = description
         this.daysToKeep = daysToKeep
         this.numToKeep = numToKeep
+    }
+
+    JobBuilder withScm(Scm scm) {
         this.scm = scm
+        this
     }
 
     JobBuilder withScmTriggers(ScmTrigger ... scmTriggers) {
@@ -85,7 +89,9 @@ final class JobBuilder implements Builder<Job> {
                 label labelExpression
             }
 
-            scm(scm.toDsl())
+            if (scm != null) {
+                scm(scm.toDsl())
+            }
 
             this.scmTriggers.each { scmTrigger ->
                 triggers(scmTrigger.toDsl())
