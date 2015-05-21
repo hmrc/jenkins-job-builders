@@ -6,6 +6,9 @@ import spock.lang.Specification
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.ChoiceParameter.choiceParameter
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.StringParameter.stringParameter
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.CheckStyleReportPlugin.checkStyleReportPlugin
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.CucumberReportPlugin.cucumberReportsPlugin
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.SCoverageReportPlugin.sCoverageReportPlugin
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.XvfbBuildPlugin.xvfbBuildPlugin
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ArtifactsPublisher.artifactsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.BuildDescriptionPublisher.buildDescriptionByRegexPublisher
@@ -33,7 +36,7 @@ class JobBuilderSpec extends Specification {
                                                               artifactsPublisher('test-artifacts'),
                                                               jobsTriggerPublisher('test-jobs'),
                                                               buildDescriptionByRegexPublisher('test-regex')).
-                                               withPlugins(xvfbBuildPlugin())
+                                               withPlugins(checkStyleReportPlugin(), cucumberReportsPlugin(), sCoverageReportPlugin(), xvfbBuildPlugin())
 
         when:
         Job job = jobBuilder.build(jobParent())
@@ -58,6 +61,7 @@ class JobBuilderSpec extends Specification {
             triggers.'hudson.triggers.TimerTrigger'.spec.text() == 'test-cron'
             buildWrappers.'hudson.plugins.ansicolor.AnsiColorBuildWrapper'.colorMapName.text() == 'xterm'
             buildWrappers.'hudson.plugins.ws__cleanup.PreBuildCleanup'.deleteDirs.text() == 'false'
+            buildWrappers.'org.jenkinsci.plugins.xvfb.XvfbBuildWrapper'.switch.text() == 'on'
             builders.'hudson.tasks.Shell' [0].command.text().contains('test-shell1')
             builders.'hudson.tasks.Shell' [1].command.text().contains('test-shell2')
             publishers.'hudson.plugins.claim.ClaimPublisher'.text() == ''
@@ -68,6 +72,9 @@ class JobBuilderSpec extends Specification {
             publishers.'hudson.plugins.parameterizedtrigger.BuildTrigger'.configs.'hudson.plugins.parameterizedtrigger.BuildTriggerConfig' [0].projects.text() == 'test-jobs'
             publishers.'hudson.plugins.parameterizedtrigger.BuildTrigger'.configs.'hudson.plugins.parameterizedtrigger.BuildTriggerConfig' [0].condition.text() == 'SUCCESS'
             publishers.'hudson.plugins.descriptionsetter.DescriptionSetterPublisher'.regexp.text() == 'test-regex'
+            publishers.'net.masterthought.jenkins.CucumberReportPublisher'.jsonReportDirectory.text() == ''
+            publishers.'org.jenkinsci.plugins.scoverage.ScoveragePublisher'.reportDir.text() == 'target/scala-2.11/scoverage-report'
+            publishers.'hudson.plugins.checkstyle.CheckStylePublisher'.pluginName.text() == '[CHECKSTYLE]'
         }
     }
 }

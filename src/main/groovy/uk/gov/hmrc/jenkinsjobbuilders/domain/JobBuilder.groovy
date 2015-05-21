@@ -48,6 +48,10 @@ final class JobBuilder implements Builder<Job> {
     }
 
     JobBuilder withParameters(Parameter ... parameters) {
+        withParameters(asList(parameters))
+    }
+
+    JobBuilder withParameters(List<Parameter> parameters) {
         this.parameters.addAll(parameters)
         this
     }
