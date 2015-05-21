@@ -40,7 +40,7 @@ gitStampInfo.putAll(['Specification-Title': project.name,
               'Implementation-Vendor': group,
               'Implementation-Vendor-Id': group])
 
-version = '2.8.0'
+version = '2.9.0'
 group = 'uk.gov.hmrc'
 
 jar {
