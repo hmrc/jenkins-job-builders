@@ -10,11 +10,11 @@ final class BuildDescriptionPublisher implements Publisher {
     }
 
     static BuildDescriptionPublisher buildDescriptionByTextPublisher(String description) {
-        buildDescriptionPublisher(null, description)
+        buildDescriptionPublisher('', description)
     }
 
     static BuildDescriptionPublisher buildDescriptionByRegexPublisher(String regex) {
-        buildDescriptionPublisher(regex, null)
+        buildDescriptionPublisher(regex, '')
     }
 
     private static BuildDescriptionPublisher buildDescriptionPublisher(String regex, String description) {
