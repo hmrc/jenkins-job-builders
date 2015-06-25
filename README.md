@@ -21,6 +21,10 @@ This can be solved in Jenkins by using the Jenkins Job DSL plugin, which allows 
 
 1. Run `./gradlew clean test` locally to test your changes. The test suite will ensure the Builders are capable of producing the expected config XML for Jenkins.
 
+## Examples
+
+Examples can be found in the [Jenkins Jobs repository](https://github.com/hmrc/jenkins-jobs)
+
 ## License
 
 This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
