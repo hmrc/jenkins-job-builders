@@ -21,6 +21,7 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubComScm.gitHubComSc
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubScmTrigger.gitHubScmTrigger
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.SbtStep.sbtStep
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.EnvironmentVariablesWrapper.environmentVariablesWrapper
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.NodeJsWrapper.nodeJsWrapper
 
 @Mixin(JobParents)
@@ -32,9 +33,8 @@ class JobBuilderSpec extends Specification {
                                                withScm(gitHubComScm('example/example-repo', 'test-credentials')).
                                                withScmTriggers(cronScmTrigger('test-cron'), gitHubScmTrigger()).
                                                withSteps(shellStep('test-shell1'), sbtStep('clean test', 'dist publish')).
-                                               withWrappers(nodeJsWrapper()).
+                                               withWrappers(nodeJsWrapper(), environmentVariablesWrapper([ENV_KEY: 'ENV_VALUE'])).
                                                withLabel('single-executor').
-                                               withEnvironmentVariables([ENV_KEY: 'ENV_VALUE']).
                                                withParameters(stringParameter('STRING-PARAM', 'STRING-VALUE'), choiceParameter('CHOICE-PARAM', asList('CHOICE-VALUE-1', 'CHOICE-VALUE-2'), 'CHOICE-DESC')).
                                                withPublishers(jUnitReportsPublisher('test-junit'),
                                                               htmlReportsPublisher(['target/test-reports/html-report': 'HTML Report']),
@@ -55,7 +55,6 @@ class JobBuilderSpec extends Specification {
             logRotator.daysToKeep.text() == '14'
             logRotator.numToKeep.text() == '10'
             assignedNode.text() == 'single-executor'
-            properties.'EnvInjectJobProperty'.info.propertiesContent.text() == 'ENV_KEY=ENV_VALUE'
             properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'.name.text() == 'STRING-PARAM'
             properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'.defaultValue.text() == 'STRING-VALUE'
             properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.ChoiceParameterDefinition'.name.text() == 'CHOICE-PARAM'
@@ -69,6 +68,7 @@ class JobBuilderSpec extends Specification {
             buildWrappers.'hudson.plugins.ws__cleanup.PreBuildCleanup'.deleteDirs.text() == 'false'
             buildWrappers.'org.jenkinsci.plugins.xvfb.XvfbBuildWrapper'.switch.text() == 'on'
             buildWrappers.'jenkins.plugins.nodejs.tools.NpmPackagesBuildWrapper'.nodeJSInstallationName.text() == 'node 0.10.28'
+            buildWrappers.'EnvInjectBuildWrapper'.info.propertiesContent.text() == 'ENV_KEY=ENV_VALUE'
             builders.'hudson.tasks.Shell' [0].command.text().contains('test-shell1')
             builders.'hudson.tasks.Shell' [1].command.text().contains('sbt clean test -Djava.io.tmpdir=${WORKSPACE}/tmp')
             builders.'hudson.tasks.Shell' [1].command.text().contains('sbt dist publish -Djava.io.tmpdir=${WORKSPACE}/tmp')
