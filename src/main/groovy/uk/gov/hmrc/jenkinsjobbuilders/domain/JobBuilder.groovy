@@ -43,6 +43,10 @@ final class JobBuilder implements Builder<Job> {
     }
 
     JobBuilder withSteps(Step ... steps) {
+        withSteps(asList(steps))
+    }
+
+    JobBuilder withSteps(List<Step> steps) {
         this.steps.addAll(steps)
         this
     }
