@@ -18,6 +18,7 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.JobsTriggerPublish
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.CronScmTrigger.cronScmTrigger
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubComScm.gitHubComScm
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubScmTrigger.gitHubScmTrigger
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.SbtStep.sbtStep
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
 
 @Mixin(JobParents)
@@ -28,7 +29,7 @@ class JobBuilderSpec extends Specification {
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description', 14, 10).
                                                withScm(gitHubComScm('example/example-repo', 'test-credentials')).
                                                withScmTriggers(cronScmTrigger('test-cron'), gitHubScmTrigger()).
-                                               withSteps(shellStep('test-shell1'), shellStep('test-shell2')).
+                                               withSteps(shellStep('test-shell1'), sbtStep('clean test', 'dist publish')).
                                                withLabel('single-executor').
                                                withParameters(stringParameter('STRING-PARAM', 'STRING-VALUE'), choiceParameter('CHOICE-PARAM', asList('CHOICE-VALUE-1', 'CHOICE-VALUE-2'), 'CHOICE-DESC')).
                                                withPublishers(jUnitReportsPublisher('test-junit'),
@@ -63,7 +64,8 @@ class JobBuilderSpec extends Specification {
             buildWrappers.'hudson.plugins.ws__cleanup.PreBuildCleanup'.deleteDirs.text() == 'false'
             buildWrappers.'org.jenkinsci.plugins.xvfb.XvfbBuildWrapper'.switch.text() == 'on'
             builders.'hudson.tasks.Shell' [0].command.text().contains('test-shell1')
-            builders.'hudson.tasks.Shell' [1].command.text().contains('test-shell2')
+            builders.'hudson.tasks.Shell' [1].command.text().contains('sbt clean test -Djava.io.tmpdir=${WORKSPACE}/tmp')
+            builders.'hudson.tasks.Shell' [1].command.text().contains('sbt dist publish -Djava.io.tmpdir=${WORKSPACE}/tmp')
             publishers.'hudson.plugins.claim.ClaimPublisher'.text() == ''
             publishers.'hudson.tasks.junit.JUnitResultArchiver'.testResults.text() == 'test-junit'
             publishers.'htmlpublisher.HtmlPublisher'.reportTargets.'htmlpublisher.HtmlPublisherTarget'.reportDir[0].text() == 'target/test-reports/html-report'
