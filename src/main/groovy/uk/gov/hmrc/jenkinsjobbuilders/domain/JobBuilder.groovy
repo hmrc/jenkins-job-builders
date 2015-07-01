@@ -28,6 +28,7 @@ final class JobBuilder implements Builder<Job> {
     private final List<Wrapper> wrappers = new ArrayList(asList(colorizeOutputWrapper(), preBuildCleanUpWrapper()))
     private Scm scm
     private String labelExpression
+    private Map<String, String> environmentVariables = new HashMap()
 
     JobBuilder(String name, String description, int daysToKeep, int numToKeep) {
         this.name = name
@@ -69,6 +70,11 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
+    JobBuilder withEnvironmentVariables(Map<String, String> environmentVariables) {
+        this.environmentVariables.putAll(environmentVariables)
+        this
+    }
+
     JobBuilder withPublishers(Publisher ... publishers) {
         withPublishers(asList(publishers))
     }
@@ -102,6 +108,12 @@ final class JobBuilder implements Builder<Job> {
             it.name this.name
             it.description this.description
             logRotator(daysToKeep, numToKeep)
+
+            this.environmentVariables.each { entry ->
+                environmentVariables {
+                    env(entry.key, entry.value)
+                }
+            }
 
             this.parameters.each { parameter ->
                 parameters(parameter.toDsl())

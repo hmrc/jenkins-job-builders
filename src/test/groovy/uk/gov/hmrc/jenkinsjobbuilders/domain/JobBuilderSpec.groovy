@@ -34,6 +34,7 @@ class JobBuilderSpec extends Specification {
                                                withSteps(shellStep('test-shell1'), sbtStep('clean test', 'dist publish')).
                                                withWrappers(nodeJsWrapper()).
                                                withLabel('single-executor').
+                                               withEnvironmentVariables([ENV_KEY: 'ENV_VALUE']).
                                                withParameters(stringParameter('STRING-PARAM', 'STRING-VALUE'), choiceParameter('CHOICE-PARAM', asList('CHOICE-VALUE-1', 'CHOICE-VALUE-2'), 'CHOICE-DESC')).
                                                withPublishers(jUnitReportsPublisher('test-junit'),
                                                               htmlReportsPublisher(['target/test-reports/html-report': 'HTML Report']),
@@ -54,6 +55,7 @@ class JobBuilderSpec extends Specification {
             logRotator.daysToKeep.text() == '14'
             logRotator.numToKeep.text() == '10'
             assignedNode.text() == 'single-executor'
+            properties.'EnvInjectJobProperty'.info.propertiesContent.text() == 'ENV_KEY=ENV_VALUE'
             properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'.name.text() == 'STRING-PARAM'
             properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'.defaultValue.text() == 'STRING-VALUE'
             properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.ChoiceParameterDefinition'.name.text() == 'CHOICE-PARAM'
