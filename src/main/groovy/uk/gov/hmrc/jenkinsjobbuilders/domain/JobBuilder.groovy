@@ -8,9 +8,12 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.Publisher
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.Scm
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.ScmTrigger
 import uk.gov.hmrc.jenkinsjobbuilders.domain.step.Step
+import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.Wrapper
 
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ClaimBrokenBuildsPublisher.claimBrokenBuildsPublisher
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.ColorizeOutputWrapper.colorizeOutputWrapper
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreBuildCleanupWrapper.preBuildCleanUpWrapper
 
 final class JobBuilder implements Builder<Job> {
     private final String name
@@ -22,6 +25,7 @@ final class JobBuilder implements Builder<Job> {
     private final List<Step> steps = new ArrayList()
     private final List<Publisher> publishers = new ArrayList(asList(claimBrokenBuildsPublisher()))
     private final List<Plugin> plugins = new ArrayList()
+    private final List<Wrapper> wrappers = new ArrayList(asList(colorizeOutputWrapper(), preBuildCleanUpWrapper()))
     private Scm scm
     private String labelExpression
 
@@ -83,6 +87,15 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
+    JobBuilder withWrappers(Wrapper ... wrappers) {
+        withWrappers(asList(wrappers))
+    }
+
+    JobBuilder withWrappers(List<Wrapper> wrappers) {
+        this.wrappers.addAll(wrappers)
+        this
+    }
+
     @Override
     Job build(DslFactory dslFactory) {
         dslFactory.job {
@@ -106,9 +119,8 @@ final class JobBuilder implements Builder<Job> {
                 triggers(scmTrigger.toDsl())
             }
 
-            wrappers {
-                colorizeOutput()
-                preBuildCleanup()
+            this.wrappers.each { wrapper ->
+                wrappers(wrapper.toDsl())
             }
 
             this.steps.each { step ->
