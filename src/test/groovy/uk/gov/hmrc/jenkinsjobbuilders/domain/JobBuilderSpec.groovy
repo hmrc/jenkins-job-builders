@@ -2,7 +2,6 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
-import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.NodeJsWrapper
 
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.ChoiceParameter.choiceParameter
@@ -21,7 +20,10 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubComScm.gitHubComSc
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubScmTrigger.gitHubScmTrigger
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.SbtStep.sbtStep
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.EnvironmentVariablesWrapper.environmentVariablesWrapper
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.JdkEnvironmentVariable.jdk8EnvironmentVariable
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.PathEnvironmentVariable.pathEnvironmentVariable
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.ClasspathEnvironmentVariable.classpathEnvironmentVariable
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.StringEnvironmentVariable.stringEnvironmentVariable
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.NodeJsWrapper.nodeJsWrapper
 
 @Mixin(JobParents)
@@ -33,7 +35,8 @@ class JobBuilderSpec extends Specification {
                                                withScm(gitHubComScm('example/example-repo', 'test-credentials')).
                                                withScmTriggers(cronScmTrigger('test-cron'), gitHubScmTrigger()).
                                                withSteps(shellStep('test-shell1'), sbtStep('clean test', 'dist publish')).
-                                               withWrappers(nodeJsWrapper(), environmentVariablesWrapper([ENV_KEY: 'ENV_VALUE'])).
+                                               withEnvironmentVariables(stringEnvironmentVariable('ENV_KEY', 'ENV_VALUE'), jdk8EnvironmentVariable(), pathEnvironmentVariable(), classpathEnvironmentVariable()).
+                                               withWrappers(nodeJsWrapper()).
                                                withLabel('single-executor').
                                                withParameters(stringParameter('STRING-PARAM', 'STRING-VALUE'), choiceParameter('CHOICE-PARAM', asList('CHOICE-VALUE-1', 'CHOICE-VALUE-2'), 'CHOICE-DESC')).
                                                withPublishers(jUnitReportsPublisher('test-junit'),
@@ -68,7 +71,10 @@ class JobBuilderSpec extends Specification {
             buildWrappers.'hudson.plugins.ws__cleanup.PreBuildCleanup'.deleteDirs.text() == 'false'
             buildWrappers.'org.jenkinsci.plugins.xvfb.XvfbBuildWrapper'.switch.text() == 'on'
             buildWrappers.'jenkins.plugins.nodejs.tools.NpmPackagesBuildWrapper'.nodeJSInstallationName.text() == 'node 0.10.28'
-            buildWrappers.'EnvInjectBuildWrapper'.info.propertiesContent.text() == 'ENV_KEY=ENV_VALUE'
+            buildWrappers.'EnvInjectBuildWrapper'.info.propertiesContent.text().contains('ENV_KEY=ENV_VALUE') == true
+            buildWrappers.'EnvInjectBuildWrapper'.info.propertiesContent.text().contains('JAVA_HOME=') == true
+            buildWrappers.'EnvInjectBuildWrapper'.info.propertiesContent.text().contains('PATH=') == true
+            buildWrappers.'EnvInjectBuildWrapper'.info.propertiesContent.text().contains('CLASSPATH=') == true
             builders.'hudson.tasks.Shell' [0].command.text().contains('test-shell1')
             builders.'hudson.tasks.Shell' [1].command.text().contains('sbt clean test -Djava.io.tmpdir=${WORKSPACE}/tmp')
             builders.'hudson.tasks.Shell' [1].command.text().contains('sbt dist publish -Djava.io.tmpdir=${WORKSPACE}/tmp')

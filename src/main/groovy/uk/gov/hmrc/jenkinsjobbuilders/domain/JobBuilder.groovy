@@ -8,6 +8,7 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.Publisher
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.Scm
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.ScmTrigger
 import uk.gov.hmrc.jenkinsjobbuilders.domain.step.Step
+import uk.gov.hmrc.jenkinsjobbuilders.domain.variables.EnvironmentVariable
 import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.Wrapper
 
 import static java.util.Arrays.asList
@@ -21,6 +22,7 @@ final class JobBuilder implements Builder<Job> {
     private final int daysToKeep
     private final int numToKeep
     private final List<Parameter> parameters = new ArrayList()
+    private final List<EnvironmentVariable> environmentVariables = new ArrayList()
     private final List<ScmTrigger> scmTriggers = new ArrayList()
     private final List<Step> steps = new ArrayList()
     private final List<Publisher> publishers = new ArrayList(asList(claimBrokenBuildsPublisher()))
@@ -61,6 +63,15 @@ final class JobBuilder implements Builder<Job> {
 
     JobBuilder withParameters(List<Parameter> parameters) {
         this.parameters.addAll(parameters)
+        this
+    }
+
+    JobBuilder withEnvironmentVariables(EnvironmentVariable ... environmentsVariables) {
+        withEnvironmentVariables(asList(environmentsVariables))
+    }
+
+    JobBuilder withEnvironmentVariables(List<EnvironmentVariable> environmentVariables) {
+        this.environmentVariables.addAll(environmentVariables)
         this
     }
 
@@ -105,6 +116,12 @@ final class JobBuilder implements Builder<Job> {
 
             this.parameters.each { parameter ->
                 parameters(parameter.toDsl())
+            }
+
+            this.environmentVariables.each { environmentVariable ->
+                wrappers {
+                    environmentVariables(environmentVariable.toDsl())
+                }
             }
 
             if (labelExpression != null) {
