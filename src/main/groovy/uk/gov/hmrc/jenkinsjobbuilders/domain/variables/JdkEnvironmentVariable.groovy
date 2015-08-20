@@ -1,10 +1,12 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.variables
 
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.StringEnvironmentVariable.stringEnvironmentVariable
+
 class JdkEnvironmentVariable implements EnvironmentVariable {
     private final EnvironmentVariable environmentVariable
 
-    private JdkEnvironmentVariable(String value) {
-        environmentVariable = StringEnvironmentVariable.stringEnvironmentVariable('JAVA_HOME', value)
+    private JdkEnvironmentVariable(String path) {
+        environmentVariable = stringEnvironmentVariable('JAVA_HOME', path)
     }
 
     static JdkEnvironmentVariable jdk7EnvironmentVariable() {

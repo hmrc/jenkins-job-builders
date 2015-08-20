@@ -10,7 +10,7 @@ class StringEnvironmentVariable implements EnvironmentVariable {
         this.value = value
     }
 
-    static EnvironmentVariable stringEnvironmentVariable(String name, String value) {
+    static StringEnvironmentVariable stringEnvironmentVariable(String name, String value) {
         new StringEnvironmentVariable(name, value)
     }
 

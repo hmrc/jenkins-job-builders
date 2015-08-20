@@ -7,7 +7,7 @@ class ClasspathEnvironmentVariable implements EnvironmentVariable {
 
     private ClasspathEnvironmentVariable() {}
 
-    static EnvironmentVariable classpathEnvironmentVariable() {
+    static ClasspathEnvironmentVariable classpathEnvironmentVariable() {
         new ClasspathEnvironmentVariable()
     }
 
