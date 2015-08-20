@@ -12,7 +12,12 @@ class ClasspathEnvironmentVariable implements EnvironmentVariable {
     }
 
     @Override
-    Closure toDsl() {
-        return environmentVariable.toDsl()
+    String getName() {
+        environmentVariable.name
+    }
+
+    @Override
+    String getValue() {
+        environmentVariable.value
     }
 }

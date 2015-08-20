@@ -14,6 +14,7 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.Wrapper
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ClaimBrokenBuildsPublisher.claimBrokenBuildsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.ColorizeOutputWrapper.colorizeOutputWrapper
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.EnvironmentVariablesWrapper.environmentVariablesWrapper
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreBuildCleanupWrapper.preBuildCleanUpWrapper
 
 final class JobBuilder implements Builder<Job> {
@@ -109,6 +110,10 @@ final class JobBuilder implements Builder<Job> {
 
     @Override
     Job build(DslFactory dslFactory) {
+        if (!this.environmentVariables.isEmpty()) {
+            this.wrappers.add(environmentVariablesWrapper(environmentVariables))
+        }
+
         dslFactory.job {
             it.name this.name
             it.description this.description
@@ -116,12 +121,6 @@ final class JobBuilder implements Builder<Job> {
 
             this.parameters.each { parameter ->
                 parameters(parameter.toDsl())
-            }
-
-            this.environmentVariables.each { environmentVariable ->
-                wrappers {
-                    environmentVariables(environmentVariable.toDsl())
-                }
             }
 
             if (labelExpression != null) {

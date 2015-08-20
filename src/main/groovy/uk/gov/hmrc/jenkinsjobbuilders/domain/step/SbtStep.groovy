@@ -8,7 +8,7 @@ class SbtStep implements Step {
 
     private SbtStep(String ... commands) {
         this.step = shellStep(commands.inject('mkdir -p \${WORKSPACE}/tmp') {
-                                mkdir, item -> mkdir + "\nsbt $item -Djava.io.tmpdir=\${WORKSPACE}/tmp"
+                                string, item -> string + "\nsbt $item -Djava.io.tmpdir=\${WORKSPACE}/tmp"
                               })
     }
 

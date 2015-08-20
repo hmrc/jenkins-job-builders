@@ -15,9 +15,12 @@ class StringEnvironmentVariable implements EnvironmentVariable {
     }
 
     @Override
-    Closure toDsl() {
-        return {
-            env(name, value)
-        }
+    String getName() {
+        return name
+    }
+
+    @Override
+    String getValue() {
+        return value
     }
 }
