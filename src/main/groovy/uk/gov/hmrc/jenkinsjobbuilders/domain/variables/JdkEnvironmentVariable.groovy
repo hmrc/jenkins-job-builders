@@ -10,7 +10,7 @@ class JdkEnvironmentVariable implements EnvironmentVariable {
     }
 
     static JdkEnvironmentVariable jdk7EnvironmentVariable() {
-        new JdkEnvironmentVariable('/usr/lib/jvm/1.7.0_51')
+        new JdkEnvironmentVariable('/usr/lib/jvm/jdk1.7.0_51')
     }
 
     static JdkEnvironmentVariable jdk8EnvironmentVariable() {
