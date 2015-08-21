@@ -20,9 +20,9 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubComScm.gitHubComSc
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubScmTrigger.gitHubScmTrigger
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.SbtStep.sbtStep
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.JdkEnvironmentVariable.jdk8EnvironmentVariable
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.PathEnvironmentVariable.pathEnvironmentVariable
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.ClasspathEnvironmentVariable.classpathEnvironmentVariable
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.JdkEnvironmentVariable.JDK8
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.PathEnvironmentVariable.pathEnvironmentVariable
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.StringEnvironmentVariable.stringEnvironmentVariable
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.NodeJsWrapper.nodeJsWrapper
 
@@ -35,7 +35,7 @@ class JobBuilderSpec extends Specification {
                                                withScm(gitHubComScm('example/example-repo', 'test-credentials')).
                                                withScmTriggers(cronScmTrigger('test-cron'), gitHubScmTrigger()).
                                                withSteps(shellStep('test-shell1'), sbtStep('clean test', 'dist publish')).
-                                               withEnvironmentVariables(stringEnvironmentVariable('ENV_KEY', 'ENV_VALUE'), jdk8EnvironmentVariable(), pathEnvironmentVariable(), classpathEnvironmentVariable()).
+                                               withEnvironmentVariables(stringEnvironmentVariable('ENV_KEY', 'ENV_VALUE'), JDK8, pathEnvironmentVariable(), classpathEnvironmentVariable()).
                                                withWrappers(nodeJsWrapper()).
                                                withLabel('single-executor').
                                                withParameters(stringParameter('STRING-PARAM', 'STRING-VALUE'), choiceParameter('CHOICE-PARAM', asList('CHOICE-VALUE-1', 'CHOICE-VALUE-2'), 'CHOICE-DESC')).
