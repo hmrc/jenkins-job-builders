@@ -20,8 +20,6 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreBuildCleanupWrapp
 final class JobBuilder implements Builder<Job> {
     private final String name
     private final String description
-    private final int daysToKeep
-    private final int numToKeep
     private final List<Parameter> parameters = new ArrayList()
     private final List<EnvironmentVariable> environmentVariables = new ArrayList()
     private final List<ScmTrigger> scmTriggers = new ArrayList()
@@ -30,13 +28,19 @@ final class JobBuilder implements Builder<Job> {
     private final List<Plugin> plugins = new ArrayList()
     private final List<Wrapper> wrappers = new ArrayList(asList(colorizeOutputWrapper(), preBuildCleanUpWrapper()))
     private Scm scm
+    private int daysToKeep = -1
+    private int numToKeep = -1
     private String labelExpression
 
-    JobBuilder(String name, String description, int daysToKeep, int numToKeep) {
+    JobBuilder(String name, String description) {
         this.name = name
         this.description = description
+    }
+
+    JobBuilder withLogRotator(int daysToKeep, int numToKeep) {
         this.daysToKeep = daysToKeep
         this.numToKeep = numToKeep
+        this
     }
 
     JobBuilder withScm(Scm scm) {

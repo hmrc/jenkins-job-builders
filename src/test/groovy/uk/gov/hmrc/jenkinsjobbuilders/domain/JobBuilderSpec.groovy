@@ -31,7 +31,8 @@ class JobBuilderSpec extends Specification {
 
     void 'test XML output'() {
         given:
-        JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description', 14, 10).
+        JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
+                                               withLogRotator(14, 10).
                                                withScm(gitHubComScm('example/example-repo', 'test-credentials')).
                                                withScmTriggers(cronScmTrigger('test-cron'), gitHubScmTrigger()).
                                                withSteps(shellStep('test-shell1'), sbtStep('clean test', 'dist publish')).
