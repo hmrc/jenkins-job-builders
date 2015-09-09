@@ -5,12 +5,12 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.StringEnvironmentV
 class PathEnvironmentVariable implements EnvironmentVariable {
     private final EnvironmentVariable environmentVariable
 
-    private PathEnvironmentVariable(JavaHomeEnvironmentVariable javaHomeEnvironmentVariable) {
-        this.environmentVariable = stringEnvironmentVariable('PATH', "${javaHomeEnvironmentVariable.getValue()}/bin:/opt/sbt/bin:\$PATH")
+    private PathEnvironmentVariable(JdkEnvironmentVariable jdk) {
+        this.environmentVariable = stringEnvironmentVariable('PATH', "${jdk.getValue()}/bin:/opt/sbt/bin:\$PATH")
     }
 
-    static EnvironmentVariable pathEnvironmentVariable(JavaHomeEnvironmentVariable javaHomeEnvironmentVariable) {
-        new PathEnvironmentVariable(javaHomeEnvironmentVariable)
+    static EnvironmentVariable pathEnvironmentVariable(JdkEnvironmentVariable jdk) {
+        new PathEnvironmentVariable(jdk)
     }
 
     @Override

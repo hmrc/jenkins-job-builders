@@ -21,7 +21,7 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubScmTrigger.gitHubS
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.SbtStep.sbtStep
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.ClasspathEnvironmentVariable.classpathEnvironmentVariable
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.JavaHomeEnvironmentVariable.JDK8
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.JdkEnvironmentVariable.JDK8
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.PathEnvironmentVariable.pathEnvironmentVariable
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.StringEnvironmentVariable.stringEnvironmentVariable
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.NodeJsWrapper.nodeJsWrapper
