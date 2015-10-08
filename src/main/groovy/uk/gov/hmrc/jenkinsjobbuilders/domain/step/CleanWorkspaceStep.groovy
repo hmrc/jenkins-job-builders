@@ -1,5 +1,7 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.step
 
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
+
 class CleanWorkspaceStep implements Step {
     private final Step step
 
