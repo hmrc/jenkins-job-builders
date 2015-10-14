@@ -8,7 +8,7 @@ class CleanWorkspaceStep implements Step {
     private CleanWorkspaceStep() {
         this.step = shellStep("""
                               |cd \${WORKSPACE}
-                              |find target -maxdepth 1 -type d -not -name '*reports' -not -name 'target' | xargs rm -rf
+                              |find target -maxdepth 2 -not -path '*report*' -not -name 'scalastyle-result.xml' -not -name 'target' -not -name 'scala-2.11' | sort -r | xargs rm -rf
                               |find . -maxdepth 1 -type d -not -name 'target' -not -name '.*' -not -name 'logs' | xargs rm -rf
                               """.stripMargin())
     }
