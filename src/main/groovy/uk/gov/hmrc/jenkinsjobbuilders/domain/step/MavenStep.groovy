@@ -1,29 +1,23 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.step
 
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
 
 class MavenStep implements Step {
-    private final String goals
-    private final String installation
-    private final String rootPom
 
-    private MavenStep(String goals, String installation, String rootPom) {
-        this.goals = goals
-        this.installation = installation
-        this.rootPom = rootPom
+    private final Step step
+
+    private MavenStep(String ... commands) {
+        this.step = shellStep(commands.inject('mkdir -p \${WORKSPACE}/tmp') {
+            string, command -> string + "\n/opt/apache-maven-3.2.1/bin/mvn $command -Djava.io.tmpdir=\${WORKSPACE}/tmp"
+        })
     }
 
-    static Step mavenStep(String goals, String installation, String rootPom = '') {
-        new MavenStep(goals, installation, rootPom)
+    static Step mavenStep(String ... commands) {
+        new MavenStep(commands)
     }
 
     @Override
     Closure toDsl() {
-        return {
-            maven {
-                goals(this.goals)
-                mavenInstallation(this.installation)
-                rootPOM(this.rootPom)
-            }
-        }
+        step.toDsl()
     }
 }
