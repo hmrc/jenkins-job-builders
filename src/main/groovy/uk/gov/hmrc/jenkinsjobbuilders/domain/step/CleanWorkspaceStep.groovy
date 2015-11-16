@@ -8,7 +8,7 @@ class CleanWorkspaceStep implements Step {
     private CleanWorkspaceStep() {
         this.step = shellStep("""
                               |cd \${WORKSPACE}
-                              |find . -maxdepth 1 -not -path . -not -path '*dependencies*' -not -path '*target*' -not -path '*logs*' -type d | xargs rm -rf
+                              |find . -maxdepth 1 -not -path . -not -path '*target*' -not -path '*logs*' -type d | xargs rm -rf
                               |find target -mindepth 2 -not -path '*report*' \\( -type f -o -type d -empty \\) -delete
                               """.stripMargin())
     }
