@@ -28,6 +28,10 @@ dependencies {
     testCompile 'org.jenkins-ci:version-number:1.1'
 }
 
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+}
+
 version = '3.13.0'
 group = 'uk.gov.hmrc'
 
@@ -35,6 +39,10 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+
+            artifact sourceJar {
+                classifier "sources"
+            }
         }
     }
 }
