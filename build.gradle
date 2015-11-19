@@ -56,8 +56,8 @@ bintray {
 }
 
 def credentials(String key) {
-    def file = new File("$properties['user.home']}", '/.bintray/.credentials')
-    if (!file.exists()) return "NONE"
+    def file = new File("${System.properties['user.home']}", '/.bintray/.credentials')
+    if (!file.exists()) throw new IllegalStateException(file.getAbsolutePath());
     def credentials = new Properties()
     credentials.load(file.newDataInputStream())
     credentials.get(key)
