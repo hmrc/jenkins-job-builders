@@ -39,7 +39,7 @@ publishing {
     }
 }
 
-bintray {
+onlyFor('bintray') {
     user = credentials('user')
     key = credentials('password')
     publications = ['mavenJava']
@@ -62,3 +62,13 @@ def credentials(String key) {
     credentials.load(file.newDataInputStream())
     credentials.get(key)
 }
+
+def onlyFor(task, config) {
+    gradle.taskGraph.whenReady { graph ->
+        if (graph.hasTask(task)) { 
+            project.configure(project, config)
+        }
+    }
+}
+
+
