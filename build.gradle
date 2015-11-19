@@ -39,7 +39,7 @@ publishing {
     }
 }
 
-onlyFor('bintray') {
+bintray {
     user = credentials('user')
     key = credentials('password')
     publications = ['mavenJava']
@@ -56,19 +56,9 @@ onlyFor('bintray') {
 }
 
 def credentials(String key) {
-    def file = new File(System.properties['user.home'], '/.bintray/.credentials')
-    if (!file.exists()) throw new InvalidUserDataException("${file} not found")
+    def file = new File("$properties['user.home']}", '/.bintray/.credentials')
+    if (!file.exists()) return "NONE"
     def credentials = new Properties()
     credentials.load(file.newDataInputStream())
     credentials.get(key)
 }
-
-def onlyFor(task, config) {
-    gradle.taskGraph.whenReady { graph ->
-        if (graph.hasTask(task)) { 
-            project.configure(project, config)
-        }
-    }
-}
-
-
