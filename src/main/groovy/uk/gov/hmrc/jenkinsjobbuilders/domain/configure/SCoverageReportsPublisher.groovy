@@ -1,6 +1,6 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
-final class SCoverageReportsPublisher implements Plugin {
+final class SCoverageReportsPublisher implements Configure {
 
     private SCoverageReportsPublisher() {}
 
@@ -13,7 +13,7 @@ final class SCoverageReportsPublisher implements Plugin {
         }
     }
 
-    static SCoverageReportsPublisher sCoverageReportPlugin() {
+    static SCoverageReportsPublisher sCoverageReportsPublisher() {
         new SCoverageReportsPublisher()
     }
 }

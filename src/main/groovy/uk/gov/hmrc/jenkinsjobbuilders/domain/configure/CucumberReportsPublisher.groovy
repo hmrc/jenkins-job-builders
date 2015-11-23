@@ -1,6 +1,6 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
-final class CucumberReportsPublisher implements Plugin {
+final class CucumberReportsPublisher implements Configure {
 
     private CucumberReportsPublisher() {}
 
@@ -17,7 +17,7 @@ final class CucumberReportsPublisher implements Plugin {
         }
     }
 
-    static CucumberReportsPublisher cucumberReportsPlugin() {
+    static CucumberReportsPublisher cucumberReportsPublisher() {
         new CucumberReportsPublisher()
     }
 }

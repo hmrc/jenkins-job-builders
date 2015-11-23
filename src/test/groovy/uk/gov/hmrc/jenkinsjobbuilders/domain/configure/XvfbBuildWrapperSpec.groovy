@@ -5,8 +5,8 @@ import spock.lang.Specification
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobBuilder
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 
-import static XvfbBuildWrapper.parallelXvfbBuildPlugin
-import static XvfbBuildWrapper.xvfbBuildPlugin
+import static XvfbBuildWrapper.parallelXvfbBuildWrapper
+import static XvfbBuildWrapper.xvfbBuildWrapper
 
 @Mixin(JobParents)
 class XvfbBuildWrapperSpec extends Specification {
@@ -14,7 +14,7 @@ class XvfbBuildWrapperSpec extends Specification {
     void 'test XML output'() {
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
-                                               withPlugins(xvfbBuildPlugin())
+                                               withConfigures(xvfbBuildWrapper())
 
         when:
         Job job = jobBuilder.build(jobParent())
@@ -32,7 +32,7 @@ class XvfbBuildWrapperSpec extends Specification {
     void 'test parallel XML output'() {
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
-                                               withPlugins(parallelXvfbBuildPlugin())
+                                               withConfigures(parallelXvfbBuildWrapper())
 
         when:
         Job job = jobBuilder.build(jobParent())

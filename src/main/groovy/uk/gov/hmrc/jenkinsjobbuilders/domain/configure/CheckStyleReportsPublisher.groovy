@@ -1,10 +1,10 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
-final class CheckStyleReportsPublisher implements Plugin {
+final class CheckStyleReportsPublisher implements Configure {
 
     private CheckStyleReportsPublisher() {}
 
-    static CheckStyleReportsPublisher checkStyleReportPlugin() {
+    static CheckStyleReportsPublisher checkStyleReportsPublisher() {
         new CheckStyleReportsPublisher()
     }
 

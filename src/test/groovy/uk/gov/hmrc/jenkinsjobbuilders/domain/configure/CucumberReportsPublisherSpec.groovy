@@ -5,7 +5,7 @@ import spock.lang.Specification
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobBuilder
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 
-import static CucumberReportsPublisher.cucumberReportsPlugin
+import static CucumberReportsPublisher.cucumberReportsPublisher
 
 @Mixin(JobParents)
 class CucumberReportsPublisherSpec extends Specification {
@@ -13,7 +13,7 @@ class CucumberReportsPublisherSpec extends Specification {
     void 'test XML output'() {
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
-                                               withPlugins(cucumberReportsPlugin())
+                                               withConfigures(cucumberReportsPublisher())
 
         when:
         Job job = jobBuilder.build(jobParent())

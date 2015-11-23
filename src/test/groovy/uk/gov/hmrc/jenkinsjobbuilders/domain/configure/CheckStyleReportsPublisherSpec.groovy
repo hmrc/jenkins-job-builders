@@ -5,7 +5,7 @@ import spock.lang.Specification
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobBuilder
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 
-import static CheckStyleReportsPublisher.checkStyleReportPlugin
+import static CheckStyleReportsPublisher.checkStyleReportsPublisher
 
 @Mixin(JobParents)
 class CheckStyleReportsPublisherSpec extends Specification {
@@ -13,7 +13,7 @@ class CheckStyleReportsPublisherSpec extends Specification {
     void 'test XML output'() {
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
-                                               withPlugins(checkStyleReportPlugin())
+                                               withConfigures(checkStyleReportsPublisher())
 
         when:
         Job job = jobBuilder.build(jobParent())

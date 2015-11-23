@@ -5,7 +5,7 @@ import spock.lang.Specification
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobBuilder
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 
-import static SCoverageReportsPublisher.sCoverageReportPlugin
+import static SCoverageReportsPublisher.sCoverageReportsPublisher
 
 @Mixin(JobParents)
 class SCoverageReportsPublisherSpec extends Specification {
@@ -13,7 +13,7 @@ class SCoverageReportsPublisherSpec extends Specification {
     void 'test XML output'() {
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
-                                               withPlugins(sCoverageReportPlugin())
+                                               withConfigures(sCoverageReportsPublisher())
 
         when:
         Job job = jobBuilder.build(jobParent())

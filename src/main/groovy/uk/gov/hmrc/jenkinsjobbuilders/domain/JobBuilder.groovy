@@ -2,8 +2,8 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain
 
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
+import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.Configure
 import uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.Parameter
-import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.Plugin
 import uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.Publisher
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.Scm
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.ScmTrigger
@@ -25,7 +25,7 @@ final class JobBuilder implements Builder<Job> {
     private final List<ScmTrigger> scmTriggers = new ArrayList()
     private final List<Step> steps = new ArrayList()
     private final List<Publisher> publishers = new ArrayList(asList(claimBrokenBuildsPublisher()))
-    private final List<Plugin> plugins = new ArrayList()
+    private final List<Configure> configures = new ArrayList()
     private final List<Wrapper> wrappers = new ArrayList(asList(colorizeOutputWrapper(), preBuildCleanUpWrapper()))
     private Scm scm
     private int daysToKeep = -1
@@ -94,12 +94,12 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
-    JobBuilder withPlugins(Plugin ... plugins) {
-        withPlugins(asList(plugins))
+    JobBuilder withConfigures(Configure ... configures) {
+        withConfigures(asList(configures))
     }
 
-    JobBuilder withPlugins(List<Plugin> plugins) {
-        this.plugins.addAll(plugins)
+    JobBuilder withConfigures(List<Configure> configures) {
+        this.configures.addAll(configures)
         this
     }
 
@@ -123,8 +123,8 @@ final class JobBuilder implements Builder<Job> {
             it.description this.description
             logRotator(daysToKeep, numToKeep)
 
-            this.parameters.each { parameter ->
-                parameters(parameter.toDsl())
+            this.parameters.each {
+                parameters(it.toDsl())
             }
 
             if (labelExpression != null) {
@@ -135,24 +135,24 @@ final class JobBuilder implements Builder<Job> {
                 scm(scm.toDsl())
             }
 
-            this.scmTriggers.each { scmTrigger ->
-                triggers(scmTrigger.toDsl())
+            this.scmTriggers.each {
+                triggers(it.toDsl())
             }
 
-            this.wrappers.each { wrapper ->
-                wrappers(wrapper.toDsl())
+            this.wrappers.each {
+                wrappers(it.toDsl())
             }
 
-            this.steps.each { step ->
-                steps(step.toDsl())
+            this.steps.each {
+                steps(it.toDsl())
             }
 
-            this.publishers.each { publisher ->
-                publishers(publisher.toDsl())
+            this.publishers.each {
+                publishers(it.toDsl())
             }
 
-            this.plugins.each { plugin ->
-                configure(plugin.toDsl())
+            this.configures.each {
+                configure(it.toDsl())
             }
         }
     }

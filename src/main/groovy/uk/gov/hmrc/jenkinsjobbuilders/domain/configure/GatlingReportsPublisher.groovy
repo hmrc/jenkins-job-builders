@@ -1,6 +1,6 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
-final class GatlingReportsPublisher implements Plugin {
+final class GatlingReportsPublisher implements Configure {
 
     private GatlingReportsPublisher() {}
 
@@ -12,7 +12,7 @@ final class GatlingReportsPublisher implements Plugin {
         }
     }
 
-    static GatlingReportsPublisher gatlingReportPlugin() {
+    static GatlingReportsPublisher gatlingReportsPublisher() {
         new GatlingReportsPublisher()
     }
 }
