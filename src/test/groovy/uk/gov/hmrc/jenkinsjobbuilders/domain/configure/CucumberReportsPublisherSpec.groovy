@@ -1,15 +1,14 @@
-package uk.gov.hmrc.jenkinsjobbuilders.domain.plugin
+package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobBuilder
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.CucumberReportPlugin.cucumberReportsPlugin
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.SCoverageReportPlugin.sCoverageReportPlugin
+import static CucumberReportsPublisher.cucumberReportsPlugin
 
 @Mixin(JobParents)
-class CucumberReportPluginSpec extends Specification {
+class CucumberReportsPublisherSpec extends Specification {
 
     void 'test XML output'() {
         given:

@@ -1,10 +1,10 @@
-package uk.gov.hmrc.jenkinsjobbuilders.domain.plugin
+package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
-final class XvfbBuildPlugin implements Plugin {
+final class XvfbBuildWrapper implements Plugin {
 
     private final boolean parallel
 
-    private XvfbBuildPlugin(boolean parallel) {
+    private XvfbBuildWrapper(boolean parallel) {
         this.parallel = parallel
     }
 
@@ -23,11 +23,11 @@ final class XvfbBuildPlugin implements Plugin {
         }
     }
 
-    static XvfbBuildPlugin xvfbBuildPlugin() {
-        new XvfbBuildPlugin(false)
+    static XvfbBuildWrapper xvfbBuildPlugin() {
+        new XvfbBuildWrapper(false)
     }
 
-    static XvfbBuildPlugin parallelXvfbBuildPlugin() {
-        new XvfbBuildPlugin(true)
+    static XvfbBuildWrapper parallelXvfbBuildPlugin() {
+        new XvfbBuildWrapper(true)
     }
 }

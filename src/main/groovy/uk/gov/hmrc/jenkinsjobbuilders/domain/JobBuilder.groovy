@@ -3,7 +3,7 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
 import uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.Parameter
-import uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.Plugin
+import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.Plugin
 import uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.Publisher
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.Scm
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.ScmTrigger

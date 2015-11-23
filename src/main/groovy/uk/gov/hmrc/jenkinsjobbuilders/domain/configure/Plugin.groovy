@@ -1,4 +1,4 @@
-package uk.gov.hmrc.jenkinsjobbuilders.domain.plugin
+package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
 import uk.gov.hmrc.jenkinsjobbuilders.domain.Setting
 

@@ -1,11 +1,11 @@
-package uk.gov.hmrc.jenkinsjobbuilders.domain.plugin
+package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
-final class CheckStyleReportPlugin implements Plugin {
+final class CheckStyleReportsPublisher implements Plugin {
 
-    private CheckStyleReportPlugin() {}
+    private CheckStyleReportsPublisher() {}
 
-    static CheckStyleReportPlugin checkStyleReportPlugin() {
-        new CheckStyleReportPlugin()
+    static CheckStyleReportsPublisher checkStyleReportPlugin() {
+        new CheckStyleReportsPublisher()
     }
 
     Closure toDsl() {

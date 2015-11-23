@@ -1,8 +1,8 @@
-package uk.gov.hmrc.jenkinsjobbuilders.domain.plugin
+package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
-final class CucumberReportPlugin implements Plugin {
+final class CucumberReportsPublisher implements Plugin {
 
-    private CucumberReportPlugin() {}
+    private CucumberReportsPublisher() {}
 
     Closure toDsl() {
         return {
@@ -17,7 +17,7 @@ final class CucumberReportPlugin implements Plugin {
         }
     }
 
-    static CucumberReportPlugin cucumberReportsPlugin() {
-        new CucumberReportPlugin()
+    static CucumberReportsPublisher cucumberReportsPlugin() {
+        new CucumberReportsPublisher()
     }
 }

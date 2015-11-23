@@ -1,8 +1,8 @@
-package uk.gov.hmrc.jenkinsjobbuilders.domain.plugin
+package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
-final class SCoverageReportPlugin implements Plugin {
+final class SCoverageReportsPublisher implements Plugin {
 
-    private SCoverageReportPlugin() {}
+    private SCoverageReportsPublisher() {}
 
     Closure toDsl() {
         return {
@@ -13,7 +13,7 @@ final class SCoverageReportPlugin implements Plugin {
         }
     }
 
-    static SCoverageReportPlugin sCoverageReportPlugin() {
-        new SCoverageReportPlugin()
+    static SCoverageReportsPublisher sCoverageReportPlugin() {
+        new SCoverageReportsPublisher()
     }
 }

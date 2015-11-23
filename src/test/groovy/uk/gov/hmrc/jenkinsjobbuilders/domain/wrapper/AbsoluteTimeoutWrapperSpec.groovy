@@ -5,9 +5,6 @@ import spock.lang.Specification
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobBuilder
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.XvfbBuildPlugin.parallelXvfbBuildPlugin
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.plugin.XvfbBuildPlugin.xvfbBuildPlugin
-
 @Mixin(JobParents)
 class AbsoluteTimeoutWrapperSpec extends Specification {
 
