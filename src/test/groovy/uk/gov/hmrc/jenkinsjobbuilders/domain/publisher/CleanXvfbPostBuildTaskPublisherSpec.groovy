@@ -2,11 +2,10 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.publisher
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobBuilder
+import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.CleanXvfbPostBuildTaskPublisher.cleanXvfbPostBuildTaskPublisher
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.PostBuildTaskPublisher.postBuildTaskPublisher
 
 @Mixin(JobParents)
 class CleanXvfbPostBuildTaskPublisherSpec extends Specification {

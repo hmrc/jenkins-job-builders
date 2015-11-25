@@ -1,7 +1,9 @@
-package uk.gov.hmrc.jenkinsjobbuilders.domain
+package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
+import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
+import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.ChoiceParameter.choiceParameter

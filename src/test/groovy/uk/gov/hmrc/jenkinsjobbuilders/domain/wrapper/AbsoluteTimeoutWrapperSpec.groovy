@@ -2,7 +2,7 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobBuilder
+import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 
 @Mixin(JobParents)

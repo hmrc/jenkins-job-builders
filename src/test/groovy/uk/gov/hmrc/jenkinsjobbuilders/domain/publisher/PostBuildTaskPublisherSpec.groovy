@@ -2,9 +2,8 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.publisher
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobBuilder
+import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
-import uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.BooleanParameter
 
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.PostBuildTaskPublisher.postBuildTaskPublisher
 

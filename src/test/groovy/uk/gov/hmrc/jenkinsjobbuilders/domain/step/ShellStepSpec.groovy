@@ -2,10 +2,9 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.step
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobBuilder
+import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.PostBuildTaskPublisher.postBuildTaskPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
 
 @Mixin(JobParents)

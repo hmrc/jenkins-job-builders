@@ -1,4 +1,4 @@
-package uk.gov.hmrc.jenkinsjobbuilders.domain
+package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.View
