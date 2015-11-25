@@ -21,7 +21,6 @@ class ShellStepSpec extends Specification {
 
         then:
         with(job.node) {
-            builders.'hudson.tasks.Shell' [0].command.text().contains("#!/bin/bash")
             builders.'hudson.tasks.Shell' [0].command.text().contains("test-shell")
         }
     }
