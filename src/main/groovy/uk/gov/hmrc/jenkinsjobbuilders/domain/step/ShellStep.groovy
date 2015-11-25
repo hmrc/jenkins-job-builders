@@ -15,10 +15,7 @@ class ShellStep implements Step {
     @Override
     Closure toDsl() {
         return {
-            shell("""\
-                  |#!/bin/bash
-                  |${command}
-                  """.stripMargin())
+            shell(command)
         }
     }
 }
