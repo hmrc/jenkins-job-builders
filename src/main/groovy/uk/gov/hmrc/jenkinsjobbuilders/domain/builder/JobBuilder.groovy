@@ -31,6 +31,7 @@ final class JobBuilder implements Builder<Job> {
     private int daysToKeep = -1
     private int numToKeep = -1
     private String labelExpression
+    private boolean concurrentBuilds = false
 
     JobBuilder(String name, String description) {
         this.name = name
@@ -50,6 +51,11 @@ final class JobBuilder implements Builder<Job> {
 
     JobBuilder withScmTriggers(ScmTrigger ... scmTriggers) {
         this.scmTriggers.addAll(scmTriggers)
+        this
+    }
+
+    JobBuilder withConcurrentBuilds() {
+        this.concurrentBuilds = true
         this
     }
 
@@ -122,6 +128,7 @@ final class JobBuilder implements Builder<Job> {
             it.name this.name
             it.description this.description
             logRotator(daysToKeep, numToKeep)
+            concurrentBuild(concurrentBuilds)
 
             this.parameters.each {
                 parameters(it.toDsl())
