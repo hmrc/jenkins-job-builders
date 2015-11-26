@@ -9,7 +9,7 @@ class CleanWorkspacePostBuildTaskPublisher implements Publisher {
         this.publisher = postBuildTaskPublisher('Started by(.*)', """\
                                                                   |#!/bin/bash
                                                                   |cd \${WORKSPACE}
-                                                                  |find . -maxdepth 1 -not -path . -not -path '*target*' -not -path '*logs*' -type d | xargs rm -rf
+                                                                  |find . -maxdepth 1 -not -path . -not -path '*target*' -not -path '*logs*' -not -path '*results*' -type d | xargs rm -rf
                                                                   |if [ -d target ]; then
                                                                   |  find target -mindepth 2 -not -path '*report*' \\( -type f -o -type d -empty \\) -delete
                                                                   |fi
