@@ -11,7 +11,7 @@ class CleanWorkspacePostBuildTaskPublisher implements Publisher {
                                                                   |cd \${WORKSPACE}
                                                                   |find . -maxdepth 1 -not -path . -not -path '*target*' -not -path '*logs*' -not -path '*results*' -type d | xargs rm -rf
                                                                   |if [ -d target ]; then
-                                                                  |  find target -mindepth 2 -not -path '*report*' \\( -type f -o -type d -empty \\) -delete
+                                                                  |  find target -mindepth 2 -not -path '*report*' -not -path '*gatling*' \\( -type f -o -type d -empty \\) -delete
                                                                   |fi
                                                                   """.stripMargin())
     }
