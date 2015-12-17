@@ -21,6 +21,22 @@ This can be solved in Jenkins by using the Jenkins Job DSL plugin, which allows 
 
 1. Run `./gradlew clean test` locally to test your changes. The test suite will ensure the Builders are capable of producing the expected config XML for Jenkins.
 
+## Installing
+
+Create a Jenkins jobs repository akin to www.github.com/hmrc/jenkins-jobs, and then create a Jenkins job that weaves together this library with the jobs repository as follows:
+
+1. Gradle Step
+  a. Use Gradle Wrapper = true
+  b. From Root Build Script Dir = true
+  c. Tasks = clean test
+2. Process Jobs DSL Step
+  a. Look On Filesystem = true
+  b. DSL Scripts = DIR/*.groovy
+  c. Removed Jobs = Delete
+  d. Removed Views = Delete
+  e. Context To Use For Relative Job Names = Jenkins Root
+  f. Additional Classpath = DIR/*.jar (where jenkins-job-builders is in DIR)
+
 ## Examples
 
 Examples can be found in the [Jenkins Jobs repository](https://github.com/hmrc/jenkins-jobs)
