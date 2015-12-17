@@ -26,16 +26,16 @@ This can be solved in Jenkins by using the Jenkins Job DSL plugin, which allows 
 Create a Jenkins jobs repository akin to www.github.com/hmrc/jenkins-jobs, and then create a Jenkins job that weaves together this library with the jobs repository as follows:
 
 1. Gradle Step
-  a. Use Gradle Wrapper = true
-  b. From Root Build Script Dir = true
-  c. Tasks = clean test
+    * Use Gradle Wrapper = true
+    * From Root Build Script Dir = true
+    * Tasks = clean test
 2. Process Jobs DSL Step
-  a. Look On Filesystem = true
-  b. DSL Scripts = DIR/*.groovy
-  c. Removed Jobs = Delete
-  d. Removed Views = Delete
-  e. Context To Use For Relative Job Names = Jenkins Root
-  f. Additional Classpath = DIR/*.jar (where jenkins-job-builders is in DIR)
+    * Look On Filesystem = true
+    * DSL Scripts = DIR/*.groovy
+    * Removed Jobs = Delete
+    * Removed Views = Delete
+    * Context To Use For Relative Job Names = Jenkins Root
+    * Additional Classpath = DIR/*.jar (where jenkins-job-builders is in DIR)
 
 ## Examples
 
