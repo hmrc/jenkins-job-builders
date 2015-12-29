@@ -4,12 +4,16 @@ import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
+import uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ClaimBrokenBuildsPublisher
+import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.ColorizeOutputWrapper
+import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreBuildCleanupWrapper
 
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.ChoiceParameter.choiceParameter
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.StringParameter.stringParameter
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ArtifactsPublisher.artifactsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.BuildDescriptionPublisher.buildDescriptionByRegexPublisher
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ClaimBrokenBuildsPublisher.claimBrokenBuildsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.HtmlReportsPublisher.htmlReportsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.JUnitReportsPublisher.jUnitReportsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.JobsTriggerPublisher.jobsTriggerPublisher
@@ -22,7 +26,9 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.ClasspathEnvironme
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.JdkEnvironmentVariable.JDK8
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.PathEnvironmentVariable.pathEnvironmentVariable
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.variables.StringEnvironmentVariable.stringEnvironmentVariable
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.ColorizeOutputWrapper.colorizeOutputWrapper
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.NodeJsWrapper.nodeJsWrapper
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreBuildCleanupWrapper.preBuildCleanUpWrapper
 
 @Mixin(JobParents)
 class JobBuilderSpec extends Specification {
@@ -35,10 +41,11 @@ class JobBuilderSpec extends Specification {
                                                withScmTriggers(cronScmTrigger('test-cron'), gitHubScmTrigger()).
                                                withSteps(shellStep('test-shell1'), sbtStep('clean test', 'dist publish')).
                                                withEnvironmentVariables(stringEnvironmentVariable('ENV_KEY', 'ENV_VALUE'), JDK8, pathEnvironmentVariable(JDK8), classpathEnvironmentVariable()).
-                                               withWrappers(nodeJsWrapper()).
+                                               withWrappers(nodeJsWrapper(), colorizeOutputWrapper(), preBuildCleanUpWrapper()).
                                                withLabel('single-executor').
                                                withParameters(stringParameter('STRING-PARAM', 'STRING-VALUE'), choiceParameter('CHOICE-PARAM', asList('CHOICE-VALUE-1', 'CHOICE-VALUE-2'), 'CHOICE-DESC')).
-                                               withPublishers(jUnitReportsPublisher('test-junit'),
+                                               withPublishers(claimBrokenBuildsPublisher(),
+                                                              jUnitReportsPublisher('test-junit'),
                                                               htmlReportsPublisher(['target/test-reports/html-report': 'HTML Report']),
                                                               artifactsPublisher('test-artifacts'),
                                                               jobsTriggerPublisher('test-jobs'),

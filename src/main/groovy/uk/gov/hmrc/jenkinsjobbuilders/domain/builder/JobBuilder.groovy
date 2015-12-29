@@ -20,13 +20,13 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreBuildCleanupWrapp
 final class JobBuilder implements Builder<Job> {
     private final String name
     private final String description
-    private final List<Parameter> parameters = new ArrayList()
-    private final List<EnvironmentVariable> environmentVariables = new ArrayList()
-    private final List<ScmTrigger> scmTriggers = new ArrayList()
-    private final List<Step> steps = new ArrayList()
-    private final List<Publisher> publishers = new ArrayList(asList(claimBrokenBuildsPublisher()))
-    private final List<Configure> configures = new ArrayList()
-    private final List<Wrapper> wrappers = new ArrayList(asList(colorizeOutputWrapper(), preBuildCleanUpWrapper()))
+    private final List<Parameter> parameters = []
+    private final List<EnvironmentVariable> environmentVariables = []
+    private final List<ScmTrigger> scmTriggers = []
+    private final List<Step> steps = []
+    private final List<Publisher> publishers = []
+    private final List<Configure> configures = []
+    private final List<Wrapper> wrappers = []
     private Scm scm
     private int daysToKeep = -1
     private int numToKeep = -1
