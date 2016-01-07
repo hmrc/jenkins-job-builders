@@ -1,4 +1,4 @@
-package uk.gov.hmrc.jenkinsjobbuilders.domain.variables
+package uk.gov.hmrc.jenkinsjobbuilders.domain.variable
 
 public interface EnvironmentVariable {
 

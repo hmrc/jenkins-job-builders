@@ -8,14 +8,11 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.Publisher
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.Scm
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.ScmTrigger
 import uk.gov.hmrc.jenkinsjobbuilders.domain.step.Step
-import uk.gov.hmrc.jenkinsjobbuilders.domain.variables.EnvironmentVariable
+import uk.gov.hmrc.jenkinsjobbuilders.domain.variable.EnvironmentVariable
 import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.Wrapper
 
 import static java.util.Arrays.asList
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ClaimBrokenBuildsPublisher.claimBrokenBuildsPublisher
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.ColorizeOutputWrapper.colorizeOutputWrapper
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.EnvironmentVariablesWrapper.environmentVariablesWrapper
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreBuildCleanupWrapper.preBuildCleanUpWrapper
 
 final class JobBuilder implements Builder<Job> {
     private final String name

@@ -1,6 +1,6 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper
 
-import uk.gov.hmrc.jenkinsjobbuilders.domain.variables.EnvironmentVariable
+import uk.gov.hmrc.jenkinsjobbuilders.domain.variable.EnvironmentVariable
 
 class EnvironmentVariablesWrapper implements Wrapper {
 
