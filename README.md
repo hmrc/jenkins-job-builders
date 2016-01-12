@@ -28,7 +28,7 @@ Create a Jenkins jobs repository akin to www.github.com/hmrc/jenkins-jobs, and t
 1. Gradle Step
     * Use Gradle Wrapper = true
     * From Root Build Script Dir = true
-    * Tasks = clean test
+    * Tasks = clean build
 2. Process Jobs DSL Step
     * Look On Filesystem = true
     * DSL Scripts = DIR/*.groovy
