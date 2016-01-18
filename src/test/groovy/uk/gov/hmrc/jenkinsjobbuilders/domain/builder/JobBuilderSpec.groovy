@@ -16,6 +16,7 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.JobsTriggerPublish
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.CronScmTrigger.cronScmTrigger
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubComScm.gitHubComScm
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubScmTrigger.gitHubScmTrigger
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.BlockingJobsTriggerStep.jobsTriggerStep
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.SbtStep.sbtStep
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.variable.StringEnvironmentVariable.stringEnvironmentVariable
@@ -32,7 +33,7 @@ class JobBuilderSpec extends Specification {
                                                withLogRotator(14, 10).
                                                withScm(gitHubComScm('example/example-repo', 'test-credentials')).
                                                withScmTriggers(cronScmTrigger('test-cron'), gitHubScmTrigger()).
-                                               withSteps(shellStep('test-shell1'), sbtStep('clean test', 'dist publish')).
+                                               withSteps(shellStep('test-shell1'), sbtStep('clean test', 'dist publish'), jobsTriggerStep('test-job2,test-job3',[foo : "bar", boo : "baz"])).
                                                withEnvironmentVariables(stringEnvironmentVariable('ENV_KEY', 'ENV_VALUE')).
                                                withWrappers(nodeJsWrapper(), colorizeOutputWrapper(), preBuildCleanUpWrapper()).
                                                withLabel('single-executor').
@@ -72,6 +73,13 @@ class JobBuilderSpec extends Specification {
             builders.'hudson.tasks.Shell' [0].command.text().contains('test-shell1')
             builders.'hudson.tasks.Shell' [1].command.text().contains('sbt clean test -Djava.io.tmpdir=${WORKSPACE}/tmp')
             builders.'hudson.tasks.Shell' [1].command.text().contains('sbt dist publish -Djava.io.tmpdir=${WORKSPACE}/tmp')
+            builders.'hudson.plugins.parameterizedtrigger.TriggerBuilder'.configs.'hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig' [0].projects.text() == 'test-job2,test-job3'
+            builders.'hudson.plugins.parameterizedtrigger.TriggerBuilder'.configs.'hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig' [0].condition.text() == 'ALWAYS'
+            builders.'hudson.plugins.parameterizedtrigger.TriggerBuilder'.configs.'hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig' [0].triggerWithNoParameters.text() == 'false'
+            builders.'hudson.plugins.parameterizedtrigger.TriggerBuilder'.configs.'hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig' [0].configs.'hudson.plugins.parameterizedtrigger.PredefinedBuildParameters'.properties.text() == 'foo=bar\nboo=baz'
+            builders.'hudson.plugins.parameterizedtrigger.TriggerBuilder'.configs.'hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig' [0].block.unstableThreshold.name.text() == 'UNSTABLE'
+            builders.'hudson.plugins.parameterizedtrigger.TriggerBuilder'.configs.'hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig' [0].block.buildStepFailureThreshold.name.text() == 'FAILURE'
+            builders.'hudson.plugins.parameterizedtrigger.TriggerBuilder'.configs.'hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig' [0].block.failureThreshold.name.text() == 'FAILURE'
             publishers.'hudson.plugins.claim.ClaimPublisher'.text() == ''
             publishers.'hudson.tasks.junit.JUnitResultArchiver'.testResults.text() == 'test-junit'
             publishers.'htmlpublisher.HtmlPublisher'.reportTargets.'htmlpublisher.HtmlPublisherTarget'.reportDir[0].text() == 'target/test-reports/html-report'
