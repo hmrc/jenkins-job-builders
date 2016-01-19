@@ -40,8 +40,8 @@ publishing {
 }
 
 bintray {
-    user = credentials('user')
-    key = credentials('password')
+    user = credentialsProperty('user')
+    key = credentialsProperty('password')
     publications = ['mavenJava']
     pkg {
         repo = 'releases'
@@ -55,10 +55,11 @@ bintray {
     publish = true
 }
 
-def credentials(String key) {
-    def file = new File("${System.properties['user.home']}", '/.bintray/.credentials')
-    if (!file.exists()) throw new IllegalStateException(file.getAbsolutePath());
+private def credentialsProperty(String key) {
     def credentials = new Properties()
-    credentials.load(file.newDataInputStream())
+    def file = new File("${System.properties['user.home']}", '/.bintray/.credentials')
+    if (file.exists()) {
+        credentials.load(file.newDataInputStream())
+    }
     credentials.get(key)
 }
