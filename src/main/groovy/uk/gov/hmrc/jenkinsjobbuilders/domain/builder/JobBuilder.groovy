@@ -6,7 +6,7 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.Configure
 import uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.Parameter
 import uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.Publisher
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.Scm
-import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.ScmTrigger
+import uk.gov.hmrc.jenkinsjobbuilders.domain.trigger.Trigger
 import uk.gov.hmrc.jenkinsjobbuilders.domain.step.Step
 import uk.gov.hmrc.jenkinsjobbuilders.domain.variable.EnvironmentVariable
 import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.Wrapper
@@ -19,7 +19,7 @@ final class JobBuilder implements Builder<Job> {
     private final String description
     private final List<Parameter> parameters = []
     private final List<EnvironmentVariable> environmentVariables = []
-    private final List<ScmTrigger> scmTriggers = []
+    private final List<Trigger> triggers = []
     private final List<Step> steps = []
     private final List<Publisher> publishers = []
     private final List<Configure> configures = []
@@ -46,8 +46,8 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
-    JobBuilder withScmTriggers(ScmTrigger ... scmTriggers) {
-        this.scmTriggers.addAll(scmTriggers)
+    JobBuilder withTriggers(Trigger ... triggers) {
+        this.triggers.addAll(triggers)
         this
     }
 
@@ -139,7 +139,7 @@ final class JobBuilder implements Builder<Job> {
                 scm(scm.toDsl())
             }
 
-            this.scmTriggers.each {
+            this.triggers.each {
                 triggers(it.toDsl())
             }
 
