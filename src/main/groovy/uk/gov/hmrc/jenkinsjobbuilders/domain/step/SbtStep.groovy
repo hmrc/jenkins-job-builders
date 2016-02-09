@@ -6,14 +6,14 @@ class SbtStep implements Step {
 
     private final Step step
 
-    private SbtStep(String ... commands) {
-        this.step = shellStep(commands.inject('mkdir -p \${WORKSPACE}/tmp') {
-                                string, item -> string + "\nsbt $item -Djava.io.tmpdir=\${WORKSPACE}/tmp"
+    private SbtStep(List<String> commands, String tmpDir) {
+        this.step = shellStep(commands.inject("mkdir -p $tmpDir") {
+                                string, item -> string + "\nsbt $item -Djava.io.tmpdir=$tmpDir"
                               })
     }
 
-    static Step sbtStep(String ... commands) {
-        new SbtStep(commands)
+    static Step sbtStep(List<String> commands, String tmpDir) {
+        new SbtStep(commands, tmpDir)
     }
 
     @Override
