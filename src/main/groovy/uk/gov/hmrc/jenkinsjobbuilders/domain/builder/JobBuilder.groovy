@@ -29,6 +29,7 @@ final class JobBuilder implements Builder<Job> {
     private int numToKeep = -1
     private String labelExpression
     private boolean concurrentBuilds = false
+    private boolean disabled = false
 
     JobBuilder(String name, String description) {
         this.name = name
@@ -53,6 +54,11 @@ final class JobBuilder implements Builder<Job> {
 
     JobBuilder withConcurrentBuilds() {
         this.concurrentBuilds = true
+        this
+    }
+
+    JobBuilder withDisabled() {
+        this.disabled = true
         this
     }
 
@@ -126,6 +132,7 @@ final class JobBuilder implements Builder<Job> {
             it.description this.description
             logRotator(daysToKeep, numToKeep)
             concurrentBuild(concurrentBuilds)
+            disabled(this.disabled)
 
             this.parameters.each {
                 parameters(it.toDsl())
