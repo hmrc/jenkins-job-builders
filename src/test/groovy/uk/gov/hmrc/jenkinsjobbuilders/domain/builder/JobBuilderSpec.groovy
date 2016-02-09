@@ -32,7 +32,7 @@ class JobBuilderSpec extends Specification {
                                                withLogRotator(14, 10).
                                                withScm(gitHubComScm('example/example-repo', 'test-credentials')).
                                                withTriggers(cronTrigger('test-cron'), gitHubPushTrigger()).
-                                               withSteps(shellStep('test-shell1'), sbtStep('clean test', 'dist publish')).
+                                               withSteps(shellStep('test-shell1'), sbtStep(['clean test', 'dist publish'])).
                                                withEnvironmentVariables(stringEnvironmentVariable('ENV_KEY', 'ENV_VALUE')).
                                                withWrappers(nodeJsWrapper(), colorizeOutputWrapper(), preBuildCleanUpWrapper()).
                                                withLabel('single-executor').
