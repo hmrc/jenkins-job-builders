@@ -13,6 +13,7 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ClaimBrokenBuildsP
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.HtmlReportsPublisher.htmlReportsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.JUnitReportsPublisher.jUnitReportsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.JobsTriggerPublisher.jobsTriggerPublisher
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.trigger.BintrayArtifactTrigger.bintrayArtifactTrigger
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.trigger.CronTrigger.cronTrigger
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubComScm.gitHubComScm
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.trigger.GitHubPushTrigger.gitHubPushTrigger
@@ -31,7 +32,7 @@ class JobBuilderSpec extends Specification {
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
                                                withLogRotator(14, 10).
                                                withScm(gitHubComScm('example/example-repo', 'test-credentials')).
-                                               withTriggers(cronTrigger('test-cron'), gitHubPushTrigger()).
+                                               withTriggers(cronTrigger('test-cron'), gitHubPushTrigger(), bintrayArtifactTrigger("H * * * *", "hmrc", "release-candidates", ["test", "test-frontend"])).
                                                withSteps(shellStep('test-shell1'), sbtStep(['clean test', 'dist publish'], '/tmp')).
                                                withEnvironmentVariables(stringEnvironmentVariable('ENV_KEY', 'ENV_VALUE')).
                                                withWrappers(nodeJsWrapper(), colorizeOutputWrapper(), preBuildCleanUpWrapper()).
@@ -65,6 +66,17 @@ class JobBuilderSpec extends Specification {
             scm.branches.'hudson.plugins.git.BranchSpec'.name.text() == 'master'
             triggers.'com.cloudbees.jenkins.gitHubPushTrigger'.spec.text() == ''
             triggers.'hudson.triggers.TimerTrigger'.spec.text() == 'test-cron'
+            triggers.'org.jenkinsci.plugins.urltrigger.URLTrigger'.spec.text().contains('H * * * *')
+            triggers.'org.jenkinsci.plugins.urltrigger.URLTrigger'.entries.'org.jenkinsci.plugins.urltrigger.URLTriggerEntry' [0].
+                    url.text().contains('https://api.bintray.com/packages/hmrc/release-candidates/test/')
+            triggers.'org.jenkinsci.plugins.urltrigger.URLTrigger'.entries.'org.jenkinsci.plugins.urltrigger.URLTriggerEntry' [0].contentTypes.
+            'org.jenkinsci.plugins.urltrigger.content.JSONContentType'.jsonPaths.'org.jenkinsci.plugins.urltrigger.content.JSONContentEntry'.
+                    jsonPath.text().contains('latest_version')
+            triggers.'org.jenkinsci.plugins.urltrigger.URLTrigger'.entries.'org.jenkinsci.plugins.urltrigger.URLTriggerEntry' [1].
+                    url.text().contains('https://api.bintray.com/packages/hmrc/release-candidates/test-frontend/')
+            triggers.'org.jenkinsci.plugins.urltrigger.URLTrigger'.entries.'org.jenkinsci.plugins.urltrigger.URLTriggerEntry' [1].contentTypes.
+            'org.jenkinsci.plugins.urltrigger.content.JSONContentType'.jsonPaths.'org.jenkinsci.plugins.urltrigger.content.JSONContentEntry'.
+                    jsonPath.text().contains('latest_version')
             buildWrappers.'hudson.plugins.ansicolor.AnsiColorBuildWrapper'.colorMapName.text() == 'xterm'
             buildWrappers.'hudson.plugins.ws__cleanup.PreBuildCleanup'.deleteDirs.text() == 'false'
             buildWrappers.'jenkins.plugins.nodejs.tools.NpmPackagesBuildWrapper'.nodeJSInstallationName.text() == 'node 0.10.28'
