@@ -28,7 +28,7 @@ dependencies {
     testCompile 'org.jenkins-ci:version-number:1.1'
 }
 
-version = '9.0.0'
+version = '9.1.0'
 group = 'uk.gov.hmrc'
 
 publishing {
