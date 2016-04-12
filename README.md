@@ -39,7 +39,7 @@ Create a Jenkins jobs repository akin to www.github.com/hmrc/jenkins-jobs, and t
 
 ## Examples
 
-Examples can be found in the [Jenkins Jobs repository](https://github.com/hmrc/jenkins-jobs)
+The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one example of how to use this library.
 
 ## License
 
