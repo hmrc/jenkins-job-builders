@@ -28,6 +28,7 @@ final class JobBuilder implements Builder<Job> {
     private int daysToKeep = -1
     private int numToKeep = -1
     private String labelExpression
+    private String environmentVariablesFile
     private boolean concurrentBuilds = false
     private boolean disabled = false
 
@@ -80,6 +81,11 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
+    JobBuilder withEnvironmentVariablesFile(String environmentVariablesFile) {
+        this.environmentVariablesFile = environmentVariablesFile
+        this
+    }
+
     JobBuilder withEnvironmentVariables(EnvironmentVariable ... environmentsVariables) {
         withEnvironmentVariables(asList(environmentsVariables))
     }
@@ -124,7 +130,7 @@ final class JobBuilder implements Builder<Job> {
     @Override
     Job build(DslFactory dslFactory) {
         if (!this.environmentVariables.isEmpty()) {
-            this.wrappers.add(environmentVariablesWrapper(environmentVariables))
+            this.wrappers.add(environmentVariablesWrapper(environmentVariablesFile, environmentVariables))
         }
 
         dslFactory.job {
