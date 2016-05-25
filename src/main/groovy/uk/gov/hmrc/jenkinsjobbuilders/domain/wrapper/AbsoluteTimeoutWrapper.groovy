@@ -17,6 +17,7 @@ class AbsoluteTimeoutWrapper implements Wrapper {
         return {
             timeout {
                 absolute(minutes)
+                failBuild()
             }
         }
     }
