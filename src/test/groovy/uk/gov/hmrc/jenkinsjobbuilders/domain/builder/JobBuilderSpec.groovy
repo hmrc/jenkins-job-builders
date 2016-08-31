@@ -33,7 +33,7 @@ class JobBuilderSpec extends Specification {
                                                withLogRotator(14, 10).
                                                withScm(gitHubComScm('example/example-repo', 'test-credentials')).
                                                withTriggers(cronTrigger('test-cron'), gitHubPushTrigger(), bintrayArtifactTrigger("H * * * *", "hmrc", "release-candidates", ["test", "test-frontend"])).
-                                               withSteps(shellStep('test-shell1'), sbtStep(['clean test', 'dist publish'], '/tmp')).
+                                               withSteps(shellStep('test-shell1'), sbtStep("ls test", ['clean test', 'dist publish'], '/tmp')).
                                                withEnvironmentVariables(stringEnvironmentVariable('ENV_KEY', 'ENV_VALUE')).
                                                withWrappers(nodeJsWrapper(), colorizeOutputWrapper(), preBuildCleanUpWrapper()).
                                                withLabel('single-executor').
@@ -82,6 +82,8 @@ class JobBuilderSpec extends Specification {
             buildWrappers.'jenkins.plugins.nodejs.tools.NpmPackagesBuildWrapper'.nodeJSInstallationName.text() == 'node 0.10.28'
             buildWrappers.'EnvInjectBuildWrapper'.info.propertiesContent.text().contains('ENV_KEY=ENV_VALUE') == true
             builders.'hudson.tasks.Shell' [0].command.text().contains('test-shell1')
+            builders.'hudson.tasks.Shell' [1].command.text().contains('ls test')
+            builders.'hudson.tasks.Shell' [1].command.text().contains('mkdir -p /tmp')
             builders.'hudson.tasks.Shell' [1].command.text().contains('sbt clean test -Djava.io.tmpdir=/tmp')
             builders.'hudson.tasks.Shell' [1].command.text().contains('sbt dist publish -Djava.io.tmpdir=/tmp')
             publishers.'hudson.plugins.claim.ClaimPublisher'.text() == ''

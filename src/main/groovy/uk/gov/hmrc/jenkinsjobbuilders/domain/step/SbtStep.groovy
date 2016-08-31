@@ -1,19 +1,25 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.step
 
+
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
 
 class SbtStep implements Step {
 
+    private static final String EOL = System.getProperty("line.separator")
     private final Step step
 
-    private SbtStep(List<String> commands, String tmpDir) {
-        this.step = shellStep(commands.inject("mkdir -p $tmpDir") {
-                                string, item -> string + "\nsbt $item -Djava.io.tmpdir=$tmpDir"
+    private SbtStep(String bashScript, List<String> sbtCommands, String tmpDir) {
+        this.step = shellStep(sbtCommands.inject(bashScript + EOL + "mkdir -p $tmpDir") {
+                                string, item -> string + EOL + "sbt $item -Djava.io.tmpdir=$tmpDir"
                               })
     }
 
     static Step sbtStep(List<String> commands, String tmpDir) {
-        new SbtStep(commands, tmpDir)
+        sbtStep("", commands, tmpDir)
+    }
+
+    static Step sbtStep(String bashScript, List<String> commands, String tmpDir) {
+        new SbtStep(bashScript, commands, tmpDir)
     }
 
     @Override
