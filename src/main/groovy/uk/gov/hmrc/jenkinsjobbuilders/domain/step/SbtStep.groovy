@@ -9,9 +9,13 @@ class SbtStep implements Step {
     private final Step step
 
     private SbtStep(String bashScript, List<String> sbtCommands, String tmpDir) {
-        this.step = shellStep(sbtCommands.inject(bashScript + EOL + "mkdir -p $tmpDir") {
+        this.step = shellStep(sbtCommands.inject(bashScriptString(bashScript, tmpDir)) {
                                 string, item -> string + EOL + "sbt $item -Djava.io.tmpdir=$tmpDir"
                               })
+    }
+
+    private static String bashScriptString(String bashScript, String tmpDir) {
+        bashScript.isEmpty() ? "mkdir -p $tmpDir" : bashScript + EOL + "mkdir -p $tmpDir"
     }
 
     static Step sbtStep(List<String> commands, String tmpDir) {
