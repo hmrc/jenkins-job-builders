@@ -2,9 +2,9 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.step
 
 
 class ShellStep implements Step {
-    private final String command
+    final String command
 
-    private ShellStep(String command) {
+    ShellStep(String command) {
         this.command = command
     }
 
