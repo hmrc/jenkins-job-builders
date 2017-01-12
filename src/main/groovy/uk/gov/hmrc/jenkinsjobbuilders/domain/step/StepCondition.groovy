@@ -63,7 +63,17 @@ class StepCondition {
     }
 
     enum Cause {
-        UPSTREAM_CAUSE("UPSTREAM_CAUSE")
+        UPSTREAM_CAUSE("UPSTREAM_CAUSE"),
+        USER_CAUSE("USER_CAUSE"),
+        CLI_CAUSE("CLI_CAUSE"),
+        REMOTE_CAUSE("REMOTE_CAUSE"),
+        SCM_TRIGGER("SCM_CAUSE"),
+        TIMER_TRIGGER("TIMER_CAUSE"),
+        FS_TRIGGER("FS_CAUSE"),
+        URL_TRIGGER("URL_CAUSE"),
+        IVY_TRIGGER("IVY_CAUSE"),
+        SCRIPT_TRIGGER("SCRIPT_CAUSE"),
+        BUILD_RESULT_TRIGGER("BUILDRESULT_CAUSE")
 
         private final String value
 
