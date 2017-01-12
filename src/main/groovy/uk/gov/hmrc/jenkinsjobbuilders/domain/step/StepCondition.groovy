@@ -26,7 +26,7 @@ class StepCondition {
         return runCondition()
     }
 
-    StepCondition when(Cause cause) {
+    StepCondition whenCausedBy(Cause cause) {
         this.cause = cause.getValue()
         this
     }
