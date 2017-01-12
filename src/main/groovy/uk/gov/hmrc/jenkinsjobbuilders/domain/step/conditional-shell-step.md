@@ -9,7 +9,7 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.StepCondition.runCondit
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.StepCondition.Behaviour.DONT_RUN
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.StepCondition.Cause.UPSTREAM_CAUSE
 
-StepCondition condition = runCondition().whenCausedBy(UPSTREAM_CAUSE).andIfFailure(DONT_RUN)
+StepCondition condition = runCondition().causedBy(UPSTREAM_CAUSE).andIfFailure(DONT_RUN)
 ```
 
 a `ConditionalShellStep` will generate a step that will run only if the cause that triggered the job was an upstream job, and if Jenkins cannot determine the cause (in case of failure) as default it will not run the step.
@@ -22,7 +22,8 @@ if(condition.isSet)
     conditionalShellStep("echo 'This job was triggered by an upstream job'", condition)
 ```
 
-A `StepCondition` can also be negated, and a construct is provided:
+A `StepCondition` can also be negated (if the evaluation exception behaviour is not specified, the `RUN` will be applied), and a construct is provided:
 ```groovy
-StepCondition condition = runCondition().not().whenCausedBy(UPSTREAM_CAUSE).andIfFailure(DONT_RUN)
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.StepCondition.Cause.TIMER_TRIGGER
+StepCondition condition = runCondition().isNot().causedBy(TIMER_TRIGGER)
 ```

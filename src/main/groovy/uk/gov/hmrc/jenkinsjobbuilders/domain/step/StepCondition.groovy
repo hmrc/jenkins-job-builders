@@ -1,5 +1,7 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.step
 
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.StepCondition.EvaluationFailureBehaviour.RUN
+
 class StepCondition {
 
     private boolean negative = false
@@ -10,10 +12,12 @@ class StepCondition {
     }
 
     static StepCondition runCondition() {
-        return new StepCondition()
+        StepCondition stepCondition = new StepCondition()
+        stepCondition.andIfFailure(RUN)
+        return stepCondition
     }
 
-    StepCondition not() {
+    StepCondition isNot() {
         return runCondition().negate()
     }
 
@@ -26,7 +30,7 @@ class StepCondition {
         return runCondition()
     }
 
-    StepCondition whenCausedBy(Cause cause) {
+    StepCondition causedBy(Cause cause) {
         this.cause = cause.getValue()
         this
     }

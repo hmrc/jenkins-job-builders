@@ -16,7 +16,7 @@ class ConditionalStepSpec extends Specification {
     void 'test XML output'() {
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description')
-            .withSteps(conditionalShellStep('hello-world', runCondition().not().whenCausedBy(UPSTREAM_CAUSE).andIfFailure(DONT_RUN)))
+            .withSteps(conditionalShellStep('hello-world', runCondition().isNot().causedBy(UPSTREAM_CAUSE).andIfFailure(DONT_RUN)))
 
         when:
         Job job = jobBuilder.build(jobParent())
