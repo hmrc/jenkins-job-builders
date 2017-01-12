@@ -31,7 +31,7 @@ class StepCondition {
         this
     }
 
-    StepCondition andIfFailure(Behaviour behaviour) {
+    StepCondition andIfFailure(EvaluationFailureBehaviour behaviour) {
         this.behaviour = behaviour.getValue()
         this
     }
@@ -48,12 +48,16 @@ class StepCondition {
         return negative
     }
 
-    enum Behaviour {
-        RUN("Run"), DONT_RUN("DontRun")
+    enum EvaluationFailureBehaviour {
+        RUN("Run"),
+        RUN_UNSTABLE("RunUnstable"),
+        DONT_RUN("DontRun"),
+        FAIL("Fail"),
+        UNSTABLE("Unstable")
 
         private final String value
 
-        Behaviour(String value) {
+        EvaluationFailureBehaviour(String value) {
             this.value = value
         }
 

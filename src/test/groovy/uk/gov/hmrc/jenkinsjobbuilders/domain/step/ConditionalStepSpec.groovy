@@ -6,7 +6,7 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ConditionalShellStep.conditionalShellStep
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.StepCondition.Behaviour.DONT_RUN
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.StepCondition.EvaluationFailureBehaviour.DONT_RUN
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.StepCondition.Cause.UPSTREAM_CAUSE
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.StepCondition.runCondition
 
