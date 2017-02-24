@@ -6,14 +6,14 @@ class CleanWorkspacePostBuildTaskPublisher implements Publisher {
     private final Publisher publisher
 
     private CleanWorkspacePostBuildTaskPublisher() {
-        this.publisher = postBuildTaskPublisher('Started by(.*)', """\
-                                                                  |#!/bin/bash
-                                                                  |cd \${WORKSPACE}
-                                                                  |find . -maxdepth 1 -not -path . -not -path '*target*' -not -path '*logs*' -not -path '*results*' -type d | xargs rm -rf
-                                                                  |if [ -d target ]; then
-                                                                  |  find target -mindepth 2 -not -path '*report*' -not -path '*gatling*' \\( -type f -o -type d -empty \\) -delete
-                                                                  |fi
-                                                                  """.stripMargin())
+        this.publisher = postBuildTaskPublisher('Building(.*)', """\
+                                                                |#!/bin/bash
+                                                                |cd \${WORKSPACE}
+                                                                |find . -maxdepth 1 -not -path . -not -path '*target*' -not -path '*logs*' -not -path '*results*' -type d | xargs rm -rf
+                                                                |if [ -d target ]; then
+                                                                |  find target -mindepth 2 -not -path '*report*' -not -path '*gatling*' \\( -type f -o -type d -empty \\) -delete
+                                                                |fi
+                                                                """.stripMargin())
     }
 
     static Publisher cleanWorkspacePostBuildTaskPublisher() {
