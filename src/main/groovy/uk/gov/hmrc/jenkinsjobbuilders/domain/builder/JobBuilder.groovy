@@ -130,7 +130,7 @@ final class JobBuilder implements Builder<Job> {
     @Override
     Job build(DslFactory dslFactory) {
         if (!this.environmentVariables.isEmpty()) {
-            this.wrappers.add(environmentVariablesWrapper(environmentVariablesFile, environmentVariables))
+            this.wrappers.add(0, environmentVariablesWrapper(environmentVariablesFile, environmentVariables))
         }
 
         dslFactory.job {
