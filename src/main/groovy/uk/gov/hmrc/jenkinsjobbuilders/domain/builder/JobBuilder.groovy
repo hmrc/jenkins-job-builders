@@ -184,7 +184,7 @@ final class JobBuilder implements Builder<Job> {
                 configure(it.toDsl())
             }
             this.permissions.each {
-                permission(it.permissionIdentifier, it.ldapIdentifier)
+                permission(it.permissionEnum, it.ldapIdentifier)
             }
         }
     }
