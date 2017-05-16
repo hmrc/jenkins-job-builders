@@ -2,6 +2,7 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
+import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission
 import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.Configure
 import uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.Parameter
 import uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.Publisher
@@ -31,6 +32,7 @@ final class JobBuilder implements Builder<Job> {
     private String environmentVariablesFile
     private boolean concurrentBuilds = false
     private boolean disabled = false
+    private final List<Permission> permissions = []
 
     JobBuilder(String name, String description) {
         this.name = name
@@ -127,6 +129,16 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
+    JobBuilder withPermissions(Permission ... permissions) {
+        this.permissions.addAll(permissions)
+        this
+    }
+
+    JobBuilder withPermissions(List<Permission> permissions) {
+        this.permissions.addAll(permissions)
+        this
+    }
+
     @Override
     Job build(DslFactory dslFactory) {
         if (!this.environmentVariables.isEmpty()) {
@@ -170,6 +182,9 @@ final class JobBuilder implements Builder<Job> {
 
             this.configures.each {
                 configure(it.toDsl())
+            }
+            this.permissions.each {
+                permission(it.permissionIdentifier, it.ldapIdentifier)
             }
         }
     }
