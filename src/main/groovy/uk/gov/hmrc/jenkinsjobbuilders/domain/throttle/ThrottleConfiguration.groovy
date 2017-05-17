@@ -9,11 +9,11 @@ class ThrottleConfiguration implements Setting {
     final int maxConcurrentTotal
     final boolean disableThrottle
 
-    private ThrottleConfiguration(List<String> categories, int maxConcurrentPerNode, int maxConcurrentTotal, boolean throttleDisabled) {
+    private ThrottleConfiguration(List<String> categories, int maxConcurrentPerNode, int maxConcurrentTotal, boolean disableThrottle) {
         this.categoriesList = categories
         this.maxConcurrentPerNode = maxConcurrentPerNode
         this.maxConcurrentTotal = maxConcurrentTotal
-        this.disableThrottle = throttleDisabled
+        this.disableThrottle = disableThrottle
     }
 
     static ThrottleConfiguration throttleConfiguration(List<String> categories, int maxConcurrentPerNode, int maxConcurrentTotal, boolean throttleDisabled) {
