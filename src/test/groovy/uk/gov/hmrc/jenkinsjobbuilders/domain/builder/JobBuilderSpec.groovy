@@ -47,8 +47,8 @@ class JobBuilderSpec extends Specification {
                                                               htmlReportsPublisher(['target/test-reports/html-report': 'HTML Report']),
                                                               artifactsPublisher('test-artifacts'),
                                                               jobsTriggerPublisher('test-jobs'),
-                                                              buildDescriptionByRegexPublisher('test-regex'))
-
+                                                              buildDescriptionByRegexPublisher('test-regex')).
+                                                withThrottle(['deployment'], 0, 1, false)
         when:
         Job job = jobBuilder.build(jobParent())
 
@@ -69,6 +69,10 @@ class JobBuilderSpec extends Specification {
             properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.ChoiceParameterDefinition'.description.text() == 'CHOICE-DESC'
             properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.ChoiceParameterDefinition'.choices.isEmpty() == false
             properties.'hudson.security.AuthorizationMatrixProperty'.permission.text() == 'hudson.model.Item.Read:dev-tools'
+            properties.'hudson.plugins.throttleconcurrents.ThrottleJobProperty'.maxConcurrentPerNode.text() == '0'
+            properties.'hudson.plugins.throttleconcurrents.ThrottleJobProperty'.maxConcurrentTotal.text() == '1'
+            properties.'hudson.plugins.throttleconcurrents.ThrottleJobProperty'.throttleEnabled.text() == 'true'
+            properties.'hudson.plugins.throttleconcurrents.ThrottleJobProperty'.categories.string.text() == 'deployment'
             scm.userRemoteConfigs.'hudson.plugins.git.UserRemoteConfig'.url.text() == 'git@github.com:example/example-repo.git'
             scm.branches.'hudson.plugins.git.BranchSpec'.name.text() == 'master'
             triggers.'com.cloudbees.jenkins.gitHubPushTrigger'.spec.text() == ''

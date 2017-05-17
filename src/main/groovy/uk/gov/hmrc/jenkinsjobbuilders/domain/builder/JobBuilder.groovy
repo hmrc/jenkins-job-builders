@@ -7,12 +7,14 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.Configure
 import uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.Parameter
 import uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.Publisher
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.Scm
+import uk.gov.hmrc.jenkinsjobbuilders.domain.throttle.ThrottleConfiguration
 import uk.gov.hmrc.jenkinsjobbuilders.domain.trigger.Trigger
 import uk.gov.hmrc.jenkinsjobbuilders.domain.step.Step
 import uk.gov.hmrc.jenkinsjobbuilders.domain.variable.EnvironmentVariable
 import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.Wrapper
 
 import static java.util.Arrays.asList
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.throttle.ThrottleConfiguration.throttleConfiguration
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.EnvironmentVariablesWrapper.environmentVariablesWrapper
 
 final class JobBuilder implements Builder<Job> {
@@ -33,6 +35,7 @@ final class JobBuilder implements Builder<Job> {
     private boolean concurrentBuilds = false
     private boolean disabled = false
     private final List<Permission> permissions = []
+    private ThrottleConfiguration throttle
 
     JobBuilder(String name, String description) {
         this.name = name
@@ -139,6 +142,11 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
+    JobBuilder withThrottle(List<String> categories, int maxConcurrentPerNode, int maxConcurrentTotal, boolean throttleDisabled) {
+        this.throttle = throttleConfiguration(categories, maxConcurrentPerNode, maxConcurrentTotal, throttleDisabled)
+        this
+    }
+
     @Override
     Job build(DslFactory dslFactory) {
         if (!this.environmentVariables.isEmpty()) {
@@ -184,7 +192,10 @@ final class JobBuilder implements Builder<Job> {
                 configure(it.toDsl())
             }
             this.permissions.each {
-                permission(it.permissionEnum, it.ldapIdentifier)
+                authorization(it.toDsl())
+            }
+            if (this.throttle != null) {
+                throttleConcurrentBuilds(this.throttle.toDsl())
             }
         }
     }
