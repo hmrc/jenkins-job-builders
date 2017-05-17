@@ -192,7 +192,7 @@ final class JobBuilder implements Builder<Job> {
                 configure(it.toDsl())
             }
             this.permissions.each {
-                permission(it.permissionEnum, it.ldapIdentifier)
+                authorization(it.toDsl())
             }
             if (this.throttle != null) {
                 throttleConcurrentBuilds(this.throttle.toDsl())
