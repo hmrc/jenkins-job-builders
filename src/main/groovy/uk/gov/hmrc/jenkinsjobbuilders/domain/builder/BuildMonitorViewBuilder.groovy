@@ -2,8 +2,7 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.View
-
-import static javaposse.jobdsl.dsl.ViewType.BuildMonitorView
+import javaposse.jobdsl.dsl.views.BuildMonitorView
 
 final class BuildMonitorViewBuilder implements Builder<View> {
 
