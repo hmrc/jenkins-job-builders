@@ -7,9 +7,9 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.Configure
 import uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.Parameter
 import uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.Publisher
 import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.Scm
+import uk.gov.hmrc.jenkinsjobbuilders.domain.step.Step
 import uk.gov.hmrc.jenkinsjobbuilders.domain.throttle.ThrottleConfiguration
 import uk.gov.hmrc.jenkinsjobbuilders.domain.trigger.Trigger
-import uk.gov.hmrc.jenkinsjobbuilders.domain.step.Step
 import uk.gov.hmrc.jenkinsjobbuilders.domain.variable.EnvironmentVariable
 import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.Wrapper
 
@@ -30,6 +30,8 @@ final class JobBuilder implements Builder<Job> {
     private Scm scm
     private int daysToKeep = -1
     private int numToKeep = -1
+    private int artifactDaysToKeep = -1
+    private int artifactNumToKeep = -1
     private String labelExpression
     private String environmentVariablesFile
     private boolean concurrentBuilds = false
@@ -42,9 +44,11 @@ final class JobBuilder implements Builder<Job> {
         this.description = description
     }
 
-    JobBuilder withLogRotator(int daysToKeep, int numToKeep) {
+    JobBuilder withLogRotator(int daysToKeep, int numToKeep, int artifactDaysToKeep, int artifactNumToKeep) {
         this.daysToKeep = daysToKeep
         this.numToKeep = numToKeep
+        this.artifactDaysToKeep = artifactDaysToKeep
+        this.artifactNumToKeep = artifactNumToKeep
         this
     }
 
@@ -53,7 +57,7 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
-    JobBuilder withTriggers(Trigger ... triggers) {
+    JobBuilder withTriggers(Trigger... triggers) {
         this.triggers.addAll(triggers)
         this
     }
@@ -68,7 +72,7 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
-    JobBuilder withSteps(Step ... steps) {
+    JobBuilder withSteps(Step... steps) {
         withSteps(asList(steps))
     }
 
@@ -77,7 +81,7 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
-    JobBuilder withParameters(Parameter ... parameters) {
+    JobBuilder withParameters(Parameter... parameters) {
         withParameters(asList(parameters))
     }
 
@@ -91,7 +95,7 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
-    JobBuilder withEnvironmentVariables(EnvironmentVariable ... environmentsVariables) {
+    JobBuilder withEnvironmentVariables(EnvironmentVariable... environmentsVariables) {
         withEnvironmentVariables(asList(environmentsVariables))
     }
 
@@ -105,7 +109,7 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
-    JobBuilder withPublishers(Publisher ... publishers) {
+    JobBuilder withPublishers(Publisher... publishers) {
         withPublishers(asList(publishers))
     }
 
@@ -114,7 +118,7 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
-    JobBuilder withConfigures(Configure ... configures) {
+    JobBuilder withConfigures(Configure... configures) {
         withConfigures(asList(configures))
     }
 
@@ -123,7 +127,7 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
-    JobBuilder withWrappers(Wrapper ... wrappers) {
+    JobBuilder withWrappers(Wrapper... wrappers) {
         withWrappers(asList(wrappers))
     }
 
@@ -132,7 +136,7 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
-    JobBuilder withPermissions(Permission ... permissions) {
+    JobBuilder withPermissions(Permission... permissions) {
         this.permissions.addAll(permissions)
         this
     }
@@ -153,8 +157,7 @@ final class JobBuilder implements Builder<Job> {
             this.wrappers.add(0, environmentVariablesWrapper(environmentVariablesFile, environmentVariables))
         }
 
-        dslFactory.job {
-            it.name this.name
+        dslFactory.job(this.name) {
             it.description this.description
             logRotator(daysToKeep, numToKeep)
             concurrentBuild(concurrentBuilds)
