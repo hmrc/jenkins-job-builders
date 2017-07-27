@@ -6,12 +6,12 @@ import static java.util.Collections.emptyMap
 final class JobsTriggerPublisher implements Publisher {
     private final def name
     private final def condition
-    private final def parameters = new HashMap()
+    private final def params = new HashMap()
 
-    private JobsTriggerPublisher(String name, String condition, Map<String, String> parameters) {
+    private JobsTriggerPublisher(String name, String condition, Map<String, String> params) {
         this.name = name
         this.condition = condition
-        this.parameters.putAll(parameters)
+        this.params.putAll(params)
     }
 
     static JobsTriggerPublisher jobsTriggerPublisher(String name, String condition = 'SUCCESS', Map<String, String> parameters = emptyMap()) {
@@ -22,10 +22,16 @@ final class JobsTriggerPublisher implements Publisher {
     Closure toDsl() {
         return {
             downstreamParameterized {
-                trigger(name, condition, parameters.isEmpty()) {
-                    predefinedProps(parameters)
+                trigger(name) {
+                    condition(condition)
+                    triggerWithNoParameters(params.isEmpty())
+                    parameters {
+                        predefinedProps(params)
+                    }
+
                 }
             }
         }
     }
 }
+

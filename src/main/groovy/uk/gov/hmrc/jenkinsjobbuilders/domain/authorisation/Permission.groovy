@@ -1,26 +1,25 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation
 
-import javaposse.jobdsl.dsl.helpers.Permissions
 import uk.gov.hmrc.jenkinsjobbuilders.domain.Setting
 
 class Permission implements Setting {
 
-    final Permissions permissionEnum
+    final String permissionValue
     final String ldapIdentifier
 
-    private Permission(String ldapIdentifier, Permissions permissionEnum) {
+    private Permission(String ldapIdentifier, String permission) {
         this.ldapIdentifier = ldapIdentifier
-        this.permissionEnum = permissionEnum
+        this.permissionValue = permission
     }
 
-    static Permission permissionSetting(String ldapIdentifier, Permissions permission) {
+    static Permission permissionSetting(String ldapIdentifier, String permission) {
         new Permission(ldapIdentifier, permission)
     }
 
     @Override
     Closure toDsl() {
         return {
-            permission(permissionEnum, ldapIdentifier)
+            permission(permissionValue, ldapIdentifier)
         }
     }
 }
