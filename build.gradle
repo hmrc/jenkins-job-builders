@@ -21,7 +21,7 @@ dependencies {
     compile ('com.google.guava:guava:11.0.1') {
         exclude module: 'jsr305'
     }
-    compile ('org.jenkins-ci.plugins:job-dsl-core:1.29') {
+    compile ('org.jenkins-ci.plugins:job-dsl-core:1.38') {
         exclude module: 'ivy'
     }
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
