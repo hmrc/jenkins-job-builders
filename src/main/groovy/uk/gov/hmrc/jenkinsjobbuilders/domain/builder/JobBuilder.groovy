@@ -153,7 +153,8 @@ final class JobBuilder implements Builder<Job> {
             this.wrappers.add(0, environmentVariablesWrapper(environmentVariablesFile, environmentVariables))
         }
 
-        dslFactory.freeStyleJob(this.name) {
+        dslFactory.job {
+            it.name this.name
             it.description this.description
             logRotator(daysToKeep, numToKeep)
             concurrentBuild(concurrentBuilds)
