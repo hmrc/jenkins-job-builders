@@ -21,8 +21,7 @@ final class BuildMonitorViewBuilder implements Builder<View> {
 
     @Override
     View build(DslFactory dslFactory) {
-        dslFactory.view(type: BuildMonitorView) {
-            name(this.name)
+        dslFactory.buildMonitorView(this.name) {
             jobs {
                 names(this.jobs)
             }
