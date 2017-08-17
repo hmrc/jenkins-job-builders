@@ -5,7 +5,6 @@ apply plugin: "com.jfrog.bintray"
 buildscript {
     repositories {
         maven { url 'http://jcenter.bintray.com'}
-        maven { url 'http://dl.bintray.com/hmrc/releases'}
     }
     dependencies {
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.1"
