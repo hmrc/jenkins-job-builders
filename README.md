@@ -41,6 +41,11 @@ Create a Jenkins jobs repository akin to www.github.com/hmrc/jenkins-jobs, and t
 
 The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one example of how to use this library.
 
+## Release Notes
+
+* 10.12.0 - Add JobsTriggerStep which adds ability to trigger a downstream job as a build step.
+    * This required an upgrade to job-dsl-core from 1.29 to 1.38.
+
 ## License
 
 This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
