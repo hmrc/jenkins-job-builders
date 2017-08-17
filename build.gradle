@@ -14,6 +14,7 @@ buildscript {
 
 repositories {
     maven { url 'http://jcenter.bintray.com'}
+    maven { url 'http://repo.jenkins-ci.org/releases/' }
 }
 
 dependencies {
