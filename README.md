@@ -1,7 +1,7 @@
 # jenkins-job-builders
 [ ![Download](https://api.bintray.com/packages/hmrc/releases/jenkins-job-builders/images/download.svg) ](https://bintray.com/hmrc/releases/jenkins-job-builders/_latestVersion)
 
-Automated Jenkins job and view configuration builders, via the [Jenkins Job DSL Plugin](https://github.com/jenkinsci/job-dsl-plugin) ([wiki](https://github.com/jenkinsci/job-dsl-plugin/wiki)).
+Automated Jenkins job and view configuration builders, via the [Jenkins Job DSL Plugin](https://github.com/jenkinsci/job-dsl-plugin) ([wiki](https://github.com/jenkinsci/job-dsl-plugin/wiki), [DSL API](https://jenkinsci.github.io/job-dsl-plugin/)).
 
 The problem with using a user interface for configuring a continuous build system like Jenkins is that it doesn't scale - teams should own their Jenkins configuration, but the normal approach in the user interface is to copy and paste jobs which quickly becomes unmaintainable when applying global fixes e.g. temporary diskspace management.
 
