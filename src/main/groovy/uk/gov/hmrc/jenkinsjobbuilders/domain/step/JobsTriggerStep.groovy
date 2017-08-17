@@ -42,19 +42,13 @@ final class JobsTriggerStep implements Step {
     Closure toDsl() {
         return {
             downstreamParameterized {
-                trigger(name) {
-                    if (this.parameters.isEmpty()) {
-                        triggerWithNoParameters()
-                    } else {
-                        parameters {
-                            predefinedProps(this.parameters)
-                        }
-                    }
+                trigger(name, 'ALWAYS', parameters.isEmpty()) {
                     block {
                         buildStepFailure(buildStepFailureThreshold)
                         failure(failureThreshold)
                         unstable(unstableThreshold)
                     }
+                    predefinedProps(parameters)
                     if (filePattern) {
                         parameterFactories {
                             forMatchingFiles(filePattern, noFilesFoundAction)
