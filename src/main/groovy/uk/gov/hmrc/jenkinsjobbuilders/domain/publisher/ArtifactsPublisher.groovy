@@ -17,7 +17,6 @@ final class ArtifactsPublisher implements Publisher {
         return {
             archiveArtifacts {
                 pattern(artifactsPattern)
-                latestOnly(false)
                 allowEmpty(true)
             }
         }

@@ -2,8 +2,7 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.View
-
-import static javaposse.jobdsl.dsl.ViewType.ListView
+import javaposse.jobdsl.dsl.views.ListView
 
 final class ListViewBuilder implements Builder<View> {
 
@@ -22,8 +21,7 @@ final class ListViewBuilder implements Builder<View> {
 
     @Override
     View build(DslFactory dslFactory) {
-        dslFactory.view(type: ListView) {
-            name(this.name)
+        dslFactory.listView(this.name) {
             jobs {
                 regex(this.jobsRegex)
             }

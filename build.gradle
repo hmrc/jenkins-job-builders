@@ -29,7 +29,7 @@ dependencies {
     testCompile 'org.jenkins-ci:version-number:1.1'
 }
 
-version = '10.12.0'
+version = '10.13.0'
 group = 'uk.gov.hmrc'
 
 publishing {

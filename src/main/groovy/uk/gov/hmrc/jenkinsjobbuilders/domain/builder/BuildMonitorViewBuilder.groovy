@@ -2,8 +2,8 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.View
+import javaposse.jobdsl.dsl.views.BuildMonitorView
 
-import static javaposse.jobdsl.dsl.ViewType.BuildMonitorView
 
 final class BuildMonitorViewBuilder implements Builder<View> {
 
@@ -21,8 +21,7 @@ final class BuildMonitorViewBuilder implements Builder<View> {
 
     @Override
     View build(DslFactory dslFactory) {
-        dslFactory.view(type: BuildMonitorView) {
-            name(this.name)
+        dslFactory.buildMonitorView(this.name) {
             jobs {
                 names(this.jobs)
             }
