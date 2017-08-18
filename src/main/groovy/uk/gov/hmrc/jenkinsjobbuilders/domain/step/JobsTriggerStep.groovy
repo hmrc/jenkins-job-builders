@@ -43,9 +43,7 @@ final class JobsTriggerStep implements Step {
         return {
             downstreamParameterized {
                 trigger(name) {
-                    if (this.parameters.isEmpty()) {
-                        triggerWithNoParameters()
-                    } else {
+                    if (this.parameters) {
                         parameters {
                             predefinedProps(this.parameters)
                         }
