@@ -6,10 +6,6 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.configure.JobsTriggerStep.Th
 final class JobsTriggerStep implements Configure {
 
     enum Threshold {
-        /**
-         * We don't actually use 'NEVER' but it
-         * seemed confusing not to provide it as an option.
-         */
         NEVER('', -1, '', true),
         SUCCESS('SUCCESS', 0, 'BLUE', true),
         UNSTABLE('UNSTABLE', 1, 'YELLOW', true),
