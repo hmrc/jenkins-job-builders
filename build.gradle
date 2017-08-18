@@ -1,4 +1,5 @@
 apply plugin: 'groovy'
+apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: "com.jfrog.bintray"
 
@@ -29,7 +30,7 @@ dependencies {
     testCompile 'org.jenkins-ci:version-number:1.1'
 }
 
-version = '10.13.0'
+version = '10.14.0'
 group = 'uk.gov.hmrc'
 
 publishing {
