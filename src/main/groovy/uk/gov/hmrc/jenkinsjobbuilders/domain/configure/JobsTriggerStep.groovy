@@ -1,25 +1,20 @@
-package uk.gov.hmrc.jenkinsjobbuilders.domain.step
+package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
-import static java.util.Collections.emptyMap
-
-final class JobsTriggerStep implements Step {
-    private final def name
-    private final def parameters = new HashMap()
+final class JobsTriggerStep implements Configure {
+    private final List<String> projectsToBuild
     private final String filePattern
     private final String noFilesFoundAction
     private final String buildStepFailureThreshold
     private final String failureThreshold
     private final String unstableThreshold
 
-    private JobsTriggerStep(String name,
-                            Map<String, String> parameters,
+    private JobsTriggerStep(List<String> projectsToBuild,
                             String filePattern,
                             String noFilesFoundAction,
                             String buildStepFailureThreshold,
                             String failureThreshold,
                             String unstableThreshold) {
-        this.name = name
-        this.parameters.putAll(parameters)
+        this.projectsToBuild = projectsToBuild
         this.filePattern = filePattern
         this.noFilesFoundAction = noFilesFoundAction
         this.buildStepFailureThreshold = buildStepFailureThreshold
@@ -27,38 +22,35 @@ final class JobsTriggerStep implements Step {
         this.unstableThreshold = unstableThreshold
     }
 
-    static Step jobsTriggerStep(String name,
-                                Map<String, String> parameters = emptyMap(),
+    static Configure jobsTriggerStep(List<String> projectsToBuild,
                                 String filePattern,
                                 String noFilesFoundAction = 'SKIP',
                                 String buildStepFailureThreshold = 'FAILURE',
                                 String failureThreshold = 'FAILURE',
                                 String unstableThreshold = 'UNSTABLE') {
-        new JobsTriggerStep(name, parameters, filePattern, noFilesFoundAction,
+        new JobsTriggerStep(projectsToBuild, filePattern, noFilesFoundAction,
                 buildStepFailureThreshold, failureThreshold, unstableThreshold)
     }
 
     @Override
     Closure toDsl() {
         return {
-            downstreamParameterized {
-                trigger(name) {
-                    if (this.parameters) {
-                        parameters {
-                            predefinedProps(this.parameters)
+            def triggerConfig = it / builders /
+                    'hudson.plugins.parameterizedtrigger.TriggerBuilder' /
+                    configs /
+                    'hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig'
+            triggerConfig / projects(this.projectsToBuild.join(','))
+            if (this.filePattern) {
+                triggerConfig / configFactories /
+                        'hudson.plugins.parameterizedtrigger.FileBuildParameterFactory' {
+                            filePattern(this.filePattern)
+                            noFilesFoundAction(this.noFilesFoundAction)
                         }
-                    }
-                    block {
-                        buildStepFailure(buildStepFailureThreshold)
-                        failure(failureThreshold)
-                        unstable(unstableThreshold)
-                    }
-                    if (filePattern) {
-                        parameterFactories {
-                            forMatchingFiles(filePattern, noFilesFoundAction)
-                        }
-                    }
-                }
+            }
+            triggerConfig / block {
+                buildStepFailureThreshold { name(this.buildStepFailureThreshold) }
+                failureThreshold { name(this.failureThreshold) }
+                unstableThreshold { name(this.unstableThreshold) }
             }
         }
     }
