@@ -24,7 +24,7 @@ public class BintrayArtifactTrigger implements Trigger {
                 cron(cronSchedule)
 
                 packagesToPoll.each{
-                    url(String.format("https://api.bintray.com/packages/%s/%s/%s/", subject, repo, it)){
+                    url(String.format("https://api.bintray.com/packages/%s/%s/%s/", subject, repo, it)) {
                         inspection('json'){
                             path('latest_version')
                         }
