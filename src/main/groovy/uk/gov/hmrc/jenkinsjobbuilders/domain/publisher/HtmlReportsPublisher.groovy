@@ -3,13 +3,15 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.publisher
 
 final class HtmlReportsPublisher implements Publisher {
     private final Map<String,String> htmlReportDirs
+    private boolean keep
 
-    private HtmlReportsPublisher(Map<String, String> htmlReportDirs) {
+    private HtmlReportsPublisher(Map<String, String> htmlReportDirs, boolean keep = false) {
         this.htmlReportDirs = htmlReportDirs
+        this.keep = keep
     }
 
-    static HtmlReportsPublisher htmlReportsPublisher(Map<String, String> htmlReportDirs) {
-        new HtmlReportsPublisher(htmlReportDirs)
+    static HtmlReportsPublisher htmlReportsPublisher(Map<String, String> htmlReportDirs, boolean keep = false) {
+        new HtmlReportsPublisher(htmlReportDirs, keep)
     }
 
     @Override
@@ -20,6 +22,7 @@ final class HtmlReportsPublisher implements Publisher {
                     report(dir) {
                         reportName(name)
                         allowMissing(true)
+                        keepAll(keep)
                     }
                 }
             }
