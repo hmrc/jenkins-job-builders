@@ -43,9 +43,6 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
-* 10.16.0 - Further complete the implementation of JobsTriggerStep.
-* 10.15.0 - Complete the implementation of JobsTriggerStep using raw XML because it's unsupported by the DSL.
-* 10.14.0 - Further fixes to align with job-dsl-core 1.38.
 * 10.13.0 - Update views to align with job-dsl-core 1.38.
 * 10.12.0 - Add JobsTriggerStep which adds ability to trigger a downstream job as a build step.
     * This required an upgrade to job-dsl-core from 1.29 to 1.38.
