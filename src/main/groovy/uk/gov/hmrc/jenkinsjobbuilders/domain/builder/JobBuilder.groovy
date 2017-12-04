@@ -175,10 +175,6 @@ final class JobBuilder implements Builder<Job> {
                 triggers(it.toDsl())
             }
 
-            this.wrappers.each {
-                wrappers(it.toDsl())
-            }
-
             this.steps.each {
                 steps(it.toDsl())
             }
@@ -195,6 +191,9 @@ final class JobBuilder implements Builder<Job> {
             }
             if (this.throttle != null) {
                 throttleConcurrentBuilds(this.throttle.toDsl())
+            }
+            this.wrappers.each {
+                wrappers(it.toDsl())
             }
         }
     }
