@@ -30,7 +30,6 @@ class JobsTriggerStepSpec extends Specification {
                     .'hudson.plugins.parameterizedtrigger.TriggerBuilder'.configs
                     .'hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig'
             triggerConfig.projects.text() == 'test-project-1,test-project-2'
-            triggerConfig.condition.text() == 'ALWAYS'
             def paramFactory = triggerConfig.configFactories.'hudson.plugins.parameterizedtrigger.FileBuildParameterFactory'
             paramFactory.filePattern.text() == '*.properties'
             paramFactory.noFilesFoundAction.text() == 'FAIL'

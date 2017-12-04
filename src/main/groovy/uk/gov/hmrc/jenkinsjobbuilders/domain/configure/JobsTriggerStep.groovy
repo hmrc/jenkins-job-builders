@@ -66,14 +66,6 @@ final class JobsTriggerStep implements Configure {
                     configs /
                     'hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig'
             triggerConfig / projects(this.projectsToBuild.join(','))
-
-            /*
-             * In v2.25 of the plugin getCondition() throws an NPE if this is not set,
-             * despite it not being mentioned in the DSL.
-             *
-             * https://github.com/jenkinsci/parameterized-trigger-plugin/blob/parameterized-trigger-2.25/src/main/java/hudson/plugins/parameterizedtrigger/BuildTriggerConfig.java#L330
-             */
-            triggerConfig / condition('ALWAYS')
             if (this.filePattern) {
                 triggerConfig / configFactories /
                         'hudson.plugins.parameterizedtrigger.FileBuildParameterFactory' {

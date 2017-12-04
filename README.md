@@ -43,7 +43,6 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
-* 10.17.0 - Fix NPE in JobsTriggerSpec.
 * 10.16.0 - Further complete the implementation of JobsTriggerStep.
 * 10.15.0 - Complete the implementation of JobsTriggerStep using raw XML because it's unsupported by the DSL.
 * 10.14.0 - Further fixes to align with job-dsl-core 1.38.
