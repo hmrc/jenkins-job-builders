@@ -1,6 +1,7 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.Job
+import javaposse.jobdsl.dsl.helpers.Permissions
 import spock.lang.Specification
 import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 
@@ -32,7 +33,7 @@ class JobBuilderSpec extends Specification {
     void 'test XML output'() {
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
-                                               withPermissions(permissionSetting("dev-tools", "hudson.model.Item.Read")).
+                                               withPermissions(permissionSetting("dev-tools", Permissions.ItemRead)).
                                                withLogRotator(14, 10).
                                                withScm(gitHubComScm('example/example-repo', 'test-credentials')).
                                                withTriggers(cronTrigger('test-cron'), gitHubPushTrigger(), bintrayArtifactTrigger("H * * * *", "hmrc", "release-candidates", ["test", "test-frontend"])).

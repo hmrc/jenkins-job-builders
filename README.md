@@ -43,7 +43,6 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
-* 10.18.0 - Upgrade to job-dsl-core 1.64 and Groovy 2.4.12. 
 * 10.17.0 - Fix NPE in JobsTriggerSpec.
 * 10.16.0 - Further complete the implementation of JobsTriggerStep.
 * 10.15.0 - Complete the implementation of JobsTriggerStep using raw XML because it's unsupported by the DSL.
