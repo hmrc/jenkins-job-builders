@@ -21,7 +21,8 @@ final class ListViewBuilder implements Builder<View> {
 
     @Override
     View build(DslFactory dslFactory) {
-        dslFactory.listView(this.name) {
+        dslFactory.view(type: ListView) {
+            name(this.name)
             jobs {
                 regex(this.jobsRegex)
             }
