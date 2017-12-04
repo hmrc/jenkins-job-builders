@@ -22,16 +22,8 @@ final class JobsTriggerPublisher implements Publisher {
     Closure toDsl() {
         return {
             downstreamParameterized {
-                trigger(name) {
-                    condition(this.condition)
-                    if(parameters.isEmpty()) {
-                        triggerWithNoParameters()
-                    }
-                    else {
-                        parameters {
-                            predefinedProps(this.parameters)
-                        }
-                    }
+                trigger(name, condition, parameters.isEmpty()) {
+                    predefinedProps(parameters)
                 }
             }
         }
