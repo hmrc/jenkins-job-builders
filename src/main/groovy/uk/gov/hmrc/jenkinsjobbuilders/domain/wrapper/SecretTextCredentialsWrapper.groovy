@@ -1,24 +1,32 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper
 
+import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.model.SecretText
+
+import static java.util.Arrays.asList
+
 class SecretTextCredentialsWrapper implements Wrapper {
 
-    private final String variable
-    private final String credentials
+    private final List<SecretText> secretTexts
 
-    SecretTextCredentialsWrapper(String variable, String credentials) {
-        this.variable = variable
-        this.credentials = credentials
+    SecretTextCredentialsWrapper(List<SecretText> secretTexts) {
+        this.secretTexts = secretTexts
     }
 
-    static SecretTextCredentialsWrapper secretTextCredentials(String variable, String credentials) {
-        new SecretTextCredentialsWrapper(variable, credentials)
+    static SecretTextCredentialsWrapper secretTextCredentials(List<SecretText> secretTexts) {
+        new SecretTextCredentialsWrapper(secretTexts)
+    }
+
+    static SecretTextCredentialsWrapper secretTextCredentials(SecretText... secretTexts) {
+        new SecretTextCredentialsWrapper(asList(secretTexts))
     }
 
     @Override
     Closure toDsl() {
         return {
             credentialsBinding {
-                string(this.variable, this.credentials)
+                secretTexts.each { secretText ->
+                    string(secretText.variable, secretText.credentials)
+                }
             }
         }
     }
