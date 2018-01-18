@@ -7,7 +7,7 @@ class NpmStep implements Step {
     private static final String EOL = System.getProperty("line.separator")
     private final Step step
 
-    private NpmStep(String bashScript, List<String> sbtCommands) {
+    private NpmStep(String bashScript, List<String> npmCommands) {
         this.step = shellStep(sbtCommands.inject(bashScript + EOL) {
             string, item -> string + EOL + "npm run $item"
         })
