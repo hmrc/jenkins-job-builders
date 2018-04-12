@@ -3,7 +3,8 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 import javaposse.jobdsl.dsl.Job
 import javaposse.jobdsl.dsl.helpers.Permissions
 import spock.lang.Specification
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
+
 
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission.permissionSetting
@@ -27,8 +28,7 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.UserVariablesWrapper
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.NodeJsWrapper.nodeJsWrapper
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreBuildCleanupWrapper.preBuildCleanUpWrapper
 
-@Mixin(JobParents)
-class JobBuilderSpec extends Specification {
+class JobBuilderSpec extends AbstractJobSpec {
 
     void 'test XML output'() {
         given:
@@ -50,7 +50,7 @@ class JobBuilderSpec extends Specification {
                                                               buildDescriptionByRegexPublisher('test-regex')).
                                                 withThrottle(['deployment'], 0, 1, false)
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         job.name == 'test-job'

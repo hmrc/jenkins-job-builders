@@ -2,11 +2,11 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 
-@Mixin(JobParents)
-class AbsoluteTimeoutWrapperSpec extends Specification {
+
+class AbsoluteTimeoutWrapperSpec extends AbstractJobSpec {
 
     void 'test XML output'() {
         given:
@@ -14,7 +14,7 @@ class AbsoluteTimeoutWrapperSpec extends Specification {
                                                withWrappers(AbsoluteTimeoutWrapper.timeoutWrapper(30))
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {

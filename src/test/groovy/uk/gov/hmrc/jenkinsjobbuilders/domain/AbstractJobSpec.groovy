@@ -10,13 +10,15 @@ import spock.lang.Specification
 
 abstract class AbstractJobSpec extends Specification {
 
-    protected JobManagement jobManagement = new JenkinsJobManagement(System.out, [:], new File('.'))
+    protected static final JobManagement JOB_MANAGEMENT = new JenkinsJobManagement(System.out, [:], new File('.'))
+
+    protected static final JobParent JOB_PARENT = createJobParent()
 
     @Shared
     @ClassRule
     JenkinsRule jenkinsRule = new JenkinsRule()
 
-    protected JobParent createJobParent() {
+    private static final createJobParent() {
         JobParent jobParent = new JobParent() {
             @Override
             Object run() {
@@ -24,7 +26,7 @@ abstract class AbstractJobSpec extends Specification {
             }
         }
 
-        jobParent.setJm(jobManagement)
+        jobParent.setJm(JOB_MANAGEMENT)
         jobParent
     }
 }

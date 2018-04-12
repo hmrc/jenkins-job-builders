@@ -3,7 +3,8 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation
 import javaposse.jobdsl.dsl.Job
 import javaposse.jobdsl.dsl.helpers.Permissions
 import spock.lang.Specification
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
+
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 
 import static java.util.Arrays.asList
@@ -28,8 +29,7 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.NodeJsWrapper.nodeJs
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreBuildCleanupWrapper.preBuildCleanUpWrapper
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.UserVariablesWrapper.userVariablesWrapper
 
-@Mixin(JobParents)
-class PermissionSpec extends Specification {
+class PermissionSpec extends AbstractJobSpec {
 
     void 'test XML output'() {
         given:
@@ -38,7 +38,7 @@ class PermissionSpec extends Specification {
 
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {

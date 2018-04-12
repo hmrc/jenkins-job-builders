@@ -16,7 +16,7 @@ class FolderBuilderSpec extends AbstractJobSpec {
         final FolderBuilder folderBuilder = new FolderBuilder(folderName)
 
         when:
-        Folder folder = folderBuilder.build(createJobParent())
+        Folder folder = folderBuilder.build(JOB_PARENT)
 
         then:
         with(folder.node) {
@@ -52,7 +52,7 @@ class FolderBuilderSpec extends AbstractJobSpec {
             .withPermissions(permissions)
 
         when:
-        Folder folder = folderBuilder.build(createJobParent())
+        Folder folder = folderBuilder.build(JOB_PARENT)
 
         then:
         with(folder.node) {

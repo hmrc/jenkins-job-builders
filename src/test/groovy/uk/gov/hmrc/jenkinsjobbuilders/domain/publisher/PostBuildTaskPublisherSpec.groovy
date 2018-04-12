@@ -2,13 +2,13 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.publisher
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
+
 
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.PostBuildTaskPublisher.postBuildTaskPublisher
 
-@Mixin(JobParents)
-class PostBuildTaskPublisherSpec extends Specification {
+class PostBuildTaskPublisherSpec extends AbstractJobSpec {
 
     void 'test XML output'() {
         given:
@@ -16,7 +16,7 @@ class PostBuildTaskPublisherSpec extends Specification {
                                                withPublishers(postBuildTaskPublisher("test-log-text", 'test-script'))
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {

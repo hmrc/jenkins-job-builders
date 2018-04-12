@@ -2,13 +2,13 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.step
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
+
 
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
 
-@Mixin(JobParents)
-class ShellStepSpec extends Specification {
+class ShellStepSpec extends AbstractJobSpec {
 
     void 'test XML output'() {
         given:
@@ -16,7 +16,7 @@ class ShellStepSpec extends Specification {
                                                withSteps(shellStep('test-shell'))
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {

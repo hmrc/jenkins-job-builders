@@ -2,11 +2,11 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.parameters
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 
-@Mixin(JobParents)
-class BooleanParametersSpec extends Specification {
+
+class BooleanParametersSpec extends AbstractJobSpec {
 
     void 'test XML output'() {
         given:
@@ -14,7 +14,7 @@ class BooleanParametersSpec extends Specification {
                                                withParameters(BooleanParameter.booleanParameter("test-param", false, "some boolean parameter"))
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {
