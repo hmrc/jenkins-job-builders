@@ -1,17 +1,16 @@
+buildscript {
+    repositories {
+        maven { url 'http://dl.bintray.com/hmrc/releases'}
+    }
+}
+
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
-apply plugin: "com.jfrog.bintray"
-
-buildscript {
-    repositories {
-        maven { url 'http://jcenter.bintray.com'}
-        maven { url 'http://dl.bintray.com/hmrc/releases'}
-    }
-    dependencies {
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.1"
-    }
-}
 
 project.ext {
     jobDslVersion = '1.68'
