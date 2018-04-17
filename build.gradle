@@ -67,7 +67,7 @@ dependencies {
     testPlugins 'org.jenkins-ci.plugins:cloudbees-folder:6.4'
 }
 
-version = '10.19.0-PBD-541.1-SNAPSHOT'
+version = '11.0.0'
 group = 'uk.gov.hmrc'
 
 task resolveTestPlugins(type: Copy) {
