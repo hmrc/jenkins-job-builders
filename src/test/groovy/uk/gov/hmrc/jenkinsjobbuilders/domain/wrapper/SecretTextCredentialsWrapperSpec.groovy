@@ -2,14 +2,13 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
+
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
-import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.model.SecretText
 
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.model.SecretText.secretText
 
-@Mixin(JobParents)
-class SecretTextCredentialsWrapperSpec extends Specification {
+class SecretTextCredentialsWrapperSpec extends AbstractJobSpec {
 
     void 'test XML output'() {
         given:
@@ -21,7 +20,7 @@ class SecretTextCredentialsWrapperSpec extends Specification {
                         ))
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {

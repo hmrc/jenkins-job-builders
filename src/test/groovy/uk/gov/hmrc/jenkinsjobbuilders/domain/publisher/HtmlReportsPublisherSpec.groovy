@@ -2,13 +2,12 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.publisher
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.HtmlReportsPublisher.htmlReportsPublisher
 
-@Mixin(JobParents)
-class HtmlReportsPublisherSpec extends Specification {
+class HtmlReportsPublisherSpec extends AbstractJobSpec {
 
     void 'With keepAll'() {
         given:
@@ -16,7 +15,7 @@ class HtmlReportsPublisherSpec extends Specification {
                 withPublishers(htmlReportsPublisher(['target/fun-browser-test-reports/html-report': 'ScalaTest (fun-browser) Results'], true))
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {
@@ -34,7 +33,7 @@ class HtmlReportsPublisherSpec extends Specification {
                 withPublishers(htmlReportsPublisher(['target/fun-browser-test-reports/html-report': 'ScalaTest (fun-browser) Results']))
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {
@@ -52,7 +51,7 @@ class HtmlReportsPublisherSpec extends Specification {
                 withPublishers(htmlReportsPublisher(['target/fun-browser-test-reports/html-report': 'ScalaTest (fun-browser) Results'], false))
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {

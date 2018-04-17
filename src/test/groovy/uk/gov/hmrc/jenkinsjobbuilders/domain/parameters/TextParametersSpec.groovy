@@ -2,11 +2,10 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.parameters
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
 
-@Mixin(JobParents)
-class TextParametersSpec extends Specification {
+class TextParametersSpec extends AbstractJobSpec {
 
     void 'test XML output'() {
         given:
@@ -14,7 +13,7 @@ class TextParametersSpec extends Specification {
                                                withParameters(TextParameter.textParameter("test-param", "", "some text parameter"))
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {

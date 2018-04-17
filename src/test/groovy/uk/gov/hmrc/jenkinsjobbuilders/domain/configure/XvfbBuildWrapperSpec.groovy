@@ -2,14 +2,14 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
+
 
 import static XvfbBuildWrapper.parallelXvfbBuildWrapper
 import static XvfbBuildWrapper.xvfbBuildWrapper
 
-@Mixin(JobParents)
-class XvfbBuildWrapperSpec extends Specification {
+class XvfbBuildWrapperSpec extends AbstractJobSpec {
 
     void 'test XML output'() {
         given:
@@ -17,7 +17,7 @@ class XvfbBuildWrapperSpec extends Specification {
                                                withConfigures(xvfbBuildWrapper())
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {
@@ -35,7 +35,7 @@ class XvfbBuildWrapperSpec extends Specification {
                                                withConfigures(parallelXvfbBuildWrapper())
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {

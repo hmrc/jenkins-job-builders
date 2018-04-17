@@ -2,13 +2,13 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.step
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
+
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.InjectEnvironmentVariablesStep.injectEnvironmentVariablesStep
 
-@Mixin(JobParents)
-class InjectEnvironmentVariablesStepSpec extends Specification {
+class InjectEnvironmentVariablesStepSpec extends AbstractJobSpec {
 
     void 'test XML output'() {
         given:
@@ -16,7 +16,7 @@ class InjectEnvironmentVariablesStepSpec extends Specification {
                                                withSteps(injectEnvironmentVariablesStep('env.properties'))
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {

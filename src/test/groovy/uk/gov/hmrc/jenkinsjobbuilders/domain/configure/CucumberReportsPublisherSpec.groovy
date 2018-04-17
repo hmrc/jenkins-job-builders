@@ -2,13 +2,13 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
 import javaposse.jobdsl.dsl.Job
 import spock.lang.Specification
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
+
 
 import static CucumberReportsPublisher.cucumberReportsPublisher
 
-@Mixin(JobParents)
-class CucumberReportsPublisherSpec extends Specification {
+class CucumberReportsPublisherSpec extends AbstractJobSpec {
 
     void 'test XML output'() {
         given:
@@ -16,7 +16,7 @@ class CucumberReportsPublisherSpec extends Specification {
                                                withConfigures(cucumberReportsPublisher())
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {
