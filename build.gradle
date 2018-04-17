@@ -76,24 +76,22 @@ task resolveTestPlugins(type: Copy) {
     include '*.hpi'
     include '*.jpi'
     mustRunAfter compileJava
+}
 
+task writePluginIndexFile(type: DefaultTask, dependsOn: resolveTestPlugins) {
     doFirst {
-        println "destinationDir: ${destinationDir}"
-    }
-
-    doLast {
-        def baseNames = source.collect {
+        def baseNames = resolveTestPlugins.source.collect {
             it.name[0..it.name.lastIndexOf('.') - 1]
         }.sort()
-        println "Copied plugins for tests."
+        logger.info("Copied plugins for tests.")
 
-        new File(destinationDir, 'index').setText(baseNames.join('\n'), 'UTF-8')
-        println "Created plugin index file."
+        new File(resolveTestPlugins.destinationDir, 'index').setText(baseNames.join('\n'), 'UTF-8')
+        logger.info("Created plugin index file.")
     }
 }
 
 test {
-    dependsOn tasks.resolveTestPlugins
+    dependsOn tasks.writePluginIndexFile
     inputs.files sourceSets.test.groovy.srcDirs, sourceSets.test.output.resourcesDir
 
     // set build directory for Jenkins test harness, JENKINS-26331
