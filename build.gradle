@@ -67,7 +67,8 @@ dependencies {
     testPlugins 'org.jenkins-ci.plugins:cloudbees-folder:6.4'
 }
 
-version = '11.0.0'
+version = project.hasProperty("releaseVersion") ? project.releaseVersion.replaceAll('release/', '') : 'unnumbered-development-build'
+println "Project version is: ${project.version}"
 group = 'uk.gov.hmrc'
 
 task resolveTestPlugins(type: Copy) {
@@ -120,6 +121,14 @@ bintray {
         }
     }
     publish = true
+}
+
+bintrayUpload {
+    doFirst {
+        if(!project.hasProperty("releaseVersion")) {
+            throw new GradleException("Cannot publish, property 'releaseVersion' has not been specified.")
+        }
+    }
 }
 
 private def credentialsProperty(String key) {
