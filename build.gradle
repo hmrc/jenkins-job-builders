@@ -13,7 +13,7 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 project.ext {
-    jobDslVersion = '1.68'
+    jobDslVersion = '1.69'
     jenkinsVersion = '2.89'
     testDependenciesOutputDirectory = new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
 }

@@ -22,7 +22,7 @@ class FolderBuilderSpec extends AbstractJobSpec {
         with(folder.node) {
             folderName == it.displayName.text()
             "Folder for ${folderName} jobs." == it.description.text()
-            'All' == it.primaryView.text()
+            'All' == it.folderViews.primaryView.text()
             it.'properties'.'com.cloudbees.hudson.plugins.folder.properties.AuthorizationMatrixProperty'[0].value().isEmpty()
         }
     }
@@ -58,7 +58,7 @@ class FolderBuilderSpec extends AbstractJobSpec {
         with(folder.node) {
             displayName == it.displayName.text()
             folderDescription == it.description.text()
-            primaryView == it.primaryView.text()
+            primaryView == it.folderViews.primaryView.text()
             def configuredPermissions = it.'properties'.'com.cloudbees.hudson.plugins.folder.properties.AuthorizationMatrixProperty'[0].value()
             7 == configuredPermissions.size()
 
