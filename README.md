@@ -43,6 +43,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.0.0 (17/04/2018) - Upgrade to job-dsl-core v1.68.
 * 10.13.0 - Update views to align with job-dsl-core 1.38.
 * 10.12.0 - Add JobsTriggerStep which adds ability to trigger a downstream job as a build step.
     * This required an upgrade to job-dsl-core from 1.29 to 1.38.
