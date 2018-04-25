@@ -32,6 +32,7 @@ final class JobBuilder implements Builder<Job> {
     private int numToKeep = -1
     private String labelExpression
     private String environmentVariablesFile
+    private String environmentVariablesScriptContent = ''
     private boolean concurrentBuilds = false
     private boolean disabled = false
     private final List<Permission> permissions = []
@@ -88,6 +89,11 @@ final class JobBuilder implements Builder<Job> {
 
     JobBuilder withEnvironmentVariablesFile(String environmentVariablesFile) {
         this.environmentVariablesFile = environmentVariablesFile
+        this
+    }
+
+    JobBuilder withEnvironmentVariablesScriptContent(String environmentVariablesScriptContent) {
+        this.environmentVariablesScriptContent = environmentVariablesScriptContent
         this
     }
 
@@ -150,7 +156,7 @@ final class JobBuilder implements Builder<Job> {
     @Override
     Job build(DslFactory dslFactory) {
         if (!this.environmentVariables.isEmpty()) {
-            this.wrappers.add(0, environmentVariablesWrapper(environmentVariablesFile, environmentVariables))
+            this.wrappers.add(0, environmentVariablesWrapper(environmentVariablesFile, environmentVariables, environmentVariablesScriptContent))
         }
 
         dslFactory.freeStyleJob(this.name) {

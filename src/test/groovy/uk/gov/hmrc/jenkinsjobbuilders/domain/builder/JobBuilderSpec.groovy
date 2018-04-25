@@ -1,7 +1,6 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.Job
-import spock.lang.Specification
 import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 
 
@@ -38,6 +37,7 @@ class JobBuilderSpec extends AbstractJobSpec {
                                                withTriggers(cronTrigger('test-cron'), gitHubPushTrigger(), bintrayArtifactTrigger("H * * * *", "hmrc", "release-candidates", ["test", "test-frontend"])).
                                                withSteps(shellStep('test-shell1'), sbtStep("ls test", ['clean test', 'dist publish'], '/tmp')).
                                                withEnvironmentVariables(stringEnvironmentVariable('ENV_KEY', 'ENV_VALUE')).
+                                               withEnvironmentVariablesScriptContent("mkdir -p \${TMP}").
                                                withWrappers(nodeJsWrapper(), colorizeOutputWrapper(), preBuildCleanUpWrapper(), userVariablesWrapper()).
                                                withLabel('single-executor').
                                                withParameters(stringParameter('STRING-PARAM', 'STRING-VALUE'), choiceParameter('CHOICE-PARAM', asList('CHOICE-VALUE-1', 'CHOICE-VALUE-2'), 'CHOICE-DESC')).
@@ -92,6 +92,7 @@ class JobBuilderSpec extends AbstractJobSpec {
             buildWrappers.'hudson.plugins.ws__cleanup.PreBuildCleanup'.deleteDirs.text() == 'false'
             buildWrappers.'jenkins.plugins.nodejs.tools.NpmPackagesBuildWrapper'.nodeJSInstallationName.text() == 'node 0.10.28'
             buildWrappers.'EnvInjectBuildWrapper'.info.propertiesContent.text().contains('ENV_KEY=ENV_VALUE') == true
+            buildWrappers.'EnvInjectBuildWrapper'.info.scriptContent.text().contains("mkdir -p \${TMP}") == true
             builders.'hudson.tasks.Shell' [0].command.text().contains('test-shell1')
             builders.'hudson.tasks.Shell' [1].command.text().contains('ls test')
             builders.'hudson.tasks.Shell' [1].command.text().contains('mkdir -p /tmp')

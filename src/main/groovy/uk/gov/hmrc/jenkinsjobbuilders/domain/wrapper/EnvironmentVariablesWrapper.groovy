@@ -4,15 +4,17 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.variable.EnvironmentVariable
 
 class EnvironmentVariablesWrapper implements Wrapper {
     private final String variablesFile
+    private final String scriptContent
     private final List<EnvironmentVariable> variables
 
-    private EnvironmentVariablesWrapper(String variablesFile, List<EnvironmentVariable> variables) {
+    private EnvironmentVariablesWrapper(String variablesFile, List<EnvironmentVariable> variables, String scriptContent) {
         this.variablesFile = variablesFile
         this.variables = variables
+        this.scriptContent = scriptContent
     }
 
-    static Wrapper environmentVariablesWrapper(String variablesFile, List<EnvironmentVariable> variables) {
-        new EnvironmentVariablesWrapper(variablesFile, variables)
+    static Wrapper environmentVariablesWrapper(String variablesFile, List<EnvironmentVariable> variables, String scriptContent = '') {
+        new EnvironmentVariablesWrapper(variablesFile, variables, scriptContent)
     }
 
     @Override
@@ -23,6 +25,7 @@ class EnvironmentVariablesWrapper implements Wrapper {
                     env(variable.name, variable.value)
                 }
                 propertiesFile(variablesFile)
+                script(scriptContent)
             }
 
         }
