@@ -1,15 +1,10 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper
 
 import javaposse.jobdsl.dsl.Job
-import spock.lang.Specification
-import uk.gov.hmrc.jenkinsjobbuilders.domain.JobParents
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 
-/**
- * Requires at least v1.38 of job-dsl-core so have commented out until we've upgraded to a compatible version.
- */
-@Mixin(JobParents)
-class SecretUsernamePasswordCredentialsWrapperSpec extends Specification {
+class SecretUsernamePasswordCredentialsWrapperSpec extends AbstractJobSpec {
 
     void 'test XML output'() {
         given:
@@ -19,7 +14,7 @@ class SecretUsernamePasswordCredentialsWrapperSpec extends Specification {
                                                                                                                                               'my-secret-credentials-id'))
 
         when:
-        Job job = jobBuilder.build(jobParent())
+        Job job = jobBuilder.build(JOB_PARENT)
 
         then:
         with(job.node) {

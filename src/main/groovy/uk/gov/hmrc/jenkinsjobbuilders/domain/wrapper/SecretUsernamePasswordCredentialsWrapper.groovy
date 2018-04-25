@@ -1,8 +1,5 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper
 
-/**
- * Requires at least v1.38 of job-dsl-core so have commented out until we've upgraded to a compatible version.
- */
 class SecretUsernamePasswordCredentialsWrapper implements Wrapper {
 
   private final String userVariableName
