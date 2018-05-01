@@ -1,32 +1,29 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper
 
+import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.model.SecretUsernamePassword
+
 class SecretUsernamePasswordCredentialsWrapper implements Wrapper {
 
-  private final String userVariableName
-  private final String passwordVariableName
-  private final String credentials
+  List<SecretUsernamePassword> secretUsernamePasswords
 
-    SecretUsernamePasswordCredentialsWrapper(final String userVariableName,
-                                             final String passwordVariableName,
-                                             final String credentials) {
-    this.userVariableName = userVariableName
-    this.passwordVariableName = passwordVariableName
-    this.credentials = credentials
+  SecretUsernamePasswordCredentialsWrapper(final List<SecretUsernamePassword> secretUsernamePasswords) {
+    this.secretUsernamePasswords = secretUsernamePasswords
   }
 
-  static SecretUsernamePasswordCredentialsWrapper secretUsernamePasswordCredentialsWrapper(final String userVariableName,
-                                                                                           final String passwordVariableName,
-                                                                                           final String credentials) {
-    return new SecretUsernamePasswordCredentialsWrapper(userVariableName,
-                                                        passwordVariableName,
-                                                        credentials)
+  static SecretUsernamePasswordCredentialsWrapper secretUsernamePasswordCredentialsWrapper(
+          final List<SecretUsernamePassword> secretUsernamePasswords) {
+
+    return new SecretUsernamePasswordCredentialsWrapper(secretUsernamePasswords)
+
   }
 
   @Override
   Closure toDsl() {
     return {
       credentialsBinding {
-        usernamePassword(this.userVariableName, this.passwordVariableName, this.credentials)
+        secretUsernamePasswords.each { s ->
+          usernamePassword(s.userVariableName, s.passwordVariableName, s.credentials)
+        }
       }
     }
   }

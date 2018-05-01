@@ -1,8 +1,6 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.model
 
-import uk.gov.hmrc.jenkinsjobbuilders.domain.Setting
-
-class SecretText implements Setting {
+class SecretText {
 
     final String variable
     final String credentials
@@ -16,10 +14,4 @@ class SecretText implements Setting {
         new SecretText(variable, credentials)
     }
 
-    @Override
-    Closure toDsl() {
-        return {
-            string(this.variable, this.credentials)
-        }
-    }
 }
