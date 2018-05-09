@@ -5,16 +5,20 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.variable.EnvironmentVariable
 class EnvironmentVariablesWrapper implements Wrapper {
     private final String variablesFile
     private final String scriptContent
+    private final String groovyScriptContent
     private final List<EnvironmentVariable> variables
 
-    private EnvironmentVariablesWrapper(String variablesFile, List<EnvironmentVariable> variables, String scriptContent) {
+    private EnvironmentVariablesWrapper(String variablesFile, List<EnvironmentVariable> variables,
+                                        String scriptContent, String groovyScriptContent) {
         this.variablesFile = variablesFile
         this.variables = variables
         this.scriptContent = scriptContent
+        this.groovyScriptContent = groovyScriptContent
     }
 
-    static Wrapper environmentVariablesWrapper(String variablesFile, List<EnvironmentVariable> variables, String scriptContent = '') {
-        new EnvironmentVariablesWrapper(variablesFile, variables, scriptContent)
+    static Wrapper environmentVariablesWrapper(String variablesFile, List<EnvironmentVariable> variables,
+                                               String scriptContent = '', String groovyScriptContent = '') {
+        new EnvironmentVariablesWrapper(variablesFile, variables, scriptContent, groovyScriptContent)
     }
 
     @Override
@@ -26,6 +30,7 @@ class EnvironmentVariablesWrapper implements Wrapper {
                 }
                 propertiesFile(variablesFile)
                 script(scriptContent)
+                groovy(groovyScriptContent)
             }
 
         }

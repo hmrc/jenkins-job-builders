@@ -5,4 +5,5 @@
 *.iws
 *.iml
 build
-target
+out/*
+target/*

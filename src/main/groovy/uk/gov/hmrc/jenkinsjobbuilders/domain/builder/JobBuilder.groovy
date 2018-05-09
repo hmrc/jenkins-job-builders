@@ -33,6 +33,7 @@ final class JobBuilder implements Builder<Job> {
     private String labelExpression
     private String environmentVariablesFile
     private String environmentVariablesScriptContent = ''
+    private String environmentVariablesGroovyScript = ''
     private boolean concurrentBuilds = false
     private boolean disabled = false
     private final List<Permission> permissions = []
@@ -97,6 +98,11 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
+    JobBuilder withEnvironmentVariablesGroovyScript(String environmentVariablesGroovyScript) {
+        this.environmentVariablesGroovyScript = environmentVariablesGroovyScript
+        this
+    }
+
     JobBuilder withEnvironmentVariables(EnvironmentVariable ... environmentsVariables) {
         withEnvironmentVariables(asList(environmentsVariables))
     }
@@ -156,7 +162,8 @@ final class JobBuilder implements Builder<Job> {
     @Override
     Job build(DslFactory dslFactory) {
         if (!this.environmentVariables.isEmpty()) {
-            this.wrappers.add(0, environmentVariablesWrapper(environmentVariablesFile, environmentVariables, environmentVariablesScriptContent))
+            this.wrappers.add(0, environmentVariablesWrapper(environmentVariablesFile, environmentVariables,
+                    environmentVariablesScriptContent, environmentVariablesGroovyScript))
         }
 
         dslFactory.freeStyleJob(this.name) {
