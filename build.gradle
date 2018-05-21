@@ -65,6 +65,8 @@ dependencies {
     // plugins to install in test instance
     testPlugins 'org.jenkins-ci.plugins:matrix-auth:2.2'
     testPlugins 'org.jenkins-ci.plugins:cloudbees-folder:6.4'
+    testPlugins 'org.jenkins-ci.plugins:credentials:2.1.16'
+    testPlugins 'org.jenkins-ci.plugins.workflow:workflow-aggregator:2.5'
 }
 
 version = project.hasProperty("releaseVersion") ? project.releaseVersion.replaceAll('release/', '') : 'unnumbered-development-build'
