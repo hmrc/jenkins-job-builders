@@ -1,5 +1,6 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
+import javaposse.jobdsl.dsl.DslScriptException
 import javaposse.jobdsl.dsl.Folder
 import javaposse.jobdsl.dsl.JobManagement
 import javaposse.jobdsl.plugin.JenkinsJobManagement
@@ -69,6 +70,21 @@ class FolderBuilderSpec extends AbstractJobSpec {
                 }
             }
         }
+    }
 
+    def 'it should throw an exception when it cannot map a permission, identifiying the permission that cannot be used'() {
+        given:
+        final String folderName = "my-first-folder"
+        final Set<Permission> permissions = [permissionSetting("ci-admin", "hudson.model.Item.MadeUpPermission")]
+        final FolderBuilder folderBuilder = new FolderBuilder(folderName)
+        folderBuilder.withPermissions(permissions)
+
+        when:
+        folderBuilder.build(JOB_PARENT)
+
+        then:
+        DslScriptException e = thrown()
+        e.message.contains("Could not assign permission: hudson.model.Item.MadeUpPermission to LDAP identifier: ci-admin")
+        e.cause instanceof DslScriptException
     }
 }

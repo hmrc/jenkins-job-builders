@@ -1,6 +1,7 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.DslFactory
+import javaposse.jobdsl.dsl.DslScriptException
 import javaposse.jobdsl.dsl.Folder
 import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission
 
@@ -49,7 +50,12 @@ final class FolderBuilder implements Builder<Folder> {
         dslFactory.folder(this.name) {
             authorization {
                 this.perms.each { Permission perm ->
-                    permission(perm.permission, perm.ldapIdentifier)
+                    try {
+                        permission(perm.permission, perm.ldapIdentifier)
+                    }
+                    catch (DslScriptException e) {
+                        throw new DslScriptException("Could not assign permission: ${perm.permission} to LDAP identifier: ${perm.ldapIdentifier}", e)
+                    }
                 }
             }
             description(this.description)
