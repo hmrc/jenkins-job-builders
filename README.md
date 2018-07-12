@@ -43,6 +43,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.7.0 (11/07/2018) - Add GithubCommitNotifierPublisher
 * 11.1.0 (18/04/2018) - Upgrade to job-dsl-core v1.69.
 * 11.0.0 (17/04/2018) - Upgrade to job-dsl-core v1.68.
 * 10.13.0 - Update views to align with job-dsl-core 1.38.
