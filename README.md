@@ -43,6 +43,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.9.0 (30/07/2018) - Provide the capability of configuring permissions on a per-job basis.
 * 11.8.0 (17/07/2018) - Add RemoteTriggerStep & RemoteToken.
 * 11.7.0 (11/07/2018) - Add GithubCommitNotifierPublisher.
 * 11.1.0 (18/04/2018) - Upgrade to job-dsl-core v1.69.
