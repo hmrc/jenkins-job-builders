@@ -1,9 +1,29 @@
+/*
+ * Copyright 2018 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.DslScriptException
 import javaposse.jobdsl.dsl.Folder
 import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission
+import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.FolderInheritanceStrategy
+import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.InheritanceStrategy
+
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.configure.InheritanceStrategy.INHERIT_GLOBAL_STRATEGY
 
 final class FolderBuilder implements Builder<Folder> {
 
@@ -12,7 +32,8 @@ final class FolderBuilder implements Builder<Folder> {
 
     private String description
     private String primaryView
-    private final Set<Permission> perms = []
+    private final Set<Permission> permissions = []
+    private InheritanceStrategy inheritanceStrategy = INHERIT_GLOBAL_STRATEGY
 
     /**
      *
@@ -41,7 +62,12 @@ final class FolderBuilder implements Builder<Folder> {
     }
 
     FolderBuilder withPermissions(final Set<Permission> perms) {
-        this.perms.addAll(perms)
+        this.permissions.addAll(perms)
+        return this
+    }
+
+    FolderBuilder withInheritanceStrategy(final InheritanceStrategy inheritanceStrategy) {
+        this.inheritanceStrategy = inheritanceStrategy
         return this
     }
 
@@ -49,7 +75,7 @@ final class FolderBuilder implements Builder<Folder> {
     Folder build(DslFactory dslFactory) {
         dslFactory.folder(this.name) {
             authorization {
-                this.perms.each { Permission perm ->
+                this.permissions.each { Permission perm ->
                     try {
                         permission(perm.permission, perm.ldapIdentifier)
                     }
@@ -58,6 +84,7 @@ final class FolderBuilder implements Builder<Folder> {
                     }
                 }
             }
+            configure(new FolderInheritanceStrategy(inheritanceStrategy).toDsl())
             description(this.description)
             displayName(this.displayName)
             if(this.primaryView) {
