@@ -20,10 +20,7 @@ import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.DslScriptException
 import javaposse.jobdsl.dsl.Folder
 import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission
-import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.FolderInheritanceStrategy
-import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.InheritanceStrategy
-
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.configure.InheritanceStrategy.INHERIT_GLOBAL_STRATEGY
+import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.Configure
 
 final class FolderBuilder implements Builder<Folder> {
 
@@ -33,7 +30,7 @@ final class FolderBuilder implements Builder<Folder> {
     private String description
     private String primaryView
     private final Set<Permission> permissions = []
-    private InheritanceStrategy inheritanceStrategy = INHERIT_GLOBAL_STRATEGY
+    private final List<Configure> configures = []
 
     /**
      *
@@ -66,8 +63,8 @@ final class FolderBuilder implements Builder<Folder> {
         return this
     }
 
-    FolderBuilder withInheritanceStrategy(final InheritanceStrategy inheritanceStrategy) {
-        this.inheritanceStrategy = inheritanceStrategy
+    FolderBuilder withConfigures(final List<Configure> configures) {
+        this.configures.addAll(configures)
         return this
     }
 
@@ -84,7 +81,9 @@ final class FolderBuilder implements Builder<Folder> {
                     }
                 }
             }
-            configure(new FolderInheritanceStrategy(inheritanceStrategy).toDsl())
+            this.configures.each {
+                configure(it.toDsl())
+            }
             description(this.description)
             displayName(this.displayName)
             if(this.primaryView) {

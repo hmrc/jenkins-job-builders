@@ -20,20 +20,24 @@ class FolderInheritanceStrategy implements Configure {
 
   private final InheritanceStrategy inheritanceStrategy
 
-  FolderInheritanceStrategy(final InheritanceStrategy inheritanceStrategy) {
+  private FolderInheritanceStrategy(final InheritanceStrategy inheritanceStrategy) {
     this.inheritanceStrategy = inheritanceStrategy
   }
 
   @Override
   Closure toDsl() {
-    return {
+    return { folder ->
       /**
-       * It's important that we append a child node here, rather than overwriting the content of the node,
-       * as permissions child nodes may have been added by other means and we don't want to remove them.
+       * The inheritanceStrategy node _must_ be added as the 0th element, otherwise Jenkins doesn't recognise it when it
+       * parses the XML.
        */
-      it / 'properties' / 'com.cloudbees.hudson.plugins.folder.properties.AuthorizationMatrixProperty' << {
-        'inheritanceStrategy'('class': inheritanceStrategy.className)
-      }
+      final Node matrix = folder / 'properties' / 'com.cloudbees.hudson.plugins.folder.properties.AuthorizationMatrixProperty'
+      final NodeList matrixChildren = matrix.value()
+      matrixChildren.add(0, new Node(null, "inheritanceStrategy", ['class': inheritanceStrategy.className]))
     }
+  }
+
+  static FolderInheritanceStrategy folderInheritanceStrategy(final InheritanceStrategy inheritanceStrategy) {
+      return new FolderInheritanceStrategy(inheritanceStrategy)
   }
 }

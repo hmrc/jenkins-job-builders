@@ -6,6 +6,7 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission
 
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission.permissionSetting
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.configure.FolderInheritanceStrategy.folderInheritanceStrategy
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.configure.InheritanceStrategy.NON_INHERITING_STRATEGY
 
 class FolderBuilderSpec extends AbstractJobSpec {
@@ -23,12 +24,11 @@ class FolderBuilderSpec extends AbstractJobSpec {
             folderName == it.displayName.text()
             "Folder for ${folderName} jobs." == it.description.text()
             'All' == it.folderViews.primaryView.text()
-            it.'properties'.'com.cloudbees.hudson.plugins.folder.properties.AuthorizationMatrixProperty'.inheritanceStrategy.'@class'.text() == "org.jenkinsci.plugins.matrixauth.inheritance.InheritGlobalStrategy"
+            ! it.'properties'.'com.cloudbees.hudson.plugins.folder.properties.AuthorizationMatrixProperty'.inheritanceStrategy
         }
     }
 
     def 'it correctly configures a fully populated example'() {
-
         given:
         final String folderName = "my-first-folder"
         final String folderDescription = "my-first-folder-description"
@@ -49,7 +49,7 @@ class FolderBuilderSpec extends AbstractJobSpec {
             .withDisplayName(displayName)
             .withPrimaryView(primaryView)
             .withPermissions(permissions)
-            .withInheritanceStrategy(NON_INHERITING_STRATEGY)
+            .withConfigures([folderInheritanceStrategy(NON_INHERITING_STRATEGY)])
 
         when:
         Folder folder = folderBuilder.build(JOB_PARENT)
@@ -59,16 +59,15 @@ class FolderBuilderSpec extends AbstractJobSpec {
             it.displayName.text() == displayName
             it.description.text() == folderDescription
             it.folderViews.primaryView.text() == primaryView
-            def configuredPermissions = it.'properties'.'com.cloudbees.hudson.plugins.folder.properties.AuthorizationMatrixProperty'[0].value()
+            final NodeList configuredPermissions = it.'properties'.'com.cloudbees.hudson.plugins.folder.properties.AuthorizationMatrixProperty'[0].value()
             configuredPermissions.size() == 8
 
-            configuredPermissions.find { configuredPermission ->
-                'inheritanceStrategy' == configuredPermission.name() &&
-                "org.jenkinsci.plugins.matrixauth.inheritance.NonInheritingStrategy" == configuredPermission["@class"]
-            }
+            final def inheritanceStrategy = configuredPermissions.first()
+            'inheritanceStrategy' == inheritanceStrategy.name()
+            "org.jenkinsci.plugins.matrixauth.inheritance.NonInheritingStrategy" == inheritanceStrategy["@class"]
 
             permissions.each { permission ->
-                configuredPermissions.find { configuredPermission ->
+                configuredPermissions.tail().find { configuredPermission ->
                     'permission' == configuredPermission.name() &&
                     "${permission.permission}:${permission.ldapIdentifier}" == configuredPermission.text()
                 }
@@ -80,8 +79,7 @@ class FolderBuilderSpec extends AbstractJobSpec {
         given:
         final String folderName = "my-first-folder"
         final Set<Permission> permissions = [permissionSetting("ci-admin", "hudson.model.Item.MadeUpPermission")]
-        final FolderBuilder folderBuilder = new FolderBuilder(folderName)
-                .withPermissions(permissions)
+        final FolderBuilder folderBuilder = new FolderBuilder(folderName).withPermissions(permissions)
 
         when:
         folderBuilder.build(JOB_PARENT)
