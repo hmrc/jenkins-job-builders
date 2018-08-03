@@ -6,6 +6,7 @@ buildscript {
 
 plugins {
     id "com.jfrog.bintray" version "1.7.3"
+    id "com.jfrog.artifactory" version "4.7.5"
 }
 
 apply plugin: 'groovy'
@@ -16,6 +17,10 @@ project.ext {
     jobDslVersion = '1.69'
     jenkinsVersion = '2.89'
     testDependenciesOutputDirectory = new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
+    artifactoryUrl = System.getenv("ARTIFACTORY_URL")
+    snapshotsPublishingRepo = System.getenv("SNAPSHOTS_PUBLISHING_REPO")
+    snapshotsPublishingRepoUsername = System.getenv("SNAPSHOTS_PUBLISHING_REPO_USERNAME")
+    snapshotsPublishingRepoPassword = System.getenv("SNAPSHOTS_PUBLISHING_REPO_PASSWORD")
 }
 
 configurations {
@@ -99,10 +104,49 @@ test {
     systemProperty 'buildDirectory', project.buildDir.absolutePath
 }
 
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier = 'javadoc'
+}
+
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        jenkinsJobBuilders(MavenPublication) {
             from components.java
+            artifact sourcesJar
+            artifact javadocJar
+        }
+    }
+}
+
+artifactory {
+    contextUrl = project.artifactoryUrl
+    publish {
+        repository {
+            repoKey = project.snapshotsPublishingRepo
+            username = project.snapshotsPublishingRepoUsername
+            password = project.snapshotsPublishingRepoPassword
+        }
+        defaults {
+            publications('jenkinsJobBuilders')
+        }
+    }
+}
+
+artifactoryDeploy {
+    doFirst {
+        if(!project.version.endsWith("-SNAPSHOT")) {
+            throw new GradleException("Artifactory is only used to publish snapshots! Current project version '${project.version}' is not a snapshot.")
+        }
+        ["ARTIFACTORY_URL", "SNAPSHOTS_PUBLISHING_REPO", "SNAPSHOTS_PUBLISHING_REPO_USERNAME", "SNAPSHOTS_PUBLISHING_REPO_PASSWORD"].each { envVar ->
+            if(!System.getenv(envVar)) {
+                throw new GradleException("Environment variable '${envVar}' is required to publish snapshots to Artifactory, but was not provided.")
+            }
         }
     }
 }
@@ -110,7 +154,7 @@ publishing {
 bintray {
     user = credentialsProperty('user')
     key = credentialsProperty('password')
-    publications = ['mavenJava']
+    publications = ['jenkinsJobBuilders']
     pkg {
         repo = 'releases'
         name = this.project.name

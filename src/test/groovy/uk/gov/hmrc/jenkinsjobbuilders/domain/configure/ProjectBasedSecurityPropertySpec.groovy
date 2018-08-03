@@ -21,6 +21,7 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.configure.InheritanceStrategy.NON_INHERITING_STRATEGY
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.configure.ProjectBasedSecurityProperty.enableProjectBasedSecurity
 
 class ProjectBasedSecurityPropertySpec extends AbstractJobSpec {
@@ -39,7 +40,7 @@ class ProjectBasedSecurityPropertySpec extends AbstractJobSpec {
                                                     Permission.permissionSetting("admin", "hudson.scm.SCM.Tag")]
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
-                                               withConfigures(enableProjectBasedSecurity(ProjectBasedSecurityProperty.InheritanceStrategy.NON_INHERITING_STRATEGY,
+                                               withConfigures(enableProjectBasedSecurity(NON_INHERITING_STRATEGY,
                                                                                          desiredPermissions))
 
         when:

@@ -17,7 +17,6 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
 import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission
-import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.Configure
 
 class ProjectBasedSecurityProperty implements Configure {
 
@@ -45,22 +44,6 @@ class ProjectBasedSecurityProperty implements Configure {
           delegate.permission("${permission.permission}:${permission.ldapIdentifier}")
         }
       }
-    }
-  }
-
-  enum InheritanceStrategy {
-    INHERIT_GLOBAL_STRATEGY("org.jenkinsci.plugins.matrixauth.inheritance.InheritGlobalStrategy"),
-    INHERIT_PARENT_STRATEGY("org.jenkinsci.plugins.matrixauth.inheritance.InheritParentStrategy"),
-    NON_INHERITING_STRATEGY("org.jenkinsci.plugins.matrixauth.inheritance.NonInheritingStrategy")
-
-    private final String className
-
-    InheritanceStrategy(final String className) {
-      this.className = className
-    }
-
-    String getClassName() {
-      return className
     }
   }
 }
