@@ -43,6 +43,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.10.0 (03/08/2018) - Support inheritance strategies in Folders.
 * 11.9.0 (30/07/2018) - Provide the capability of configuring permissions on a per-job basis.
 * 11.8.0 (17/07/2018) - Add RemoteTriggerStep & RemoteToken.
 * 11.7.0 (11/07/2018) - Add GithubCommitNotifierPublisher.
