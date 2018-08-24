@@ -43,6 +43,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.12.0 (24/08/2018) - Modify cucumber reporter to use target/cucumber.json file
 * 11.11.0 (10/08/2018) - Support regex job filter in view builder.
 * 11.10.0 (03/08/2018) - Support inheritance strategies in Folders.
 * 11.9.0 (30/07/2018) - Provide the capability of configuring permissions on a per-job basis.

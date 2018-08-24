@@ -1,10 +1,8 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
 import javaposse.jobdsl.dsl.Job
-import spock.lang.Specification
 import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
-
 
 import static CucumberReportsPublisher.cucumberReportsPublisher
 
@@ -20,7 +18,9 @@ class CucumberReportsPublisherSpec extends AbstractJobSpec {
 
         then:
         with(job.node) {
-            publishers.'net.masterthought.jenkins.CucumberReportPublisher'.jsonReportDirectory.text() == ''
+            publishers.'net.masterthought.jenkins.CucumberReportPublisher'.jsonReportDirectory.text() == 'target'
+            publishers.'net.masterthought.jenkins.CucumberReportPublisher'.fileIncludePattern.text() == 'cucumber.json'
+            publishers.'net.masterthought.jenkins.CucumberReportPublisher'.fileExcludePattern.text() == ''
         }
     }
 }
