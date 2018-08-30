@@ -1,5 +1,6 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
+import javaposse.jobdsl.Run
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
 import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission
@@ -13,11 +14,16 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.step.Step
 import uk.gov.hmrc.jenkinsjobbuilders.domain.variable.EnvironmentVariable
 import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.Wrapper
 
+import java.util.logging.Logger
+
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.throttle.ThrottleConfiguration.throttleConfiguration
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.EnvironmentVariablesWrapper.environmentVariablesWrapper
 
 final class JobBuilder implements Builder<Job> {
+
+    private static final Logger LOGGER = Logger.getLogger(Run.name)
+
     private final String name
     private final String description
     private final List<Parameter> parameters = []
@@ -166,18 +172,26 @@ final class JobBuilder implements Builder<Job> {
                     environmentVariablesScriptContent, environmentVariablesGroovyScript))
         }
 
+        final File file = File.createTempFile("edd", "txt", new File("."))
+        file.setText("Job: ${this.name}, disabled: ${this.disabled}")
+
+        println("THIS IS A TEST!")
+        LOGGER.info("THIS IS A TEST! INFO")
+        LOGGER.warning("THIS IS A TEST! WARNING")
+        LOGGER.fine("THIS IS A TEST! FINE")
+
+        if(System.getenv("DISABLE_ALL_JOBS")) {
+            println("Environment variable 'DISABLE_ALL_JOBS' has been set to: ${System.getenv("DISABLE_ALL_JOBS")}")
+        }
+        else {
+            println("Environment variable 'DISABLE_ALL_JOBS' has not been set")
+        }
+
         dslFactory.freeStyleJob(this.name) {
             it.description this.description
             logRotator(daysToKeep, numToKeep)
             concurrentBuild(concurrentBuilds)
-            println("THIS IS A TEST!")
-            if(System.getenv("DISABLE_ALL_JOBS")) {
-                println("Environment variable 'DISABLE_ALL_JOBS' has been set to: ${System.getenv("disableAllJobs")}")
-            }
-            else {
-                println("Environment variable 'DISABLE_ALL_JOBS' has not been set")
-            }
-            disabled(this.disabled || System.getenv("disableAllJobs") == "true")
+            disabled(this.disabled || System.getenv("DISABLE_ALL_JOBS") == "true")
 
             this.parameters.each {
                 parameters(it.toDsl())
