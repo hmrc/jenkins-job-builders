@@ -191,7 +191,9 @@ final class JobBuilder implements Builder<Job> {
             it.description this.description
             logRotator(daysToKeep, numToKeep)
             concurrentBuild(concurrentBuilds)
-            disabled(this.disabled || System.getenv("DISABLE_ALL_JOBS") == "true")
+            if(this.disabled || System.getenv("DISABLE_ALL_JOBS") == "true") {
+                disabled(true)
+            }
 
             this.parameters.each {
                 parameters(it.toDsl())
