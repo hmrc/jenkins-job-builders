@@ -170,7 +170,14 @@ final class JobBuilder implements Builder<Job> {
             it.description this.description
             logRotator(daysToKeep, numToKeep)
             concurrentBuild(concurrentBuilds)
-            disabled(this.disabled)
+            println("THIS IS A TEST!")
+            if(System.getenv("DISABLE_ALL_JOBS")) {
+                println("Environment variable 'DISABLE_ALL_JOBS' has been set to: ${System.getenv("disableAllJobs")}")
+            }
+            else {
+                println("Environment variable 'DISABLE_ALL_JOBS' has not been set")
+            }
+            disabled(this.disabled || System.getenv("disableAllJobs") == "true")
 
             this.parameters.each {
                 parameters(it.toDsl())

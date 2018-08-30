@@ -1,6 +1,8 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.Job
+import org.junit.Rule
+import org.junit.contrib.java.lang.system.EnvironmentVariables
 import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 
 
@@ -27,6 +29,9 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.NodeJsWrapper.nodeJs
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreBuildCleanupWrapper.preBuildCleanUpWrapper
 
 class JobBuilderSpec extends AbstractJobSpec {
+
+    @Rule
+    public final EnvironmentVariables environmentVariables = new EnvironmentVariables()
 
     void 'test XML output'() {
         given:
@@ -108,6 +113,21 @@ class JobBuilderSpec extends AbstractJobSpec {
             publishers.'hudson.plugins.parameterizedtrigger.BuildTrigger'.configs.'hudson.plugins.parameterizedtrigger.BuildTriggerConfig' [0].projects.text() == 'test-jobs'
             publishers.'hudson.plugins.parameterizedtrigger.BuildTrigger'.configs.'hudson.plugins.parameterizedtrigger.BuildTriggerConfig' [0].condition.text() == 'SUCCESS'
             publishers.'hudson.plugins.descriptionsetter.DescriptionSetterPublisher'.regexp.text() == 'test-regex'
+        }
+
+    }
+
+    void 'it should disable the job when the appropriate environment variable is present'() {
+        given:
+        environmentVariables.set("DISABLE_ALL_JOBS", "true")
+        final JobBuilder jobBuilder = new JobBuilder('disabled-test-job', 'disabled-test-job-description')
+
+        when:
+        final Job job = jobBuilder.build(JOB_PARENT)
+
+        then:
+        with(job.node) {
+            "true" == disabled.text()
         }
     }
 }

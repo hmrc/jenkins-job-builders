@@ -57,6 +57,7 @@ dependencies {
     }
 
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+    testCompile 'com.github.stefanbirkner:system-rules:1.18.0'
 
     // Jenkins test harness dependencies
     testCompile 'org.jenkins-ci.main:jenkins-test-harness:2.33'
