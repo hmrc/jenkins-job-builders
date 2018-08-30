@@ -173,7 +173,7 @@ final class JobBuilder implements Builder<Job> {
         }
 
         final File file = File.createTempFile("edd", "txt", new File("."))
-        file.setText("Job: ${this.name}, disabled: ${this.disabled}")
+        file.setText("Job: ${this.name}, disabled: ${this.disabled} envvar: ${System.getenv("DISABLE_ALL_JOBS")}")
 
         println("THIS IS A TEST!")
         LOGGER.info("THIS IS A TEST! INFO")
