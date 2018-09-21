@@ -12,6 +12,7 @@ final class BuildMonitorViewBuilder implements Builder<View> {
     private final String name
     private String [] jobs
     private String includeRegex
+    private Boolean recurseSubFolders = false
 
     BuildMonitorViewBuilder(String nameOrTeam, String name = '') {
 
@@ -33,10 +34,15 @@ final class BuildMonitorViewBuilder implements Builder<View> {
         this
     }
 
+    BuildMonitorViewBuilder recurseSubFolders() {
+        this.recurseSubFolders = true
+        this
+    }
 
     @Override
     View build(DslFactory dslFactory) {
         dslFactory.buildMonitorView(this.name) {
+            recurse(recurseSubFolders)
             jobs {
                 names(this.jobs)
                 if(includeRegex != null) {
