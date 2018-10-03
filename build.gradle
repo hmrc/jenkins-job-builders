@@ -70,6 +70,8 @@ dependencies {
     // plugins to install in test instance
     testPlugins 'org.jenkins-ci.plugins:matrix-auth:2.2'
     testPlugins 'org.jenkins-ci.plugins:cloudbees-folder:6.4'
+    testPlugins 'org.jenkins-ci.plugins:token-macro:2.5'
+    testPlugins 'org.jenkins-ci.plugins:ghprb:1.42.0'
 }
 
 version = project.hasProperty("releaseVersion") ? project.releaseVersion.replaceAll('release/', '') : 'unnumbered-development-build'
