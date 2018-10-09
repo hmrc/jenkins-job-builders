@@ -43,6 +43,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.17.0 (09/10/2018) - Add the GitHubPullRequestTrigger class and extend the GitHubScm class to allow refspec and name to be specified.
 * 11.14.0 (24/08/2018) - Merged SecretText and SecretUsernamPassword wrapper together
 * 11.13.0 (24/08/2018) - Added abilitiy to recurse through sub folders in views
 * 11.12.0 (24/08/2018) - Modify cucumber reporter to use target/cucumber.json file
