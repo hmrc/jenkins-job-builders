@@ -14,10 +14,10 @@ class UpstreamTrigger implements Trigger {
     /**
      * Creates a {@link jenkins.triggers.ReverseBuildTrigger} based on the successful completion of any of a list of upstream jobs.
      * @param upstreamJobs String with a comma separated list of jobs
-     * @param {@link uk.gov.hmrc.jenkinsjobbuilders.domain.Condition} one of SUCCESS, UNSTABLE, FAILURE
+     * @param {@link uk.gov.hmrc.jenkinsjobbuilders.domain.Condition} one of SUCCESS, UNSTABLE, FAILURE, defaults to SUCCESS
      * @return UpstreamTrigger
      */
-    static UpstreamTrigger upstreamTrigger(String upstreamJobs, Condition condition) {
+    static UpstreamTrigger upstreamTrigger(String upstreamJobs, Condition condition = Condition.SUCCESS) {
         new UpstreamTrigger(upstreamJobs, condition)
     }
 
