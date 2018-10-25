@@ -1,26 +1,20 @@
-buildscript {
-    repositories {
-        maven { url 'http://dl.bintray.com/hmrc/releases'}
-    }
-}
-
 plugins {
-    id "com.jfrog.bintray" version "1.7.3"
-    id "com.jfrog.artifactory" version "4.7.5"
+    id "com.jfrog.artifactory" version "4.8.1"
 }
 
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
+apply from: 'hmrc_bintray_distribution_plugin.gradle'
 
 project.ext {
     jobDslVersion = '1.69'
     jenkinsVersion = '2.89'
     testDependenciesOutputDirectory = new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
-    artifactoryUrl = System.getenv("ARTIFACTORY_URL")
-    snapshotsPublishingRepo = System.getenv("SNAPSHOTS_PUBLISHING_REPO")
-    snapshotsPublishingRepoUsername = System.getenv("SNAPSHOTS_PUBLISHING_REPO_USERNAME")
-    snapshotsPublishingRepoPassword = System.getenv("SNAPSHOTS_PUBLISHING_REPO_PASSWORD")
+    artifactoryUri = System.getenv("ARTIFACTORY_URI")
+    publishingRepoKey = getArtifactoryRepoKey()
+    publishingRepoUsername = System.getenv("PUBLISHING_REPO_USERNAME")
+    publishingRepoPassword = System.getenv("PUBLISHING_REPO_PASSWORD")
 }
 
 configurations {
@@ -74,8 +68,8 @@ dependencies {
     testPlugins 'org.jenkins-ci.plugins:ghprb:1.42.0'
 }
 
-version = project.hasProperty("releaseVersion") ? project.releaseVersion.replaceAll('release/', '') : 'unnumbered-development-build'
-println "Project version is: ${project.version}"
+version = getReleaseVersion()
+logger.quiet("Project version is: ${project.version}")
 group = 'uk.gov.hmrc'
 
 task resolveTestPlugins(type: Copy) {
@@ -126,64 +120,67 @@ publishing {
     }
 }
 
+artifactoryDeploy {
+    doFirst {
+        validatePublishingConfiguration()
+    }
+}
+
 artifactory {
-    contextUrl = project.artifactoryUrl
+    contextUrl = project.artifactoryUri
     publish {
         repository {
-            repoKey = project.snapshotsPublishingRepo
-            username = project.snapshotsPublishingRepoUsername
-            password = project.snapshotsPublishingRepoPassword
+            repoKey = project.publishingRepoKey
+            username = project.publishingRepoUsername
+            password = project.publishingRepoPassword
         }
         defaults {
             publications('jenkinsJobBuilders')
         }
+        publishBuildInfo = true
+        publishArtifacts = true
+        publishPom = true
     }
 }
 
-artifactoryDeploy {
-    doFirst {
-        if(!project.version.endsWith("-SNAPSHOT")) {
-            throw new GradleException("Artifactory is only used to publish snapshots! Current project version '${project.version}' is not a snapshot.")
-        }
-        ["ARTIFACTORY_URL", "SNAPSHOTS_PUBLISHING_REPO", "SNAPSHOTS_PUBLISHING_REPO_USERNAME", "SNAPSHOTS_PUBLISHING_REPO_PASSWORD"].each { envVar ->
-            if(!System.getenv(envVar)) {
-                throw new GradleException("Environment variable '${envVar}' is required to publish snapshots to Artifactory, but was not provided.")
-            }
-        }
-    }
+bintrayDistribution {
+    artefactName = "jenkins-job-builders"
+    artefactVersion = getReleaseVersion()
 }
 
-bintray {
-    user = credentialsProperty('user')
-    key = credentialsProperty('password')
-    publications = ['jenkinsJobBuilders']
-    pkg {
-        repo = 'releases'
-        name = this.project.name
-        userOrg = 'hmrc'
-        version {
-            name = this.version
-            vcsTag = 'None'
-        }
+private validatePublishingConfiguration() {
+    boolean isReleaseVersion = isReleaseVersion()
+    final Set<String> requiredPublishingEnvVars = ["ARTIFACTORY_URI", "PUBLISHING_REPO_USERNAME", "PUBLISHING_REPO_PASSWORD"]
+    if(isReleaseVersion) {
+        requiredPublishingEnvVars << "RELEASES_PUBLISHING_REPO"
     }
-    publish = true
-}
-
-bintrayUpload {
-    doFirst {
-        if(!project.hasProperty("releaseVersion")) {
-            throw new GradleException("Cannot publish, property 'releaseVersion' has not been specified.")
+    else {
+        requiredPublishingEnvVars << "SNAPSHOTS_PUBLISHING_REPO"
+    }
+    requiredPublishingEnvVars.each { envVar ->
+        if(!System.getenv(envVar)) {
+            throw new GradleException("Environment variable '${envVar}' is required to publish ${isReleaseVersion ? "releases" : "snapshots"} to Artifactory, but was not provided.")
         }
     }
 }
 
-private def credentialsProperty(String key) {
-    def credentials = new Properties()
-    def file = new File("${System.properties['user.home']}", '/.bintray/.credentials')
-    if (file.exists()) {
-        credentials.load(file.newDataInputStream())
-    }
-    credentials.get(key)
+private String getReleaseVersion() {
+    return project.hasProperty("releaseVersion") ? project.releaseVersion.replaceAll('release/', '') : 'unnumbered-development-build'
+}
+
+private boolean isReleaseVersion() {
+    final boolean isReleaseVersion = (getReleaseVersion() ==~ /^[0-9]+\.[0-9]+\.[0-9]+$/)
+    logger.quiet("Specified releaseVersion '${getReleaseVersion()}' has been identified as a ${isReleaseVersion ? "release" : "snapshot"} version.")
+    return isReleaseVersion
+}
+
+private String getArtifactoryRepoKey() {
+    final String repoKeyEnvVar = isReleaseVersion() ? "RELEASES_PUBLISHING_REPO" : "SNAPSHOTS_PUBLISHING_REPO"
+    final String repoKey = System.getenv(repoKeyEnvVar)
+    logger.quiet("Artifactory repo key is: ${repoKey}")
+    return repoKey
 }
 
 tasks.install.dependsOn(build)
+tasks.artifactoryPublish.dependsOn(check)
+tasks.distributeToBintray.dependsOn(artifactoryPublish)
