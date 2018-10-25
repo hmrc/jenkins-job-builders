@@ -1,0 +1,111 @@
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
+
+import static java.util.Base64.getEncoder
+
+class HmrcBintrayDistributionPluginExtension {
+    String artifactoryUri = System.getenv("ARTIFACTORY_URI" )
+    String artefactRepositoryName = System.getenv("RELEASES_PUBLISHING_REPO")
+    String artefactGroup = "uk.gov.hmrc"
+    String artefactName
+    String artefactVersion
+}
+
+class HmrcBintrayDistributionPlugin implements Plugin<Project> {
+
+    void apply(Project project) {
+        final HmrcBintrayDistributionPluginExtension extension = project.extensions.create('bintrayDistribution',
+                                                                                           HmrcBintrayDistributionPluginExtension)
+
+        project.task('distributeToBintray') {
+            doFirst {
+                final String artefactGroupAsUriPath = extension.artefactGroup.replaceAll('\\.', '/')
+                final String artefactLocationUri = "/api/storage/${extension.artefactRepositoryName}/${artefactGroupAsUriPath}/${extension.artefactName}/${extension.artefactVersion}"
+                final String artefactDistributionUrl = "${extension.artifactoryUri}/api/distribute"
+                final String artefactUrl = "${extension.artifactoryUri}${artefactLocationUri}"
+                final String artefactMavenCoordinates = "${extension.artefactGroup}:${extension.artefactName}:${extension.artefactVersion}"
+
+                final String listArtefactResponseBody
+                try {
+
+                    listArtefactResponseBody = httpGet(artefactUrl)
+                }
+                catch (FileNotFoundException fnfe) {
+                    logger.error("The artefact specified for bintray distribution '" + artefactMavenCoordinates + "' was not present in Artifactory at the URL: ${artefactUrl}")
+                    throw fnfe
+                }
+
+                final def jsonResponse = new JsonSlurper().parseText(listArtefactResponseBody)
+                final Set<String> artefactUris = jsonResponse.children.collect() { it.uri }
+                logger.quiet("The following artefacts were identified as part of the package: ${artefactUris.join(', ')}")
+
+                final JsonBuilder distributeArtefactJsonPayload = new JsonBuilder()
+                distributeArtefactJsonPayload {
+                    targetRepo "bintray-distribution"
+                    packagesRepoPaths artefactUris.collect() { artefactUri ->
+                        "${extension.artefactRepositoryName}/${artefactGroupAsUriPath}/${extension.artefactName}/${extension.artefactVersion}${artefactUri}"
+                    }
+                }
+
+                String distributeArtefactResponse
+                try {
+                    distributeArtefactResponse = httpPost(artefactDistributionUrl,
+                                                          distributeArtefactJsonPayload.toPrettyString(),
+                                                          ["Accept"      : "application/json",
+                                                           "Content-Type": "application/json"])
+                }
+                catch (IOException e) {
+                    if(e.message.contains("409")) {
+                        logger.error("Unable to distribute artefact '${artefactMavenCoordinates}' to Bintray. Does the artefact already exist in Bintray?")
+                    }
+                    throw e
+                }
+                logger.quiet("Artifactory distribution response: ${distributeArtefactResponse}")
+                logger.quiet("Artefact '${artefactMavenCoordinates}' was successfully distributed to Bintray.")
+            }
+        }
+    }
+
+    private String httpGet(final String uri) {
+        final URL url = new URL(uri)
+        final HttpURLConnection uc = url.openConnection() as HttpURLConnection
+        configureWithBasicAuth(uc)
+        String response
+        uc.getInputStream().withStream { inputStream ->
+            response = inputStream.getText("UTF-8")
+        }
+        return response
+    }
+
+    private String httpPost(final String uri,
+                            final String payload,
+                            final Map<String, String> headers) {
+        final URL url = new URL(uri)
+        final HttpURLConnection uc = url.openConnection() as HttpURLConnection
+        configureWithBasicAuth(uc)
+        headers.each { headerName, headerValue ->
+            uc.setRequestProperty(headerName, headerValue)
+        }
+        uc.setRequestMethod("POST")
+        uc.setDoOutput(true)
+        String response
+        uc.getOutputStream().withStream { outputStream ->
+            outputStream.write(payload.getBytes("UTF-8"))
+            response = uc.getInputStream().withStream { inputStream ->
+                response = inputStream.getText("UTF-8")
+            }
+        }
+        return response
+
+    }
+
+    private void configureWithBasicAuth(final HttpURLConnection httpURLConnection) {
+        final String username = System.getenv("PUBLISHING_REPO_USERNAME")
+        final String password = System.getenv("PUBLISHING_REPO_PASSWORD")
+        final String userpass = username + ":" + password
+        final String basicAuth = "Basic " + new String(getEncoder().encode(userpass.getBytes("UTF-8")), "UTF-8")
+        httpURLConnection.setRequestProperty ("Authorization", basicAuth)
+    }
+}
+
+apply plugin: HmrcBintrayDistributionPlugin

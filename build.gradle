@@ -5,6 +5,7 @@ plugins {
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
+apply from: 'hmrc_bintray_distribution_plugin.gradle'
 
 project.ext {
     jobDslVersion = '1.69'
@@ -68,7 +69,7 @@ dependencies {
 }
 
 version = getReleaseVersion()
-println "Project version is: ${project.version}"
+logger.quiet("Project version is: ${project.version}")
 group = 'uk.gov.hmrc'
 
 task resolveTestPlugins(type: Copy) {
@@ -142,6 +143,11 @@ artifactory {
     }
 }
 
+bintrayDistribution {
+    artefactName = "jenkins-job-builders"
+    artefactVersion = getReleaseVersion()
+}
+
 private validatePublishingConfiguration() {
     boolean isReleaseVersion = isReleaseVersion()
     final Set<String> requiredPublishingEnvVars = ["ARTIFACTORY_URI", "PUBLISHING_REPO_USERNAME", "PUBLISHING_REPO_PASSWORD"]
@@ -164,15 +170,17 @@ private String getReleaseVersion() {
 
 private boolean isReleaseVersion() {
     final boolean isReleaseVersion = (getReleaseVersion() ==~ /^[0-9]+\.[0-9]+\.[0-9]+$/)
-    println("Specified releaseVersion '${getReleaseVersion()}' has been identified as a ${isReleaseVersion ? "release" : "snapshot"} version.")
+    logger.quiet("Specified releaseVersion '${getReleaseVersion()}' has been identified as a ${isReleaseVersion ? "release" : "snapshot"} version.")
     return isReleaseVersion
 }
 
 private String getArtifactoryRepoKey() {
     final String repoKeyEnvVar = isReleaseVersion() ? "RELEASES_PUBLISHING_REPO" : "SNAPSHOTS_PUBLISHING_REPO"
     final String repoKey = System.getenv(repoKeyEnvVar)
-    println("Artifactory repo key is: ${repoKey}")
+    logger.quiet("Artifactory repo key is: ${repoKey}")
     return repoKey
 }
 
 tasks.install.dependsOn(build)
+tasks.artifactoryPublish.dependsOn(check)
+tasks.distributeToBintray.dependsOn(artifactoryPublish)
