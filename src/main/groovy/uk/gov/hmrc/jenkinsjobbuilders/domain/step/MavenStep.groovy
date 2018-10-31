@@ -8,7 +8,7 @@ class MavenStep implements Step {
 
     private MavenStep(String ... commands) {
         this.step = shellStep(commands.inject('mkdir -p \${WORKSPACE}/tmp') {
-            string, command -> string + "\n/opt/apache-maven-3.2.1/bin/mvn $command -Djava.io.tmpdir=\${WORKSPACE}/tmp"
+            string, command -> string + "\n/opt/apache-maven-3.2.1/bin/mvn $command -Djava.io.tmpdir=\"\${WORKSPACE}/tmp\""
         })
     }
 
