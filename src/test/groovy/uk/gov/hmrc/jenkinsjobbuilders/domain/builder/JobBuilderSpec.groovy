@@ -36,6 +36,7 @@ class JobBuilderSpec extends AbstractJobSpec {
                                                withScm(gitHubComScm('example/example-repo', 'test-credentials')).
                                                withTriggers(cronTrigger('test-cron'), gitHubPushTrigger(), bintrayArtifactTrigger("H * * * *", "hmrc", "release-candidates", ["test", "test-frontend"])).
                                                withSteps(shellStep('test-shell1'), sbtStep("ls test", ['clean test', 'dist publish'], '/tmp')).
+                                               withPreScmSteps(shellStep('echo prescm')).
                                                withEnvironmentVariables(stringEnvironmentVariable('ENV_KEY', 'ENV_VALUE')).
                                                withEnvironmentVariablesScriptContent("mkdir -p \${TMP}").
                                                withEnvironmentVariablesGroovyScript("println \"Hello\"").
@@ -95,6 +96,7 @@ class JobBuilderSpec extends AbstractJobSpec {
             buildWrappers.'EnvInjectBuildWrapper'.info.propertiesContent.text().contains('ENV_KEY=ENV_VALUE') == true
             buildWrappers.'EnvInjectBuildWrapper'.info.scriptContent.text().contains("mkdir -p \${TMP}") == true
             buildWrappers.'EnvInjectBuildWrapper'.info.groovyScriptContent.text().contains("println \"Hello\"") == true
+            buildWrappers.'org.jenkinsci.plugins.preSCMbuildstep.PreSCMBuildStepsWrapper'.buildSteps.'hudson.tasks.Shell' [0].command.text().contains('echo prescm')
             builders.'hudson.tasks.Shell' [0].command.text().contains('test-shell1')
             builders.'hudson.tasks.Shell' [1].command.text().contains('ls test')
             builders.'hudson.tasks.Shell' [1].command.text().contains('mkdir -p /tmp')
