@@ -16,6 +16,7 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.Wrapper
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.throttle.ThrottleConfiguration.throttleConfiguration
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.EnvironmentVariablesWrapper.environmentVariablesWrapper
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreScmStepsWrapper.preScmStepsWrapper
 
 final class JobBuilder implements Builder<Job> {
     private final String name
@@ -24,6 +25,7 @@ final class JobBuilder implements Builder<Job> {
     private final List<EnvironmentVariable> environmentVariables = []
     private final List<Trigger> triggers = []
     private final List<Step> steps = []
+    private final List<Step> preScmSteps = []
     private final List<Publisher> publishers = []
     private final List<Configure> configures = []
     private final List<Wrapper> wrappers = []
@@ -76,6 +78,15 @@ final class JobBuilder implements Builder<Job> {
 
     JobBuilder withSteps(List<Step> steps) {
         this.steps.addAll(steps)
+        this
+    }
+
+    JobBuilder withPreScmSteps(Step ... steps) {
+        withPreScmSteps(asList(steps))
+    }
+
+    JobBuilder withPreScmSteps(List<Step> steps) {
+        this.preScmSteps.addAll(steps)
         this
     }
 
@@ -164,6 +175,10 @@ final class JobBuilder implements Builder<Job> {
         if (!this.environmentVariables.isEmpty()) {
             this.wrappers.add(0, environmentVariablesWrapper(environmentVariablesFile, environmentVariables,
                     environmentVariablesScriptContent, environmentVariablesGroovyScript))
+        }
+
+        if (!this.preScmSteps.isEmpty()) {
+            this.wrappers.add(preScmStepsWrapper(preScmSteps))
         }
 
         dslFactory.freeStyleJob(this.name) {
