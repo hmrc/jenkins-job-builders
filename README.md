@@ -43,6 +43,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.23.0 (06/03/2019) - Upgrade to job-dsl-core v1.71.
 * 11.22.0 (05/12/2018) - Add a method to insert a pre scm build job
 * 11.21.0 (05/11/2018) - Add active choice reactive parameter
 * 11.20.0 (31/10/2018) - Fix a bug where folders have spaces (for maven steps)
