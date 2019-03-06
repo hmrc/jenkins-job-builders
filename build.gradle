@@ -46,7 +46,7 @@ dependencies {
     compile ('com.google.guava:guava:11.0.1') {
         exclude module: 'jsr305'
     }
-    compile ('org.jenkins-ci.plugins:job-dsl-core:1.68') {
+    compile ('org.jenkins-ci.plugins:job-dsl-core:1.71') {
         exclude module: 'ivy'
     }
 
