@@ -112,4 +112,25 @@ class JobBuilderSpec extends AbstractJobSpec {
             publishers.'hudson.plugins.descriptionsetter.DescriptionSetterPublisher'.regexp.text() == 'test-regex'
         }
     }
+
+    void 'test scm clone options'() {
+        given:
+        JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
+                                               withScm(gitHubComScm('example/example-repo', 'test-credentials', 'master', 10))
+
+        when:
+        Job job = jobBuilder.build(JOB_PARENT)
+
+        then:
+        job.name == 'test-job'
+
+        println(job.node)
+
+        with(job.node) {
+            scm.branches.'hudson.plugins.git.BranchSpec'.name.text() == 'master'
+            scm.extensions.'hudson.plugins.git.extensions.impl.CloneOption'.shallow.text() == 'true'
+            scm.extensions.'hudson.plugins.git.extensions.impl.CloneOption'.noTags.text() == 'true'
+            scm.extensions.'hudson.plugins.git.extensions.impl.CloneOption'.depth.text() == '10'
+        }
+    }
 }
