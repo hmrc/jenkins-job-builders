@@ -8,7 +8,7 @@ apply plugin: 'maven-publish'
 apply from: 'hmrc_bintray_distribution_plugin.gradle'
 
 project.ext {
-    jobDslVersion = '1.69'
+    jobDslVersion = '1.72'
     jenkinsVersion = '2.89'
     testDependenciesOutputDirectory = new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
     artifactoryUri = System.getenv("ARTIFACTORY_URI")
@@ -46,7 +46,7 @@ dependencies {
     compile ('com.google.guava:guava:11.0.1') {
         exclude module: 'jsr305'
     }
-    compile ('org.jenkins-ci.plugins:job-dsl-core:1.71') {
+    compile ('org.jenkins-ci.plugins:job-dsl-core:1.72') {
         exclude module: 'ivy'
     }
 
