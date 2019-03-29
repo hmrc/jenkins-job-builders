@@ -43,6 +43,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.26.0 (02/04/2019) - Implement a conjoined username/password credentials binding.
 * 11.25.0 (29/03/2019) - Upgrade test harness jenkins version to v2.150.3
 * 11.24.0 (29/03/2019) - Add shallow SCM clone options and upgrade job-dsl-core to v1.72
 * 11.23.0 (06/03/2019) - Upgrade to job-dsl-core v1.71.
