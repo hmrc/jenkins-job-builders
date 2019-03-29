@@ -9,7 +9,7 @@ apply from: 'hmrc_bintray_distribution_plugin.gradle'
 
 project.ext {
     jobDslVersion = '1.72'
-    jenkinsVersion = '2.89'
+    jenkinsVersion = '2.150.3'
     testDependenciesOutputDirectory = new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
     artifactoryUri = System.getenv("ARTIFACTORY_URI")
     publishingRepoKey = getArtifactoryRepoKey()
