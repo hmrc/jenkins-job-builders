@@ -43,6 +43,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.24.0 (29/03/2019) - Add shallow SCM clone options and upgrade job-dsl-core to v1.72
 * 11.23.0 (06/03/2019) - Upgrade to job-dsl-core v1.71.
 * 11.22.0 (05/12/2018) - Add a method to insert a pre scm build job
 * 11.21.0 (05/11/2018) - Add active choice reactive parameter
