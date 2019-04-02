@@ -8,7 +8,7 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.model.SecretText.secretText
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.model.SecretUsernamePassword.secretUsernamePassword
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.model.SecretUsernamePassword.secretUsernamePassword
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.model.ConjoinedSecretUsernamePassword.conjoinedSecretUsernamePassword
 
 class CredentialsBindingsSpec extends AbstractJobSpec {
 
@@ -24,6 +24,10 @@ class CredentialsBindingsSpec extends AbstractJobSpec {
                                 [
                                         secretUsernamePassword("user0", "pass0", "cred0"),
                                         secretUsernamePassword("user1", "pass1", "cred1")
+                                ],
+                                [
+                                        conjoinedSecretUsernamePassword("userpass0", "cred0"),
+                                        conjoinedSecretUsernamePassword("userpass1", "cred1")
                                 ]
                         ))
 
@@ -31,6 +35,8 @@ class CredentialsBindingsSpec extends AbstractJobSpec {
         Job job = jobBuilder.build(JOB_PARENT)
 
         then:
+        println(job.node)
+
         with(job.node) {
             buildWrappers.'org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper'
                     .bindings.'org.jenkinsci.plugins.credentialsbinding.impl.StringBinding'
@@ -75,7 +81,24 @@ class CredentialsBindingsSpec extends AbstractJobSpec {
             buildWrappers.'org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper'
                     .bindings.'org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordMultiBinding'
                     .passwordVariable[1].value() == 'pass1'
+
+
+
+            buildWrappers.'org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper'
+                    .bindings.'org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding'
+                    .variable[0].value() == 'userpass0'
+
+            buildWrappers.'org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper'
+                    .bindings.'org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding'
+                    .credentialsId[0].value() == 'cred0'
+
+            buildWrappers.'org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper'
+                    .bindings.'org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding'
+                    .variable[1].value() == 'userpass1'
+
+            buildWrappers.'org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper'
+                    .bindings.'org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding'
+                    .credentialsId[1].value() == 'cred1'
         }
     }
-
 }
