@@ -18,7 +18,7 @@ final class BuildMonitorViewBuilder implements Builder<View> {
 
         // nameOrTeam is there for backwards compatibility, where the name was the first parameter
         if(name == '') {
-            this.name = name
+            this.name = nameOrTeam
         } else {
             this.name = "$nameOrTeam/$name"
         }
