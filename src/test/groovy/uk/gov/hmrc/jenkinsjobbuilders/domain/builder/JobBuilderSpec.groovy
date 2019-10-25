@@ -129,7 +129,7 @@ class JobBuilderSpec extends AbstractJobSpec {
         with(job.node) {
             scm.branches.'hudson.plugins.git.BranchSpec'.name.text() == 'master'
             scm.extensions.'hudson.plugins.git.extensions.impl.CloneOption'.shallow.text() == 'true'
-            scm.extensions.'hudson.plugins.git.extensions.impl.CloneOption'.noTags.text() == 'true'
+            scm.extensions.'hudson.plugins.git.extensions.impl.CloneOption'.noTags.text() == 'false'
             scm.extensions.'hudson.plugins.git.extensions.impl.CloneOption'.depth.text() == '10'
         }
     }
