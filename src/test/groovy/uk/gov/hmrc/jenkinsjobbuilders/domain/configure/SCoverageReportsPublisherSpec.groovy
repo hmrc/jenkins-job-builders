@@ -23,4 +23,18 @@ class SCoverageReportsPublisherSpec extends AbstractJobSpec {
             publishers.'org.jenkinsci.plugins.scoverage.ScoveragePublisher'.reportDir.text() == 'target/scala-2.11/scoverage-report'
         }
     }
+
+    void 'test XML output with scala-2.12'() {
+        given:
+        JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
+                withConfigures(sCoverageReportsPublisher("2.12"))
+
+        when:
+        Job job = jobBuilder.build(JOB_PARENT)
+
+        then:
+        with(job.node) {
+            publishers.'org.jenkinsci.plugins.scoverage.ScoveragePublisher'.reportDir.text() == 'target/scala-2.12/scoverage-report'
+        }
+    }
 }
