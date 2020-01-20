@@ -43,6 +43,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.31.0 (17/01/2020) - Allow to specify the Scala version in the Coverage Report Publisher
 * 11.30.0 (25/10/2019) - Add support for honoring the refspec in the initial git fetch, and parameterise whether tags are pulled or not 
 * 11.29.0 (01/10/2019) - Add support for [AWS CodeBuild with Jenkins plugin](https://wiki.jenkins.io/display/JENKINS/AWS+CodeBuild+Plugin)
 * 11.27.0 (15/04/2019) - Fix name bug in BuildMonitorViewBuilder.
