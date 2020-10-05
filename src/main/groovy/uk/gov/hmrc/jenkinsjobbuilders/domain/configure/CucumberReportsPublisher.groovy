@@ -34,6 +34,7 @@ final class CucumberReportsPublisher implements Configure {
                 'undefinedFails'('false')
                 'noFlashCharts'('false')
                 'ignoreFailedTests'('false')
+                'buildStatus'('FAILURE')
             }
         }
     }
