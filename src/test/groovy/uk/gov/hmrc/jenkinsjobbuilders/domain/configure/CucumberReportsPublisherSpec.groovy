@@ -21,6 +21,7 @@ class CucumberReportsPublisherSpec extends AbstractJobSpec {
             publishers.'net.masterthought.jenkins.CucumberReportPublisher'.jsonReportDirectory.text() == 'target'
             publishers.'net.masterthought.jenkins.CucumberReportPublisher'.fileIncludePattern.text() == 'cucumber.json'
             publishers.'net.masterthought.jenkins.CucumberReportPublisher'.fileExcludePattern.text() == ''
+            publishers.'net.masterthought.jenkins.CucumberReportPublisher'.buildStatus.text() == 'FAILURE'
         }
     }
 }
