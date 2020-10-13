@@ -2,16 +2,18 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.publisher
 
 
 final class HtmlReportsPublisher implements Publisher {
-    private final Map<String,String> htmlReportDirs
+    private final Map<String, String> htmlReportDirs
     private boolean keep
+    private boolean alwaysLinkLatest
 
-    private HtmlReportsPublisher(Map<String, String> htmlReportDirs, boolean keep = false) {
+    private HtmlReportsPublisher(Map<String, String> htmlReportDirs, boolean keep = false, boolean alwaysLinkLatest = false) {
         this.htmlReportDirs = htmlReportDirs
         this.keep = keep
+        this.alwaysLinkLatest = alwaysLinkLatest
     }
 
-    static HtmlReportsPublisher htmlReportsPublisher(Map<String, String> htmlReportDirs, boolean keep = false) {
-        new HtmlReportsPublisher(htmlReportDirs, keep)
+    static HtmlReportsPublisher htmlReportsPublisher(Map<String, String> htmlReportDirs, boolean keep = false, boolean alwaysLinkLatest = false) {
+        new HtmlReportsPublisher(htmlReportDirs, keep, alwaysLinkLatest)
     }
 
     @Override
@@ -23,6 +25,7 @@ final class HtmlReportsPublisher implements Publisher {
                         reportName(name)
                         allowMissing(true)
                         keepAll(keep)
+                        alwaysLinkToLastBuild(alwaysLinkLatest)
                     }
                 }
             }
