@@ -43,6 +43,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.35.0 (14/10/2020) - Add clearPublishers to JobBuilder to let you remove all existing publishers set in default Job Builders
 * 11.34.0 (13/10/2020) - Allow configuration of alwaysLinkToLastBuild in HtmlReportsPublisher
 * 11.33.0 (05/10/2020) - Modify cucumber reporter to mark build as failed when cucumber report marked as failed
 * 11.32.0 (07/08/2020) - Add support for the PostBuildScript Publisher plugin

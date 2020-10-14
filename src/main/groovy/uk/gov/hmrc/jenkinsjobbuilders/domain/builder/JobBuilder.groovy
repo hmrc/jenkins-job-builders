@@ -137,6 +137,11 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
+    JobBuilder clearPublishers() {
+        this.publishers.clear()
+        this
+    }
+
     JobBuilder withConfigures(Configure ... configures) {
         withConfigures(asList(configures))
     }
