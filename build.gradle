@@ -5,7 +5,6 @@ plugins {
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
-apply from: 'hmrc_bintray_distribution_plugin.gradle'
 
 project.ext {
     jobDslVersion = '1.72'
@@ -183,4 +182,3 @@ private String getArtifactoryRepoKey() {
 
 tasks.install.dependsOn(build)
 tasks.artifactoryPublish.dependsOn(check)
-tasks.distributeToBintray.dependsOn(artifactoryPublish)
