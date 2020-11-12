@@ -142,11 +142,6 @@ artifactory {
     }
 }
 
-bintrayDistribution {
-    artefactName = "jenkins-job-builders"
-    artefactVersion = getReleaseVersion()
-}
-
 private validatePublishingConfiguration() {
     boolean isReleaseVersion = isReleaseVersion()
     final Set<String> requiredPublishingEnvVars = ["ARTIFACTORY_URI", "PUBLISHING_REPO_USERNAME", "PUBLISHING_REPO_PASSWORD"]
