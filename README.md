@@ -1,5 +1,5 @@
 # jenkins-job-builders
-[ ![Download](https://api.bintray.com/packages/hmrc/releases/jenkins-job-builders/images/download.svg) ](https://bintray.com/hmrc/releases/jenkins-job-builders/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/hmrc-digital/releases/jenkins-job-builders/images/download.svg) ](https://bintray.com/hmrc/releases/jenkins-job-builders/_latestVersion)
 
 Automated Jenkins job and view configuration builders, via the [Jenkins Job DSL Plugin](https://github.com/jenkinsci/job-dsl-plugin) ([wiki](https://github.com/jenkinsci/job-dsl-plugin/wiki)).
 
@@ -43,6 +43,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.35.0 (08/12/2020) - Release to hmrc-digital bintray account
 * 11.34.0 (13/10/2020) - Allow configuration of alwaysLinkToLastBuild in HtmlReportsPublisher
 * 11.33.0 (05/10/2020) - Modify cucumber reporter to mark build as failed when cucumber report marked as failed
 * 11.32.0 (07/08/2020) - Add support for the PostBuildScript Publisher plugin
