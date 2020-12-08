@@ -1,5 +1,5 @@
 # jenkins-job-builders
-[ ![Download](https://api.bintray.com/packages/hmrc-digital/releases/jenkins-job-builders/images/download.svg) ](https://bintray.com/hmrc/releases/jenkins-job-builders/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/hmrc-digital/releases/jenkins-job-builders/images/download.svg) ](https://bintray.com/hmrc-digital/releases/jenkins-job-builders/_latestVersion)
 
 Automated Jenkins job and view configuration builders, via the [Jenkins Job DSL Plugin](https://github.com/jenkinsci/job-dsl-plugin) ([wiki](https://github.com/jenkinsci/job-dsl-plugin/wiki)).
 
