@@ -23,4 +23,18 @@ class ShellStepSpec extends AbstractJobSpec {
             builders.'hudson.tasks.Shell' [0].command.text().contains("test-shell")
         }
     }
+
+    void 'support optional exit code to mark unstable'() {
+        given:
+        JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
+                withSteps(shellStep('test-shell', 13))
+
+        when:
+        Job job = jobBuilder.build(JOB_PARENT)
+
+        then:
+        with(job.node) {
+            assert builders.'hudson.tasks.Shell' [0] == null
+        }
+    }
 }

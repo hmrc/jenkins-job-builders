@@ -11,11 +11,15 @@ class ShellStep implements Step {
     static Step shellStep(String command) {
         new ShellStep(command)
     }
+    static Step shellStep(String command, int ifUnstableExitCode) {
+        new ShellStep(command)
+    }
 
     @Override
     Closure toDsl() {
         return {
-            shell(command)
+            shell(command, 13)
+            unstableReturn(13)
         }
     }
 }
