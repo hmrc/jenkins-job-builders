@@ -43,6 +43,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.36.0 (12/03/2021) - add an optional parameter to shellStep "unstableReturnCode" that sets build to unstable based of given return code value
 * 11.35.0 (08/12/2020) - Release to hmrc-digital bintray account
 * 11.34.0 (13/10/2020) - Allow configuration of alwaysLinkToLastBuild in HtmlReportsPublisher
 * 11.33.0 (05/10/2020) - Modify cucumber reporter to mark build as failed when cucumber report marked as failed
