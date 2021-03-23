@@ -20,7 +20,7 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreScmStepsWrapper.p
 
 final class JobBuilder implements Builder<Job> {
     private final String name
-    private final String description
+    private String description
     private final List<Parameter> parameters = []
     private final List<EnvironmentVariable> environmentVariables = []
     private final List<Trigger> triggers = []
@@ -167,6 +167,11 @@ final class JobBuilder implements Builder<Job> {
 
     JobBuilder withThrottle(List<String> categories, int maxConcurrentPerNode, int maxConcurrentTotal, boolean throttleDisabled) {
         this.throttle = throttleConfiguration(categories, maxConcurrentPerNode, maxConcurrentTotal, throttleDisabled)
+        this
+    }
+
+    JobBuilder withExtendedDescription(String description) {
+        this.description += description
         this
     }
 
