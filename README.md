@@ -43,13 +43,14 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.37.0 (23/03/2021) - Allow JobBuilder description to be modified after instantiation
 * 11.36.0 (12/03/2021) - add an optional parameter to shellStep "unstableReturnCode" that sets build to unstable based of given return code value
 * 11.35.0 (08/12/2020) - Release to hmrc-digital bintray account
 * 11.34.0 (13/10/2020) - Allow configuration of alwaysLinkToLastBuild in HtmlReportsPublisher
 * 11.33.0 (05/10/2020) - Modify cucumber reporter to mark build as failed when cucumber report marked as failed
 * 11.32.0 (07/08/2020) - Add support for the PostBuildScript Publisher plugin
 * 11.31.0 (17/01/2020) - Allow to specify the Scala version in the Coverage Report Publisher
-* 11.30.0 (25/10/2019) - Add support for honoring the refspec in the initial git fetch, and parameterise whether tags are pulled or not 
+* 11.30.0 (25/10/2019) - Add support for honoring the refspec in the initial git fetch, and parameterise whether tags are pulled or not
 * 11.29.0 (01/10/2019) - Add support for [AWS CodeBuild with Jenkins plugin](https://wiki.jenkins.io/display/JENKINS/AWS+CodeBuild+Plugin)
 * 11.27.0 (15/04/2019) - Fix name bug in BuildMonitorViewBuilder.
 * 11.26.0 (02/04/2019) - Implement a conjoined username/password credentials binding.

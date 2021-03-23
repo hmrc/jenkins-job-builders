@@ -133,4 +133,23 @@ class JobBuilderSpec extends AbstractJobSpec {
             scm.extensions.'hudson.plugins.git.extensions.impl.CloneOption'.depth.text() == '10'
         }
     }
+
+    void 'test able to modify description after instantiation'() {
+        given:
+        JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description')
+            .withScm(gitHubComScm('example/example-repo', 'test-credentials', 'master', 10))
+            .withExtendedDescription(' - appended')
+
+        when:
+        Job job = jobBuilder.build(JOB_PARENT)
+
+        then:
+        job.name == 'test-job'
+
+        println(job.node)
+
+        with(job.node) {
+            description.text() == 'test-job-description - appended'
+        }
+    }
 }
