@@ -10,6 +10,7 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.ChoiceParameter.c
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.StringParameter.stringParameter
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ArtifactsPublisher.artifactsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.BuildDescriptionPublisher.buildDescriptionByRegexPublisher
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.BuildDescriptionStep.buildDescriptionByTextStep
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ClaimBrokenBuildsPublisher.claimBrokenBuildsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.HtmlReportsPublisher.htmlReportsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.JUnitReportsPublisher.jUnitReportsPublisher
@@ -150,6 +151,25 @@ class JobBuilderSpec extends AbstractJobSpec {
 
         with(job.node) {
             description.text() == 'test-job-description - appended'
+        }
+    }
+
+    void 'test set job description text'() {
+        given:
+        JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
+                withPreScmSteps(buildDescriptionByTextStep('test-description'))
+        when:
+        Job job = jobBuilder.build(JOB_PARENT)
+
+        then:
+        job.name == 'test-job'
+
+        println(job.node)
+
+        with(job.node) {
+            buildWrappers.'org.jenkinsci.plugins.preSCMbuildstep.PreSCMBuildStepsWrapper'
+                    .buildSteps.'hudson.plugins.descriptionsetter.DescriptionSetterBuilder'
+                    .description.text() == "test-description"
         }
     }
 }
