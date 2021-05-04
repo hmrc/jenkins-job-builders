@@ -1,12 +1,11 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.publisher
 
-final class BuildDescriptionPublisher implements Publisher {
-    private final String description
-    private final String regex
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractBuildDescription
+
+final class BuildDescriptionPublisher extends AbstractBuildDescription implements Publisher {
 
     private BuildDescriptionPublisher(String regex, String description) {
-        this.regex = regex
-        this.description = description
+        super(regex, description)
     }
 
     static BuildDescriptionPublisher buildDescriptionByTextPublisher(String description) {
@@ -19,12 +18,5 @@ final class BuildDescriptionPublisher implements Publisher {
 
     private static BuildDescriptionPublisher buildDescriptionPublisher(String regex, String description) {
         new BuildDescriptionPublisher(regex, description)
-    }
-
-    @Override
-    Closure toDsl() {
-        return {
-            buildDescription(regex, description)
-        }
     }
 }

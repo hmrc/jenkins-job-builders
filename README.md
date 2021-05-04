@@ -43,6 +43,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.38.0 (04/05/2021) - add BuildDescriptionStep to allow jobs to set their own descriptions
 * 11.37.0 (23/03/2021) - Allow JobBuilder description to be modified after instantiation
 * 11.36.0 (12/03/2021) - add an optional parameter to shellStep "unstableReturnCode" that sets build to unstable based of given return code value
 * 11.35.0 (08/12/2020) - Release to hmrc-digital bintray account
