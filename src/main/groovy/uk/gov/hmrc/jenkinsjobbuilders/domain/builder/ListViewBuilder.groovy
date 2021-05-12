@@ -29,18 +29,18 @@ final class ListViewBuilder implements Builder<View> {
     View build(DslFactory dslFactory) {
         dslFactory.listView(this.name) {
             recurse(this.recurseSubFolders)
-                jobs {
-                    regex(this.jobsRegex)
-                }
-                columns {
-                    status()
-                    weather()
-                    name()
-                    lastSuccess()
-                    lastFailure()
-                    lastDuration()
-                    buildButton()
-                }
+            jobs {
+                regex(this.jobsRegex)
+            }
+            columns {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
             }
         }
+    }
 }
