@@ -9,6 +9,7 @@ final class ListViewBuilder implements Builder<View> {
     private final String name
     private String jobsRegex
     private boolean scoverageReports = false
+    private Boolean recurseSubFolders = false
 
     ListViewBuilder(String name) {
         this.name = name
@@ -19,9 +20,15 @@ final class ListViewBuilder implements Builder<View> {
         this
     }
 
+    ListViewBuilder withRecurseSubFolders() {
+        this.recurseSubFolders = true
+        this
+    }
+
     @Override
     View build(DslFactory dslFactory) {
         dslFactory.listView(this.name) {
+            recurse(this.recurseSubFolders)
             jobs {
                 regex(this.jobsRegex)
             }
