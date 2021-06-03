@@ -1,5 +1,7 @@
+>**We are aware that this codebase contains outdated language. This may be due to a third party dependency which provides essential functionality or because of links to other projects. We are committed to providing an inclusive experience and are actively engaging with our suppliers and the open source community to address these issues.**
+
 # jenkins-job-builders
-[ ![Download](https://api.bintray.com/packages/hmrc-digital/releases/jenkins-job-builders/images/download.svg) ](https://bintray.com/hmrc-digital/releases/jenkins-job-builders/_latestVersion)
+[Download here](https://open.artefacts.tax.service.gov.uk/maven2/uk/gov/hmrc/jenkins-job-builders/)
 
 Automated Jenkins job and view configuration builders, via the [Jenkins Job DSL Plugin](https://github.com/jenkinsci/job-dsl-plugin) ([wiki](https://github.com/jenkinsci/job-dsl-plugin/wiki)).
 
