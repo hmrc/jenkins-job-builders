@@ -4,6 +4,7 @@ import groovy.transform.builder.Builder
 import groovy.transform.builder.ExternalStrategy
 import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.Configure
 
+@Deprecated
 final class AwsCodeBuildStep implements Configure {
 
     String credentialsType
