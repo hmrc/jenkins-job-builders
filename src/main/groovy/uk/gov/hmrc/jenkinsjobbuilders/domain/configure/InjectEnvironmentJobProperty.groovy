@@ -31,7 +31,7 @@ final class InjectEnvironmentJobProperty implements Configure {
 
     Closure toDsl() {
         return {
-            it / 'properties' << 'EnvInjectJobProperty' {
+            it / 'properties' << 'envInjectJobProperty' {
                 info {
                   loadFilesFromMaster false
                   propertiesContent this.propertiesContent
