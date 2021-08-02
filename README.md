@@ -45,6 +45,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.41.0 (02/08/2021) - Updated DSL property name in InjectEnvironmentJobProperty
 * 11.40.1 (02/08/2021) - Updated DSL property name in InjectEnvironmentJobProperty
 * 11.40.0 (02/08/2021) - Add the InjectEnvironmentJobProperty class to perform pre-scm environment injection
 * 11.39.0 (12/05/2021) - Allow ListViewBuilder to recurse into folders
