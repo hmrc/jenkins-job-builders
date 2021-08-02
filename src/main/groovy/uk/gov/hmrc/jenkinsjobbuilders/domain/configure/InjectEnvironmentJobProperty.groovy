@@ -5,39 +5,39 @@ final class InjectEnvironmentJobProperty implements Configure {
     private InjectEnvironmentJobProperty() {}
 
     private String  propertiesContent= ''
-    private String  propertiesFile = ''
-    private String  scriptFile = ''
-    private String  script = ''
+    private String  propertiesFilePath = ''
+    private String  scriptFilePath = ''
+    private String  scriptContent = ''
 
     InjectEnvironmentJobProperty withPropertiesContent(String propertiesContent) {
         this.propertiesContent = propertiesContent
         this
     }
 
-    InjectEnvironmentJobProperty withPropertiesFile(String propertiesFile) {
-        this.propertiesFile = propertiesFile
+    InjectEnvironmentJobProperty withPropertiesFilePath(String propertiesFilePath) {
+        this.propertiesFilePath = propertiesFilePath
         this
     }
 
-    InjectEnvironmentJobProperty withScriptFile(String scriptFile) {
-        this.scriptFile = scriptFile
+    InjectEnvironmentJobProperty withScriptFilePath(String scriptFilePath) {
+        this.scriptFilePath = scriptFilePath
         this
     }
 
-    InjectEnvironmentJobProperty withScript(String script) {
-        this.script = script
+    InjectEnvironmentJobProperty withScriptContent(String scriptContent) {
+        this.scriptContent = scriptContent
         this
     }
 
     Closure toDsl() {
         return {
-            it / 'properties' << 'envInjectJobProperty' {
+            it / 'properties' << 'EnvInjectJobProperty' {
                 info {
                   loadFilesFromMaster false
                   propertiesContent this.propertiesContent
-                  propertiesFile this.propertiesFile
-                  scriptFile this.scriptFile
-                  script this.script
+                  propertiesFilePath this.propertiesFilePath
+                  scriptFilePath this.scriptFilePath
+                  scriptContent this.scriptContent
                   }
                 keepBuildVariables true
                 keepJenkinsSystemVariables true

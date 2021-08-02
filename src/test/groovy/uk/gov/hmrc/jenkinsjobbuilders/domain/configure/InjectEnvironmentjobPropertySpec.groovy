@@ -19,10 +19,10 @@ class InjectEnvironmentJobPropertySpec extends AbstractJobSpec {
         then:
         println(job.node)
         with(job.node) {
-            properties.envInjectJobProperty.info.propertiesContent.text() == ''
-            properties.envInjectJobProperty.info.propertiesFile.text() == ''
-            properties.envInjectJobProperty.info.scriptFile.text() == ''
-            properties.envInjectJobProperty.info.script.text() == ''
+            properties.EnvInjectJobProperty.info.propertiesContent.text() == ''
+            properties.EnvInjectJobProperty.info.propertiesFilePath.text() == ''
+            properties.EnvInjectJobProperty.info.scriptFilePath.text() == ''
+            properties.EnvInjectJobProperty.info.scriptContent.text() == ''
         }
     }
      void 'test XML output with parameters'() {
@@ -30,9 +30,9 @@ class InjectEnvironmentJobPropertySpec extends AbstractJobSpec {
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
                                             withConfigures(injectEnvironmentJobProperty()
                                                 .withPropertiesContent('PropertyContent')
-                                                .withPropertiesFile('PropertyFile')
-                                                .withScriptFile('PropertyScriptFile')
-                                                .withScript('PropertyScript')
+                                                .withPropertiesFilePath('PropertyFile')
+                                                .withScriptFilePath('PropertyScriptFile')
+                                                .withScriptContent('PropertyScript')
                                             )
 
         when:
@@ -41,10 +41,10 @@ class InjectEnvironmentJobPropertySpec extends AbstractJobSpec {
         then:
         println(job.node)
         with(job.node) {
-            properties.envInjectJobProperty.info.propertiesContent.text() == 'PropertyContent'
-            properties.envInjectJobProperty.info.propertiesFile.text() == 'PropertyFile'
-            properties.envInjectJobProperty.info.scriptFile.text() == 'PropertyScriptFile'
-            properties.envInjectJobProperty.info.script.text() == 'PropertyScript'
+            properties.EnvInjectJobProperty.info.propertiesContent.text() == 'PropertyContent'
+            properties.EnvInjectJobProperty.info.propertiesFilePath.text() == 'PropertyFile'
+            properties.EnvInjectJobProperty.info.scriptFilePath.text() == 'PropertyScriptFile'
+            properties.EnvInjectJobProperty.info.scriptContent.text() == 'PropertyScript'
         }
     }
 }
