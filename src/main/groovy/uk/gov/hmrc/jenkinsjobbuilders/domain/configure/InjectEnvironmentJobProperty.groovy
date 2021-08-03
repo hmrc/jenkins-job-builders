@@ -4,10 +4,10 @@ final class InjectEnvironmentJobProperty implements Configure {
 
     private InjectEnvironmentJobProperty() {}
 
-    private String  propertiesContent= ''
-    private String  propertiesFilePath = ''
-    private String  scriptFilePath = ''
-    private String  scriptContent = ''
+    private String propertiesContent = ''
+    private String propertiesFilePath = ''
+    private String scriptFilePath = ''
+    private String scriptContent = ''
 
     InjectEnvironmentJobProperty withPropertiesContent(String propertiesContent) {
         this.propertiesContent = propertiesContent
@@ -34,11 +34,19 @@ final class InjectEnvironmentJobProperty implements Configure {
             it / 'properties' << 'EnvInjectJobProperty' {
                 info {
                   loadFilesFromMaster false
-                  propertiesContent this.propertiesContent
-                  propertiesFilePath this.propertiesFilePath
-                  scriptFilePath this.scriptFilePath
-                  scriptContent this.scriptContent
+                  if ( this.propertiesContent != '' ) {
+                    propertiesContent this.propertiesContent
                   }
+                  if ( this.propertiesFilePath != '' ) {
+                    propertiesFilePath this.propertiesFilePath
+                  }
+                  if ( this.scriptFilePath != '' ) {
+                    scriptFilePath this.scriptFilePath
+                  }
+                  if ( this.scriptContent != '' ) {
+                    scriptContent this.scriptContent
+                  }
+                }
                 keepBuildVariables true
                 keepJenkinsSystemVariables true
                 overrideBuildParameters false
