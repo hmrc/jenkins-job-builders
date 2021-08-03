@@ -45,6 +45,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 11.42.0 (03/08/2021) - Dont add envInject properties if they are defined with a null value
 * 11.41.0 (02/08/2021) - Updated DSL property name in InjectEnvironmentJobProperty
 * 11.40.1 (02/08/2021) - Updated DSL property name in InjectEnvironmentJobProperty
 * 11.40.0 (02/08/2021) - Add the InjectEnvironmentJobProperty class to perform pre-scm environment injection
