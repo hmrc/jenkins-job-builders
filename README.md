@@ -45,7 +45,8 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
-* 11.42.0 (03/08/2021) - Dont add envInject properties if they are defined with a null value
+* 12.0.0 (23/09/2021) - Support multiple build results in postBuildScriptPublisher
+* 11.42.0 (03/08/2021) - Don't add envInject properties if they are defined with a null value
 * 11.41.0 (02/08/2021) - Updated DSL property name in InjectEnvironmentJobProperty
 * 11.40.1 (02/08/2021) - Updated DSL property name in InjectEnvironmentJobProperty
 * 11.40.0 (02/08/2021) - Add the InjectEnvironmentJobProperty class to perform pre-scm environment injection
@@ -71,7 +72,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 * 11.18.0 (19/10/2018) - Add the UpstreamTrigger class to enable building a job based on the successful completion of upstream jobs
 * 11.17.0 (09/10/2018) - Add the GitHubPullRequestTrigger class and extend the GitHubScm class to allow refspec and name to be specified.
 * 11.14.0 (24/08/2018) - Merged SecretText and SecretUsernamPassword wrapper together
-* 11.13.0 (24/08/2018) - Added abilitiy to recurse through sub folders in views
+* 11.13.0 (24/08/2018) - Added ability to recurse through sub folders in views
 * 11.12.0 (24/08/2018) - Modify cucumber reporter to use target/cucumber.json file
 * 11.11.0 (10/08/2018) - Support regex job filter in view builder.
 * 11.10.0 (03/08/2018) - Support inheritance strategies in Folders.

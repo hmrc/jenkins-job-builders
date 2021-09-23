@@ -65,6 +65,7 @@ dependencies {
     testPlugins 'org.jenkins-ci.plugins:cloudbees-folder:6.4'
     testPlugins 'org.jenkins-ci.plugins:token-macro:2.5'
     testPlugins 'org.jenkins-ci.plugins:ghprb:1.42.0'
+    testPlugins 'org.jenkins-ci.plugins:postbuildscript:2.9.1'
 }
 
 version = getReleaseVersion()
