@@ -6,15 +6,19 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.Publisher
 final class PostBuildScriptPublisher implements Publisher {
     private final ArrayList<Result> results
     private final String script
+    private final Boolean stopOnFailure
 
-    private PostBuildScriptPublisher(String script, ArrayList<Result> results) {
+    private PostBuildScriptPublisher(String script, ArrayList<Result> results, Boolean stopOnFailure) {
         this.script = script
         this.results = results
+        this.stopOnFailure = stopOnFailure
     }
 
-    static PostBuildScriptPublisher postBuildScriptPublisher(String script, ArrayList<Result> results) {
-        new PostBuildScriptPublisher(script, results)
+    static PostBuildScriptPublisher postBuildScriptPublisher(String script, ArrayList<Result> results, Boolean stopOnFailure = false) {
+        new PostBuildScriptPublisher(script, results, stopOnFailure)
     }
+
+
 
     @Override
     Closure toDsl() {
@@ -22,6 +26,7 @@ final class PostBuildScriptPublisher implements Publisher {
             postBuildScript {
                 buildSteps {
                     postBuildStep {
+                        stopOnFailure(this.stopOnFailure)
                         results(results*.name())
                         buildSteps {
                             shell {

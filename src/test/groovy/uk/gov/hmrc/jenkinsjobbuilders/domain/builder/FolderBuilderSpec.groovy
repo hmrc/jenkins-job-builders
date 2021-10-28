@@ -23,7 +23,7 @@ class FolderBuilderSpec extends AbstractJobSpec {
         with(folder.node) {
             folderName == it.displayName.text()
             "Folder for ${folderName} jobs." == it.description.text()
-            'All' == it.folderViews.primaryView.text()
+            'all' == it.folderViews.primaryView.text()
             ! it.'properties'.'com.cloudbees.hudson.plugins.folder.properties.AuthorizationMatrixProperty'.inheritanceStrategy
         }
     }

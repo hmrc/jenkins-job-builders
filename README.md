@@ -45,6 +45,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 13.0.0 (28/10/2021) - Only support Post Build Script plugin version 3.0.0 and higher
 * 12.0.0 (23/09/2021) - Support multiple build results in postBuildScriptPublisher
 * 11.42.0 (03/08/2021) - Don't add envInject properties if they are defined with a null value
 * 11.41.0 (02/08/2021) - Updated DSL property name in InjectEnvironmentJobProperty
