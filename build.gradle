@@ -7,8 +7,8 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 project.ext {
-    jobDslVersion = '1.72'
-    jenkinsVersion = '2.150.3'
+    jobDslVersion = '1.77'
+    jenkinsVersion = '2.303.2'
     testDependenciesOutputDirectory = new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
     artifactoryUri = System.getenv("ARTIFACTORY_URI")
     publishingRepoKey = getArtifactoryRepoKey()
@@ -45,14 +45,15 @@ dependencies {
     compile ('com.google.guava:guava:11.0.1') {
         exclude module: 'jsr305'
     }
-    compile ('org.jenkins-ci.plugins:job-dsl-core:1.72') {
+    compile ("org.jenkins-ci.plugins:job-dsl-core:${jobDslVersion}") {
         exclude module: 'ivy'
+        exclude module: 'xstream'
     }
 
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
 
     // Jenkins test harness dependencies
-    testCompile 'org.jenkins-ci.main:jenkins-test-harness:2.33'
+    testCompile 'org.jenkins-ci.main:jenkins-test-harness:1645.vf98fc478f846'
     testCompile "org.jenkins-ci.main:jenkins-war:${jenkinsVersion}"
 
     // Job DSL plugin including plugin dependencies
@@ -61,11 +62,13 @@ dependencies {
     testCompile 'org.jenkins-ci.plugins:structs:1.6@jar'
 
     // plugins to install in test instance
-    testPlugins 'org.jenkins-ci.plugins:matrix-auth:2.2'
-    testPlugins 'org.jenkins-ci.plugins:cloudbees-folder:6.4'
-    testPlugins 'org.jenkins-ci.plugins:token-macro:2.5'
+    testPlugins 'org.jenkins-ci.plugins:matrix-auth:2.6.8'
+    testPlugins 'org.jenkins-ci.plugins:cloudbees-folder:6.16'
+    testPlugins 'org.jenkins-ci.modules:sshd:3.1.0'
+    testPlugins 'org.jenkins-ci.plugins:credentials:2.5'
+    testPlugins 'org.jenkins-ci.plugins:token-macro:266.v44a80cf277fd'
     testPlugins 'org.jenkins-ci.plugins:ghprb:1.42.0'
-    testPlugins 'org.jenkins-ci.plugins:postbuildscript:2.9.1'
+    testPlugins 'org.jenkins-ci.plugins:postbuildscript:3.0.0'
 }
 
 version = getReleaseVersion()
