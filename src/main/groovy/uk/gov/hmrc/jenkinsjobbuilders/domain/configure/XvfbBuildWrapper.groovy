@@ -11,7 +11,6 @@ final class XvfbBuildWrapper implements Configure {
     Closure toDsl() {
         return {
             it / 'buildWrappers' / 'org.jenkinsci.plugins.xvfb.XvfbBuildWrapper' {
-                'switch'('on')
                 'installationName'('default')
                 'screen'('1920x1080x24')
                 'displayNameOffset'('1')

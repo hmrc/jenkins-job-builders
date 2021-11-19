@@ -29,11 +29,6 @@ final class CucumberReportsPublisher implements Configure {
                 'jsonReportDirectory'(jsonReportDirectory)
                 'fileIncludePattern'(fileIncludePattern)
                 'fileExcludePattern'(fileExcludePattern)
-                'pluginUrlPath'('')
-                'skippedFails'('false')
-                'undefinedFails'('false')
-                'noFlashCharts'('false')
-                'ignoreFailedTests'('false')
                 'buildStatus'('FAILURE')
             }
         }
