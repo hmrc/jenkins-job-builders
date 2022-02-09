@@ -1,12 +1,11 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper
 
+import uk.gov.hmrc.jenkinsjobbuilders.domain.Setting
+import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.model.ConjoinedSecretUsernamePassword
 import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.model.SecretText
 import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.model.SecretUsernamePassword
-import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.model.ConjoinedSecretUsernamePassword
 
-import static java.util.Arrays.asList
-
-class CredentialsBindings implements Wrapper {
+class CredentialsBindings implements Setting {
 
     private final List<SecretText> secretTexts
 
@@ -27,6 +26,19 @@ class CredentialsBindings implements Wrapper {
         new CredentialsBindings(secretTexts, secretUsernamePasswords, conjoinedSecretUsernamePassword)
     }
 
+    static CredentialsBindings combineCredentialsBindings(CredentialsBindings first, CredentialsBindings second) {
+        if (first == null) {
+            return second
+        } else if (second == null) {
+            return first
+        } else {
+            return credentialsBindings(
+                    first.secretTexts + second.secretTexts,
+                    first.secretUsernamePasswords + second.secretUsernamePasswords,
+                    first.conjoinedSecretUsernamePassword + second.conjoinedSecretUsernamePassword
+            )
+        }
+    }
 
     @Override
     Closure toDsl() {

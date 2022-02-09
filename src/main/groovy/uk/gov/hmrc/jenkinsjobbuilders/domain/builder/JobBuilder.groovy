@@ -11,10 +11,12 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.throttle.ThrottleConfiguration
 import uk.gov.hmrc.jenkinsjobbuilders.domain.trigger.Trigger
 import uk.gov.hmrc.jenkinsjobbuilders.domain.step.Step
 import uk.gov.hmrc.jenkinsjobbuilders.domain.variable.EnvironmentVariable
+import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.CredentialsBindings
 import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.Wrapper
 
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.throttle.ThrottleConfiguration.throttleConfiguration
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.CredentialsBindings.combineCredentialsBindings
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.EnvironmentVariablesWrapper.environmentVariablesWrapper
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreScmStepsWrapper.preScmStepsWrapper
 
@@ -29,6 +31,7 @@ final class JobBuilder implements Builder<Job> {
     private final List<Publisher> publishers = []
     private final List<Configure> configures = []
     private final List<Wrapper> wrappers = []
+    private CredentialsBindings credentialsBindings
     private Scm scm
     private int daysToKeep = -1
     private int numToKeep = -1
@@ -155,6 +158,11 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
+    JobBuilder withCredentialsBindings(CredentialsBindings credentialsBindings) {
+        this.credentialsBindings = combineCredentialsBindings(this.credentialsBindings, credentialsBindings)
+        this
+    }
+
     JobBuilder withPermissions(Permission ... permissions) {
         this.permissions.addAll(permissions)
         this
@@ -227,6 +235,9 @@ final class JobBuilder implements Builder<Job> {
             }
             this.wrappers.each {
                 wrappers(it.toDsl())
+            }
+            if (this.credentialsBindings != null) {
+                wrappers(credentialsBindings.toDsl())
             }
         }
     }
