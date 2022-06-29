@@ -16,6 +16,7 @@ class BuildMonitorViewBuilderSpec extends AbstractJobSpec {
         then:
         with(buildMonitorView.node) {
             "false" == it.recurse.text()
+            "false" == it.config.displayCommitters.text()
              it.jobNames[0].text().contains("foo-job-1-name")
              it.jobNames[0].text().contains("foo-job-2-name")
         }
