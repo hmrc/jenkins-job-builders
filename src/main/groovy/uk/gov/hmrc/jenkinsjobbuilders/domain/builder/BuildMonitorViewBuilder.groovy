@@ -2,9 +2,6 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.View
-import javaposse.jobdsl.dsl.views.BuildMonitorView
-import javaposse.jobdsl.dsl.views.jobfilter.MatchType
-import javaposse.jobdsl.dsl.views.jobfilter.RegexMatchValue
 
 
 final class BuildMonitorViewBuilder implements Builder<View> {
@@ -47,6 +44,11 @@ final class BuildMonitorViewBuilder implements Builder<View> {
                 names(this.jobs)
                 if(includeRegex != null) {
                     regex(includeRegex)
+                }
+            }
+            configure { node ->
+                node / config {
+                    displayCommitters 'false'
                 }
             }
         }

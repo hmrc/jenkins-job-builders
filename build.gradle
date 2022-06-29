@@ -8,7 +8,7 @@ apply plugin: 'maven-publish'
 
 project.ext {
     jobDslVersion = '1.77'
-    jenkinsVersion = '2.303.2'
+    jenkinsVersion = '2.332.1'
     testDependenciesOutputDirectory = new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
     artifactoryUri = System.getenv("ARTIFACTORY_URI")
     publishingRepoKey = getArtifactoryRepoKey()
@@ -62,13 +62,15 @@ dependencies {
     testCompile 'org.jenkins-ci.plugins:structs:1.6@jar'
 
     // plugins to install in test instance
-    testPlugins 'org.jenkins-ci.plugins:matrix-auth:2.6.8'
-    testPlugins 'org.jenkins-ci.plugins:cloudbees-folder:6.16'
     testPlugins 'org.jenkins-ci.modules:sshd:3.1.0'
-    testPlugins 'org.jenkins-ci.plugins:credentials:2.5'
-    testPlugins 'org.jenkins-ci.plugins:token-macro:266.v44a80cf277fd'
+    testPlugins 'org.jenkins-ci.plugins:build-monitor-plugin:1.13+build.202205140447'
+    testPlugins 'org.jenkins-ci.plugins:cloudbees-folder:6.729.v2b_9d1a_74d673'
+    testPlugins 'org.jenkins-ci.plugins:credentials:1074.v60e6c29b_b_44b_'
     testPlugins 'org.jenkins-ci.plugins:ghprb:1.42.0'
+    testPlugins 'org.jenkins-ci.plugins:matrix-auth:2.6.8'
     testPlugins 'org.jenkins-ci.plugins:postbuildscript:3.0.0'
+    testPlugins 'org.jenkins-ci.plugins:token-macro:266.v44a80cf277fd'
+    testPlugins 'org.jenkins-ci.plugins.workflow:workflow-step-api:625.vd896b_f445a_f8'
 }
 
 version = getReleaseVersion()
