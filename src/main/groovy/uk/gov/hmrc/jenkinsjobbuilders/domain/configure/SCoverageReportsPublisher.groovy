@@ -9,12 +9,10 @@ final class SCoverageReportsPublisher implements Configure {
     }
 
     Closure toDsl() {
-        return {
-            it / 'publishers' / 'org.jenkinsci.plugins.scoverage.ScoveragePublisher' {
-                'reportDir'("target/scala-${scalaVersion}/scoverage-report")
-                'reportFile'('scoverage.xml')
-            }
-        }
+        new BaseSCoverageReportsPublisher(
+                "target/scala-${scalaVersion}/scoverage-report",
+                'scoverage.xml'
+        ).toDsl()
     }
 
     static SCoverageReportsPublisher sCoverageReportsPublisher() {
