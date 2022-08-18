@@ -45,6 +45,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
+* 13.4.0 (18/08/2022) - Provide a `scalac` version agnostic SCoverage publisher
 * 13.3.0 (29/06/2022) - Disable "Show Committers" on build monitor views
 * 13.1.0 (19/11/2021) - Remove deprecated properties from cucumber and xvfb plugins
 * 13.0.0 (28/10/2021) - Only support Post Build Script plugin version 3.0.0 and higher
