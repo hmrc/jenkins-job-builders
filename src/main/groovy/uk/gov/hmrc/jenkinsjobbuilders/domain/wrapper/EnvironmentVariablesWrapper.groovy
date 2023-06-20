@@ -26,7 +26,7 @@ class EnvironmentVariablesWrapper implements Wrapper {
         return {
             environmentVariables {
                 variables.each { variable ->
-                    env(variable.getName(), variable.getValue())
+                    env(variable.name, variable.value)
                 }
                 propertiesFile(variablesFile)
                 script(scriptContent)
