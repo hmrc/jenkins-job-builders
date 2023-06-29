@@ -7,7 +7,7 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 project.ext {
-    jobDslVersion = '1.77'
+    jobDslVersion = '1.82'
     jenkinsVersion = '2.332.1'
     testDependenciesOutputDirectory = new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
     artifactoryUri = System.getenv("ARTIFACTORY_URI")
@@ -51,6 +51,17 @@ dependencies {
     }
 
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+
+    /**
+     * AbstractJobSpec relies on JUnit 4 features such as @ClassRule in order
+     * to load the in-memory Jenkins instance. Whilst recent versions of
+     * jenkins-test-harness support Junit 5, via the @WithJenkins annotation,
+     * it would require a significant effort to refactor AbstractJobSpec to use
+     * the new annotation. Until we're ready to do that work we have pinned
+     * the JUnit platform to JUnit 4
+     */
+    testImplementation("junit:junit:4.13.2")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.9.3")
 
     // Jenkins test harness dependencies
     testCompile 'org.jenkins-ci.main:jenkins-test-harness:1645.vf98fc478f846'
@@ -103,6 +114,14 @@ test {
 
     // set build directory for Jenkins test harness, JENKINS-26331
     systemProperty 'buildDirectory', project.buildDir.absolutePath
+}
+
+// Apply generic configuration to all Test tasks.
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    testLogging {
+        showStandardStreams true
+    }
 }
 
 task sourcesJar(type: Jar) {
