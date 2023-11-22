@@ -9,6 +9,8 @@ apply plugin: 'maven-publish'
 project.ext {
     jobDslVersion = '1.82'
     jenkinsVersion = '2.332.1'
+    jenkinsTestHarnessVersion = '2104.v8d1866dd0ea_f'
+
     testDependenciesOutputDirectory = new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
     artifactoryUri = System.getenv("ARTIFACTORY_URI")
     publishingRepoKey = getArtifactoryRepoKey()
@@ -64,7 +66,7 @@ dependencies {
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.9.3")
 
     // Jenkins test harness dependencies
-    testCompile 'org.jenkins-ci.main:jenkins-test-harness:1645.vf98fc478f846'
+    testCompile "org.jenkins-ci.main:jenkins-test-harness:${jenkinsTestHarnessVersion}"
     testCompile "org.jenkins-ci.main:jenkins-war:${jenkinsVersion}"
 
     // Job DSL plugin including plugin dependencies
