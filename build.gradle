@@ -94,6 +94,7 @@ dependencies {
     testPlugins 'org.jenkins-ci.plugins:parameterized-trigger:2.45'
     testPlugins 'org.jenkins-ci.plugins:postbuildscript:3.2.0-460.va_fda_0fa_26720'
     testPlugins 'org.jenkins-ci.plugins:preSCMbuildstep:44.v6ef4fd97f56e'
+    testPlugins 'org.jenkins-ci.plugins:timestamper:1.26'
     testPlugins 'org.jenkins-ci.plugins:throttle-concurrents:2.14'
     testPlugins 'org.jenkins-ci.plugins:urltrigger:1.02'
     testPlugins 'org.jenkins-ci.plugins:ws-cleanup:0.44'
