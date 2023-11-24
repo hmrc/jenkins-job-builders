@@ -45,7 +45,8 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 ## Release Notes
 
-* 15.0.0 (21/07/2023) - Remove ruby-runtime plugin support 
+* 16.0.0 (21/11/2023) - Add support for [timestamper](https://plugins.jenkins.io/timestamper/)
+* 15.0.0 (21/07/2023) - Remove ruby-runtime plugin support
 * 14.0.0 (29/06/2023) - Upgrade job-dsl to v1.82
 * 13.4.0 (18/08/2022) - Provide a `scalac` version agnostic SCoverage publisher
 * 13.3.0 (29/06/2022) - Disable "Show Committers" on build monitor views
