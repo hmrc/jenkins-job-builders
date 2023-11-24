@@ -8,7 +8,7 @@ apply plugin: 'maven-publish'
 
 project.ext {
     jobDslVersion = '1.82'
-    jenkinsVersion = '2.332.1'
+    jenkinsCoreVersion = '2.414.3'
     jenkinsTestHarnessVersion = '2104.v8d1866dd0ea_f'
 
     testDependenciesOutputDirectory = new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
@@ -67,7 +67,7 @@ dependencies {
 
     // Jenkins test harness dependencies
     testCompile "org.jenkins-ci.main:jenkins-test-harness:${jenkinsTestHarnessVersion}"
-    testCompile "org.jenkins-ci.main:jenkins-war:${jenkinsVersion}"
+    testCompile "org.jenkins-ci.main:jenkins-war:${jenkinsCoreVersion}"
 
     // Job DSL plugin including plugin dependencies
     testCompile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}"
@@ -75,15 +75,33 @@ dependencies {
     testCompile 'org.jenkins-ci.plugins:structs:1.6@jar'
 
     // plugins to install in test instance
-    testPlugins 'org.jenkins-ci.modules:sshd:3.1.0'
-    testPlugins 'org.jenkins-ci.plugins:build-monitor-plugin:1.13+build.202205140447'
-    testPlugins 'org.jenkins-ci.plugins:cloudbees-folder:6.729.v2b_9d1a_74d673'
-    testPlugins 'org.jenkins-ci.plugins:credentials:1074.v60e6c29b_b_44b_'
-    testPlugins 'org.jenkins-ci.plugins:ghprb:1.42.0'
-    testPlugins 'org.jenkins-ci.plugins:matrix-auth:2.6.8'
-    testPlugins 'org.jenkins-ci.plugins:postbuildscript:3.0.0'
-    testPlugins 'org.jenkins-ci.plugins:token-macro:266.v44a80cf277fd'
-    testPlugins 'org.jenkins-ci.plugins.workflow:workflow-step-api:625.vd896b_f445a_f8'
+    testPlugins 'com.coravy.hudson.plugins.github:github:1.37.3'
+    testPlugins 'io.jenkins.plugins:caffeine-api:3.1.8-133.v17b_1ff2e0599'
+    testPlugins 'org.jenkins-ci.plugins:ansicolor:1.0.2'
+    testPlugins 'org.jenkins-ci.plugins:build-monitor-plugin:1.14-653.va_1c684a_30b_ff'
+    testPlugins 'org.jenkins-ci.plugins:build-timeout:1.28'
+    testPlugins 'org.jenkins-ci.plugins:build-user-vars-plugin:1.9'
+    testPlugins 'org.jenkins-ci.plugins:claim:516.v36293563731d'
+    testPlugins 'org.jenkins-ci.plugins:cloudbees-folder:6.848.ve3b_fd7839a_81'
+    testPlugins 'org.jenkins-ci.plugins:envinject:2.901.v0038b_6471582'
+    testPlugins 'org.jenkins-ci.plugins:git:5.2.0'
+    testPlugins 'org.jenkins-ci.plugins:htmlpublisher:1.32'
+    testPlugins 'org.jenkins-ci.plugins:junit:1240.vf9529b_881428'
+    testPlugins 'org.jenkins-ci.plugins:matrix-auth:3.1.6'
+    testPlugins 'org.jenkins-ci.plugins:matrix-project:789.v57a_725b_63c79'
+    testPlugins 'org.jenkins-ci.plugins:nodejs:1.6.1'
+    testPlugins 'org.jenkins-ci.plugins:Parameterized-Remote-Trigger:3.1.5.1'
+    testPlugins 'org.jenkins-ci.plugins:parameterized-trigger:2.45'
+    testPlugins 'org.jenkins-ci.plugins:postbuildscript:3.2.0-460.va_fda_0fa_26720'
+    testPlugins 'org.jenkins-ci.plugins:preSCMbuildstep:44.v6ef4fd97f56e'
+    testPlugins 'org.jenkins-ci.plugins:throttle-concurrents:2.14'
+    testPlugins 'org.jenkins-ci.plugins:urltrigger:1.02'
+    testPlugins 'org.jenkins-ci.plugins:ws-cleanup:0.44'
+    testPlugins 'org.jvnet.hudson.plugins:postbuild-task:1.9'
+
+    // Plugins which ideally we would install, but they cause other plugins to downgrade and tests to break
+    // testPlugins 'org.jenkins-ci.plugins:description-setter:1.10'
+    // testPlugins 'org.jenkins-ci.plugins:ghprb:1.42.2'
 }
 
 version = getReleaseVersion()

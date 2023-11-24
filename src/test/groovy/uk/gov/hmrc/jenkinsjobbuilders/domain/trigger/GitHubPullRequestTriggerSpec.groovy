@@ -10,6 +10,12 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.trigger.GitHubPullRequestTri
 
 class GitHubPullRequestTriggerSpec extends AbstractJobSpec {
 
+    /*
+    Ideally we would test this functionality, but the org.jenkins-ci.plugins:ghprb plugin it depends on causes
+    other plugins to be downgraded, breaking other tests
+    */
+
+    /*
     void 'test XML output'() {
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
@@ -24,4 +30,5 @@ class GitHubPullRequestTriggerSpec extends AbstractJobSpec {
             triggers.'org.jenkinsci.plugins.ghprb.GhprbTrigger'.extensions.'org.jenkinsci.plugins.ghprb.extensions.status.GhprbSimpleStatus'.commitStatusContext.text() == "my-context"
         }
     }
+    */
 }
