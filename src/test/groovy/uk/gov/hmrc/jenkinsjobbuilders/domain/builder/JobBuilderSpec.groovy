@@ -15,6 +15,7 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ClaimBrokenBuildsP
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.HtmlReportsPublisher.htmlReportsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.JUnitReportsPublisher.jUnitReportsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.JobsTriggerPublisher.jobsTriggerPublisher
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.PostBuildCleanWsPublisher.postBuildCleanWsPublisher
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.trigger.BintrayArtifactTrigger.bintrayArtifactTrigger
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.trigger.CronTrigger.cronTrigger
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubComScm.gitHubComScm
@@ -109,6 +110,8 @@ class JobBuilderSpec extends AbstractJobSpec {
             publishers.'hudson.tasks.ArtifactArchiver'.artifacts.text() == 'test-artifacts'
             publishers.'hudson.plugins.parameterizedtrigger.BuildTrigger'.configs.'hudson.plugins.parameterizedtrigger.BuildTriggerConfig' [0].projects.text() == 'test-jobs'
             publishers.'hudson.plugins.parameterizedtrigger.BuildTrigger'.configs.'hudson.plugins.parameterizedtrigger.BuildTriggerConfig' [0].condition.text() == 'SUCCESS'
+            publishers.'hudson.plugins.ws__cleanup.cleanWs'.cleanWhenSuccess.text() == 'true'
+            publishers.'hudson.plugins.ws__cleanup.cleanWs'.deleteDirs.text() == 'false'
         }
     }
 
