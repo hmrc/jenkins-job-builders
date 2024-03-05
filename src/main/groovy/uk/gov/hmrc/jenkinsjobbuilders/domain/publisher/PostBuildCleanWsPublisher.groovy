@@ -8,8 +8,6 @@ class PostBuildCleanWsPublisher implements Publisher {
 
     @Override
     Closure toDsl() {
-        return {
-            cleanWs()
-        }
+        return cleanWs()
     }
 }
