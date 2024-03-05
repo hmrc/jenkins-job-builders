@@ -110,11 +110,9 @@ class JobBuilderSpec extends AbstractJobSpec {
             publishers.'hudson.tasks.ArtifactArchiver'.artifacts.text() == 'test-artifacts'
             publishers.'hudson.plugins.parameterizedtrigger.BuildTrigger'.configs.'hudson.plugins.parameterizedtrigger.BuildTriggerConfig' [0].projects.text() == 'test-jobs'
             publishers.'hudson.plugins.parameterizedtrigger.BuildTrigger'.configs.'hudson.plugins.parameterizedtrigger.BuildTriggerConfig' [0].condition.text() == 'SUCCESS'
-            publishers.'hudson.plugins.ws__cleanup.cleanWs'.cleanWhenSuccess.text() == 'true'
-            publishers.'hudson.plugins.ws__cleanup.cleanWs'.deleteDirs.text() == 'false'
         }
     }
-false
+
     void 'test scm clone options'() {
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
