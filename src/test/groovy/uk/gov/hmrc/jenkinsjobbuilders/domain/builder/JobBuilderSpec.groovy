@@ -114,7 +114,7 @@ class JobBuilderSpec extends AbstractJobSpec {
             publishers.'hudson.plugins.ws__cleanup.cleanWs'.deleteDirs.text() == 'false'
         }
     }
-
+false
     void 'test scm clone options'() {
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
