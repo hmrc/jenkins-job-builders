@@ -19,6 +19,7 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.throttle.ThrottleConfigurati
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.CredentialsBindings.combineCredentialsBindings
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.EnvironmentVariablesWrapper.environmentVariablesWrapper
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreScmStepsWrapper.preScmStepsWrapper
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.PostBuildCleanWsPublisher.postBuildCleanWsPublisher
 
 final class JobBuilder implements Builder<Job> {
     private final String name
@@ -43,6 +44,7 @@ final class JobBuilder implements Builder<Job> {
     private boolean disabled = false
     private final List<Permission> permissions = []
     private ThrottleConfiguration throttle
+    private Publisher postBuildWorkspaceCleanup
 
     JobBuilder(String name, String description) {
         this.name = name
@@ -140,6 +142,11 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
+    JobBuilder withPostBuildWorkspaceCleanup(boolean cleanAbortedBuild = true, boolean cleanFailBuild = true, boolean cleanNotBuilt = true, boolean cleanSuccessfulBuild = true, boolean cleanUnstableBuild = true, boolean notFailBuild = true) {
+        this.postBuildWorkspaceCleanup = postBuildCleanWsPublisher(cleanAbortedBuild, cleanFailBuild, cleanNotBuilt, cleanSuccessfulBuild, cleanUnstableBuild, notFailBuild)
+        this
+    }
+
     JobBuilder withConfigures(Configure ... configures) {
         withConfigures(asList(configures))
     }
@@ -192,6 +199,10 @@ final class JobBuilder implements Builder<Job> {
 
         if (!this.preScmSteps.isEmpty()) {
             this.wrappers.add(preScmStepsWrapper(preScmSteps))
+        }
+
+        if (this.postBuildWorkspaceCleanup != null) {
+            this.publishers.add(this.postBuildWorkspaceCleanup)
         }
 
         dslFactory.freeStyleJob(this.name) {
