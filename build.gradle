@@ -3,7 +3,6 @@ plugins {
 }
 
 apply plugin: 'groovy'
-apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 project.ext {
@@ -43,16 +42,16 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.4.12'
-    compile ('com.google.guava:guava:11.0.1') {
+    implementation 'org.codehaus.groovy:groovy-all:2.4.12'
+    implementation ('com.google.guava:guava:11.0.1') {
         exclude module: 'jsr305'
     }
-    compile ("org.jenkins-ci.plugins:job-dsl-core:${jobDslVersion}") {
+    implementation ("org.jenkins-ci.plugins:job-dsl-core:${jobDslVersion}") {
         exclude module: 'ivy'
         exclude module: 'xstream'
     }
 
-    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+    testImplementation 'org.spockframework:spock-core:1.1-groovy-2.4'
 
     /**
      * AbstractJobSpec relies on JUnit 4 features such as @ClassRule in order
@@ -62,17 +61,18 @@ dependencies {
      * the new annotation. Until we're ready to do that work we have pinned
      * the JUnit platform to JUnit 4
      */
-    testImplementation("junit:junit:4.13.2")
+    testImplementation("junit:junit:4testImplementation.13.2")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.9.3")
 
     // Jenkins test harness dependencies
-    testCompile "org.jenkins-ci.main:jenkins-test-harness:${jenkinsTestHarnessVersion}"
-    testCompile "org.jenkins-ci.main:jenkins-war:${jenkinsCoreVersion}"
+    testImplementation "org.jenkins-ci.main:jenkins-test-harness:${jenkinsTestHarnessVersion}"
+    testImplementation "org.jenkins-ci.main:jenkins-war:${jenkinsCoreVersion}"
 
     // Job DSL plugin including plugin dependencies
-    testCompile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}"
-    testCompile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}@jar"
-    testCompile 'org.jenkins-ci.plugins:structs:1.6@jar'
+    testImplementation "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}"
+    testImplementation "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}@jar"
+    testImplementation 'org.jenkins-ci.plugins:structs:1.6@jar'
+    testImplementation 'org.jenkins-ci.plugins:ws-cleanup:0.46'
 
     // plugins to install in test instance
     testPlugins 'com.coravy.hudson.plugins.github:github:1.37.3'
@@ -97,7 +97,6 @@ dependencies {
     testPlugins 'org.jenkins-ci.plugins:timestamper:1.26'
     testPlugins 'org.jenkins-ci.plugins:throttle-concurrents:2.14'
     testPlugins 'org.jenkins-ci.plugins:urltrigger:1.02'
-    testPlugins 'org.jenkins-ci.plugins:ws-cleanup:0.44'
     testPlugins 'org.jvnet.hudson.plugins:postbuild-task:1.9'
 
     // Plugins which ideally we would install, but they cause other plugins to downgrade and tests to break
@@ -147,12 +146,12 @@ tasks.withType(Test).configureEach {
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
-    classifier = 'sources'
+    archiveClassifier = 'sources'
 }
 
 task javadocJar(type: Jar) {
     from javadoc
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
 }
 
 publishing {
@@ -221,5 +220,5 @@ private String getArtifactoryRepoKey() {
     return repoKey
 }
 
-tasks.install.dependsOn(build)
+tasks.publish.dependsOn(build)
 tasks.artifactoryPublish.dependsOn(check)
