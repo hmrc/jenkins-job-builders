@@ -44,6 +44,7 @@ Create a Jenkins jobs repository akin to www.github.com/hmrc/jenkins-jobs, and t
 The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one example of how to use this library.
 
 ## Release Notes
+* 16.3.0 (12/07/2024) - Upgrade Jenkins-job-buuilder and unblock failing tests 
 * 16.2.0 (06/03/2024) - Add support for a post build workspace cleanup
 * 16.0.0 (21/11/2023) - Add support for [timestamper](https://plugins.jenkins.io/timestamper/)
 * 15.0.0 (21/07/2023) - Remove ruby-runtime plugin support
