@@ -113,6 +113,14 @@ class JobBuilderSpec extends AbstractJobSpec {
             publishers.'hudson.plugins.parameterizedtrigger.BuildTrigger'.configs.'hudson.plugins.parameterizedtrigger.BuildTriggerConfig' [0].condition.text() == 'SUCCESS'
             publishers.'hudson.plugins.ws__cleanup.WsCleanup'.cleanWhenSuccess.text() == 'true'
             publishers.'hudson.plugins.ws__cleanup.WsCleanup'.deleteDirs.text() == 'false'
+            publishers.'hudson.plugins.ws__cleanup.WsCleanup'.cleanWhenUnstable.text() == 'true'
+            publishers.'hudson.plugins.ws__cleanup.WsCleanup'.cleanWhenFailure.text() == 'true'
+            publishers.'hudson.plugins.ws__cleanup.WsCleanup'.cleanWhenNotBuilt.text() == 'true'
+            publishers.'hudson.plugins.ws__cleanup.WsCleanup'.cleanWhenAborted.text() == 'true'
+            publishers.'hudson.plugins.ws__cleanup.WsCleanup'.notFailBuild.text() == 'true'
+            publishers.'hudson.plugins.ws__cleanup.WsCleanup'.cleanupMatrixParent.text() == 'false'
+            publishers.'hudson.plugins.ws__cleanup.WsCleanup'.disableDeferredWipeout.text() == 'false'
+            publishers.last() == ' iushsi '
         }
     }
 
