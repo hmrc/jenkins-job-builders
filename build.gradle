@@ -61,7 +61,7 @@ dependencies {
      * the new annotation. Until we're ready to do that work we have pinned
      * the JUnit platform to JUnit 4
      */
-    testImplementation("junit:junit:4testImplementation.13.2")
+    testImplementation("junit:junit:4.13.2")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.9.3")
 
     // Jenkins test harness dependencies

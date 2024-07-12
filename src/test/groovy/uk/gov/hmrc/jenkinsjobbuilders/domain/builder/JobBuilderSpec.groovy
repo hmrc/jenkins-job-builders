@@ -120,7 +120,6 @@ class JobBuilderSpec extends AbstractJobSpec {
             publishers.'hudson.plugins.ws__cleanup.WsCleanup'.notFailBuild.text() == 'true'
             publishers.'hudson.plugins.ws__cleanup.WsCleanup'.cleanupMatrixParent.text() == 'false'
             publishers.'hudson.plugins.ws__cleanup.WsCleanup'.disableDeferredWipeout.text() == 'false'
-            publishers.last() == ' iushsi '
         }
     }
 
