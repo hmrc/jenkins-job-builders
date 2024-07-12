@@ -6,9 +6,9 @@ apply plugin: 'groovy'
 apply plugin: 'maven-publish'
 
 project.ext {
-    jobDslVersion = '1.82'
-    jenkinsCoreVersion = '2.414.3'
-    jenkinsTestHarnessVersion = '2104.v8d1866dd0ea_f'
+    jobDslVersion = '1.87'
+    jenkinsCoreVersion = '2.440.3'
+    jenkinsTestHarnessVersion = '2193.v71b_f09ec6d46'
 
     testDependenciesOutputDirectory = new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
     artifactoryUri = System.getenv("ARTIFACTORY_URI")
@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all:2.4.12'
+    implementation 'org.codehaus.groovy:groovy-all:2.5.+'
     implementation ('com.google.guava:guava:11.0.1') {
         exclude module: 'jsr305'
     }
@@ -51,7 +51,7 @@ dependencies {
         exclude module: 'xstream'
     }
 
-    testImplementation 'org.spockframework:spock-core:1.1-groovy-2.4'
+    testImplementation 'org.spockframework:spock-junit4:2.3-groovy-2.5'
 
     /**
      * AbstractJobSpec relies on JUnit 4 features such as @ClassRule in order
@@ -72,7 +72,6 @@ dependencies {
     testImplementation "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}"
     testImplementation "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}@jar"
     testImplementation 'org.jenkins-ci.plugins:structs:1.6@jar'
-    testImplementation 'org.jenkins-ci.plugins:ws-cleanup:0.46'
 
     // plugins to install in test instance
     testPlugins 'com.coravy.hudson.plugins.github:github:1.37.3'
@@ -98,6 +97,7 @@ dependencies {
     testPlugins 'org.jenkins-ci.plugins:throttle-concurrents:2.14'
     testPlugins 'org.jenkins-ci.plugins:urltrigger:1.02'
     testPlugins 'org.jvnet.hudson.plugins:postbuild-task:1.9'
+    testPlugins 'org.jenkins-ci.plugins:ws-cleanup:0.44'
 
     // Plugins which ideally we would install, but they cause other plugins to downgrade and tests to break
     // testPlugins 'org.jenkins-ci.plugins:description-setter:1.10'
