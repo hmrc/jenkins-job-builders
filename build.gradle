@@ -182,7 +182,7 @@ artifactory {
         defaults {
             publications('jenkinsJobBuilders')
         }
-        publishBuildInfo = true
+        publishBuildInfo = false
         publishArtifacts = true
         publishPom = true
     }
