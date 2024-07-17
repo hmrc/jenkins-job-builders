@@ -50,7 +50,8 @@ class JobBuilderSpec extends AbstractJobSpec {
                                                               htmlReportsPublisher(['target/test-reports/html-report': 'HTML Report']),
                                                               artifactsPublisher('test-artifacts'),
                                                               jobsTriggerPublisher('test-jobs')).
-                                               withThrottle(['deployment'], 0, 1, false)
+                                               withThrottle(['deployment'], 0, 1, false).
+                                               withPostBuildWorkspaceCleanup()
         when:
         Job job = jobBuilder.build(JOB_PARENT)
 
@@ -110,8 +111,8 @@ class JobBuilderSpec extends AbstractJobSpec {
             publishers.'hudson.tasks.ArtifactArchiver'.artifacts.text() == 'test-artifacts'
             publishers.'hudson.plugins.parameterizedtrigger.BuildTrigger'.configs.'hudson.plugins.parameterizedtrigger.BuildTriggerConfig' [0].projects.text() == 'test-jobs'
             publishers.'hudson.plugins.parameterizedtrigger.BuildTrigger'.configs.'hudson.plugins.parameterizedtrigger.BuildTriggerConfig' [0].condition.text() == 'SUCCESS'
-            publishers.'hudson.plugins.ws__cleanup.cleanWs'.cleanWhenSuccess.text() == 'true'
-            publishers.'hudson.plugins.ws__cleanup.cleanWs'.deleteDirs.text() == 'false'
+            publishers.'hudson.plugins.ws__cleanup.WsCleanup'.cleanWhenSuccess.text() == 'true'
+            publishers.'hudson.plugins.ws__cleanup.WsCleanup'.deleteDirs.text() == 'false'
         }
     }
 
