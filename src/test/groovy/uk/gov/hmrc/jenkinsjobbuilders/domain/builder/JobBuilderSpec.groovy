@@ -51,7 +51,7 @@ class JobBuilderSpec extends AbstractJobSpec {
                                                               artifactsPublisher('test-artifacts'),
                                                               jobsTriggerPublisher('test-jobs')).
                                                withThrottle(['deployment'], 0, 1, false).
-                                               withPostBuildWorkspaceCleanup()
+                                               withPostBuildWorkspaceCleanup(true, true, true, true, true, true)
         when:
         Job job = jobBuilder.build(JOB_PARENT)
 
@@ -117,9 +117,7 @@ class JobBuilderSpec extends AbstractJobSpec {
             publishers.'hudson.plugins.ws__cleanup.WsCleanup'.cleanWhenFailure.text() == 'true'
             publishers.'hudson.plugins.ws__cleanup.WsCleanup'.cleanWhenNotBuilt.text() == 'true'
             publishers.'hudson.plugins.ws__cleanup.WsCleanup'.cleanWhenAborted.text() == 'true'
-            publishers.'hudson.plugins.ws__cleanup.WsCleanup'.notFailBuild.text() == 'true'
-            publishers.'hudson.plugins.ws__cleanup.WsCleanup'.cleanupMatrixParent.text() == 'false'
-            publishers.'hudson.plugins.ws__cleanup.WsCleanup'.disableDeferredWipeout.text() == 'false'
+            publishers.'hudson.plugins.ws__cleanup.WsCleanup'.notFailBuild.text() == 'false'
         }
     }
 

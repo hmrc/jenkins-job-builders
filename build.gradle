@@ -7,7 +7,7 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 project.ext {
-    jobDslVersion = '1.82'
+    jobDslVersion = '1.81'
     jenkinsCoreVersion = '2.414.3'
     jenkinsTestHarnessVersion = '2104.v8d1866dd0ea_f'
 
@@ -92,13 +92,13 @@ dependencies {
     testPlugins 'org.jenkins-ci.plugins:nodejs:1.6.1'
     testPlugins 'org.jenkins-ci.plugins:Parameterized-Remote-Trigger:3.1.5.1'
     testPlugins 'org.jenkins-ci.plugins:parameterized-trigger:2.45'
-    testPlugins 'org.jenkins-ci.plugins:postbuildscript:3.2.0-460.va_fda_0fa_26720'
+    testPlugins 'org.jenkins-ci.plugins:postbuildscript:3.2.0-550.v88192b_d3e922'
     testPlugins 'org.jenkins-ci.plugins:preSCMbuildstep:44.v6ef4fd97f56e'
     testPlugins 'org.jenkins-ci.plugins:timestamper:1.26'
     testPlugins 'org.jenkins-ci.plugins:throttle-concurrents:2.14'
     testPlugins 'org.jenkins-ci.plugins:urltrigger:1.02'
     testPlugins 'org.jvnet.hudson.plugins:postbuild-task:1.9'
-    testPlugins 'org.jenkins-ci.plugins:ws-cleanup:0.44'
+    testPlugins 'org.jenkins-ci.plugins:ws-cleanup:0.43'
 
     // Plugins which ideally we would install, but they cause other plugins to downgrade and tests to break
     // testPlugins 'org.jenkins-ci.plugins:description-setter:1.10'
