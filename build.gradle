@@ -3,13 +3,12 @@ plugins {
 }
 
 apply plugin: 'groovy'
-apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 project.ext {
-    jobDslVersion = '1.82'
-    jenkinsCoreVersion = '2.414.3'
-    jenkinsTestHarnessVersion = '2104.v8d1866dd0ea_f'
+    jobDslVersion = '1.87'
+    jenkinsCoreVersion = '2.440.3'
+    jenkinsTestHarnessVersion = '2193.v71b_f09ec6d46'
 
     testDependenciesOutputDirectory = new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
     artifactoryUri = System.getenv("ARTIFACTORY_URI")
@@ -43,16 +42,16 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.4.12'
-    compile ('com.google.guava:guava:11.0.1') {
+    implementation 'org.codehaus.groovy:groovy-all:2.5.+'
+    implementation ('com.google.guava:guava:11.0.1') {
         exclude module: 'jsr305'
     }
-    compile ("org.jenkins-ci.plugins:job-dsl-core:${jobDslVersion}") {
+    implementation ("org.jenkins-ci.plugins:job-dsl-core:${jobDslVersion}") {
         exclude module: 'ivy'
         exclude module: 'xstream'
     }
 
-    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+    testImplementation 'org.spockframework:spock-junit4:2.3-groovy-2.5'
 
     /**
      * AbstractJobSpec relies on JUnit 4 features such as @ClassRule in order
@@ -66,13 +65,13 @@ dependencies {
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.9.3")
 
     // Jenkins test harness dependencies
-    testCompile "org.jenkins-ci.main:jenkins-test-harness:${jenkinsTestHarnessVersion}"
-    testCompile "org.jenkins-ci.main:jenkins-war:${jenkinsCoreVersion}"
+    testImplementation "org.jenkins-ci.main:jenkins-test-harness:${jenkinsTestHarnessVersion}"
+    testImplementation "org.jenkins-ci.main:jenkins-war:${jenkinsCoreVersion}"
 
     // Job DSL plugin including plugin dependencies
-    testCompile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}"
-    testCompile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}@jar"
-    testCompile 'org.jenkins-ci.plugins:structs:1.6@jar'
+    testImplementation "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}"
+    testImplementation "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}@jar"
+    testImplementation 'org.jenkins-ci.plugins:structs:1.6@jar'
 
     // plugins to install in test instance
     testPlugins 'com.coravy.hudson.plugins.github:github:1.37.3'
@@ -147,12 +146,12 @@ tasks.withType(Test).configureEach {
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
-    classifier = 'sources'
+    archiveClassifier = 'sources'
 }
 
 task javadocJar(type: Jar) {
     from javadoc
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
 }
 
 publishing {
@@ -221,5 +220,5 @@ private String getArtifactoryRepoKey() {
     return repoKey
 }
 
-tasks.install.dependsOn(build)
+tasks.publish.dependsOn(build)
 tasks.artifactoryPublish.dependsOn(check)
