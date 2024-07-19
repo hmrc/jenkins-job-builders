@@ -44,6 +44,7 @@ Create a Jenkins jobs repository akin to www.github.com/hmrc/jenkins-jobs, and t
 The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one example of how to use this library.
 
 ## Release Notes
+* 17.1.0 (19/07/2024) - Added ability to disable job rebuilds
 * 17.0.0 (18/07/2024) - Upgrade Jenkins-job-builder and unblock failing tests
 * 16.4.0 (16/07/2024) - Upgrade com.jfrog.artifactory plugin version to 4.33.1
 * 16.3.0 (12/07/2024) - Upgrade Jenkins-job-builder and unblock failing tests 
