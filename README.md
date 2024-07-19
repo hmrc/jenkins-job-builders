@@ -43,6 +43,36 @@ Create a Jenkins jobs repository akin to www.github.com/hmrc/jenkins-jobs, and t
 
 The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one example of how to use this library.
 
+## Testing/Release process
+
+1. Complete development:
+   * Make changes
+   Ensure tests are passing locally by running `./gradlew clean test build -info`
+   * Merge changes to main
+
+2. The `jenkins-job-builders` Jenkins job will be triggered by the merge to main
+
+3. If successful, manually create a new git tag in the `jenkins-job-builder` repo:
+   * Update the 'Release Notes' section below;
+     * Add a new version number and description
+     * Commit and merge to main
+   * create a new GitHub tag
+     * `git tag -a release/<version>`
+     * `git push origin tag release/<version>`
+4. Run the `jenkins-job-builders-hmrc-release` Jenkins job specifying the new tag number 
+This will build the artefact and push it to Live Artifactory  
+*NB: We do not store the `jenkins-job-builder` artifact in Lab03 Artifactory. The Labs point to Live Artifactory for when using this artefact*
+
+5. Test labs:
+   * In the `build-job` repo set the `jenkinsJobBuildersVersion` (in `build.gradle`) to the new version
+   * Push branch
+   * Run `seed-jenkins` from branch in a Lab of your choice
+   * Tests job(s) as needed
+     * *NB: For general changes `build-and-deploy-canary-service-pipeline` is always a good choice.*
+   
+7. If all good, merge branch to main. 
+This will kick off `seed-jenkins` in Live.
+
 ## Release Notes
 * 17.1.0 (19/07/2024) - Added ability to disable job rebuilds
 * 17.0.0 (18/07/2024) - Upgrade Jenkins-job-builder and unblock failing tests
