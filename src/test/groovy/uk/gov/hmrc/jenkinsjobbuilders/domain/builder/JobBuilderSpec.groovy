@@ -51,7 +51,8 @@ class JobBuilderSpec extends AbstractJobSpec {
                                                               artifactsPublisher('test-artifacts'),
                                                               jobsTriggerPublisher('test-jobs')).
                                                withThrottle(['deployment'], 0, 1, false).
-                                               withPostBuildWorkspaceCleanup()
+                                               withPostBuildWorkspaceCleanup().
+                                               withRebuildDisabled()
         when:
         Job job = jobBuilder.build(JOB_PARENT)
 
@@ -76,6 +77,7 @@ class JobBuilderSpec extends AbstractJobSpec {
             properties.'hudson.plugins.throttleconcurrents.ThrottleJobProperty'.maxConcurrentTotal.text() == '1'
             properties.'hudson.plugins.throttleconcurrents.ThrottleJobProperty'.throttleEnabled.text() == 'true'
             properties.'hudson.plugins.throttleconcurrents.ThrottleJobProperty'.categories.string.text() == 'deployment'
+            properties.'com.sonyericsson.rebuild.RebuildSettings'.rebuildDisabled.text() == 'true'
             scm.userRemoteConfigs.'hudson.plugins.git.UserRemoteConfig'.url.text() == 'git@github.com:example/example-repo.git'
             scm.branches.'hudson.plugins.git.BranchSpec'.name.text() == 'master'
             triggers.'com.cloudbees.jenkins.gitHubPushTrigger'.spec.text() == ''

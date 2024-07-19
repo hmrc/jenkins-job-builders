@@ -98,6 +98,7 @@ dependencies {
     testPlugins 'org.jenkins-ci.plugins:urltrigger:1.02'
     testPlugins 'org.jvnet.hudson.plugins:postbuild-task:1.9'
     testPlugins 'org.jenkins-ci.plugins:ws-cleanup:0.44'
+    testPlugins 'com.sonyericsson.hudson.plugins.rebuild:rebuild:332.va_1ee476d8f6d'
 
     // Plugins which ideally we would install, but they cause other plugins to downgrade and tests to break
     // testPlugins 'org.jenkins-ci.plugins:description-setter:1.10'
