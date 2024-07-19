@@ -215,6 +215,11 @@ final class JobBuilder implements Builder<Job> {
             it.description this.description
             logRotator(daysToKeep, numToKeep)
             concurrentBuild(concurrentBuilds)
+            properties{
+                rebuild{
+                    rebuildDisabled(this.rebuildDisabled)
+                }
+            }
             disabled(this.disabled)
 
             this.parameters.each {
