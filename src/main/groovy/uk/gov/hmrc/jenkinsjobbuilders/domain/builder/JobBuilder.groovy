@@ -41,6 +41,7 @@ final class JobBuilder implements Builder<Job> {
     private String environmentVariablesScriptContent = ''
     private String environmentVariablesGroovyScript = ''
     private boolean concurrentBuilds = false
+    private boolean rebuildDisabled = false
     private boolean disabled = false
     private final List<Permission> permissions = []
     private ThrottleConfiguration throttle
@@ -69,6 +70,11 @@ final class JobBuilder implements Builder<Job> {
 
     JobBuilder withConcurrentBuilds() {
         this.concurrentBuilds = true
+        this
+    }
+
+    JobBuilder withRebuildDisabled() {
+        this.rebuildDisabled = true
         this
     }
 
