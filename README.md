@@ -74,6 +74,7 @@ This will build the artefact and push it to Live Artifactory
 This will kick off `seed-jenkins` in Live.
 
 ## Release Notes
+* 18.0.0 (19/07/2024) - Moving to new version number 
 * 17.2.0 (19/07/2024) - Added disablerebuild test
 * 17.1.0 (19/07/2024) - Added ability to disable job rebuilds
 * 17.0.0 (18/07/2024) - Upgrade Jenkins-job-builder and unblock failing tests
