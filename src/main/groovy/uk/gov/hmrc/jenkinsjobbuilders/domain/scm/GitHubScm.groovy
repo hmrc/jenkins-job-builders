@@ -11,8 +11,9 @@ final class GitHubScm implements Scm {
     private final int depth
     private final boolean honorRefspec
     private final boolean pullTags
+    private final int timeout
 
-    private GitHubScm(String host, String repository, String branch, String protocol, String refspec, String credentials, String name, int depth, boolean honorRefspec, boolean pullTags) {
+    private GitHubScm(String host, String repository, String branch, String protocol, String refspec, String credentials, String name, int depth, boolean honorRefspec, boolean pullTags, int timeout) {
         this.branch = branch
         this.host = host
         this.protocol = protocol
@@ -23,14 +24,16 @@ final class GitHubScm implements Scm {
         this.depth = depth
         this.honorRefspec = honorRefspec
         this.pullTags = pullTags
+        this.timeout = timeout
+
     }
 
     static GitHubScm gitHubScm(String host, String repository, String branch, String protocol) {
         gitHubScm(host, repository, branch, protocol, null, null, null)
     }
 
-    static GitHubScm gitHubScm(String host, String repository, String branch, String protocol, String refspec, String credentials, String name = null, int depth = 0, boolean honorRefspec = false, boolean pullTags = true) {
-        new GitHubScm(host, repository, branch, protocol, refspec, credentials, name, depth, honorRefspec, pullTags)
+    static GitHubScm gitHubScm(String host, String repository, String branch, String protocol, String refspec, String credentials, String name = null, int depth = 0, boolean honorRefspec = false, boolean pullTags = true, int timeout = 10) {
+        new GitHubScm(host, repository, branch, protocol, refspec, credentials, name, depth, honorRefspec, pullTags, timeout)
     }
 
     @Override
@@ -56,11 +59,12 @@ final class GitHubScm implements Scm {
                                 depth(this.depth)
                                 shallow(true)
                             }
-                        }
+                            timeout(this.timeout)
                     }
                 }
                 branch(this.branch)
             }
         }
     }
+}
 }
