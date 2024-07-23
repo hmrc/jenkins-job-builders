@@ -60,11 +60,11 @@ final class GitHubScm implements Scm {
                                 shallow(true)
                             }
                             timeout(this.timeout)
+                        }
                     }
                 }
                 branch(this.branch)
             }
         }
     }
-}
 }
