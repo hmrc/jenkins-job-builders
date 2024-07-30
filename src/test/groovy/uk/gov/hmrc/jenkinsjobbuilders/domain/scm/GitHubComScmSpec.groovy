@@ -4,7 +4,6 @@ import javaposse.jobdsl.dsl.Job
 import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubScm.gitHubScm
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubScm.gitHubScmWithTimeout
 
 class GitHubComScmSpec extends AbstractJobSpec {
     private JobBuilder jobBuilder
