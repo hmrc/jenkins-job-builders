@@ -32,7 +32,11 @@ final class GitHubScm implements Scm {
         gitHubScm(host, repository, branch, protocol, null, null, null)
     }
 
-    static GitHubScm gitHubScm(String host, String repository, String branch, String protocol, String refspec, String credentials, String name = null, int depth = 0, boolean honorRefspec = false, boolean pullTags = true, int timeout = 10) {
+    static GitHubScm gitHubScm(String host, String repository, String branch, String protocol, String refspec, String credentials, String name = null, int depth = 0, boolean honorRefspec = false, boolean pullTags = true) {
+        new GitHubScm(host, repository, branch, protocol, refspec, credentials, name, depth, honorRefspec, pullTags, 0)
+    }
+
+    static GitHubScm gitHubScm(String host, String repository, String branch, String protocol, String refspec, String credentials, int timeout, String name = null, int depth = 0, boolean honorRefspec = false, boolean pullTags = true) {
         new GitHubScm(host, repository, branch, protocol, refspec, credentials, name, depth, honorRefspec, pullTags, timeout)
     }
 
@@ -59,7 +63,9 @@ final class GitHubScm implements Scm {
                                 depth(this.depth)
                                 shallow(true)
                             }
-                            timeout(this.timeout)
+                            if (this.timeout != 0) {
+                                timeout(this.timeout)
+                            }
                         }
                     }
                 }
