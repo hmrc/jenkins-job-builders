@@ -74,6 +74,7 @@ This will build the artefact and push it to Live Artifactory
 This will kick off `seed-jenkins` in Live.
 
 ## Release Notes
+* 18.2.0 (30/07/2024) - Updated Methods for handling timeout value
 * 18.1.0 (23/07/2024) - Added in Git Timeout option
 * 18.0.0 (22/07/2024) - Moving to new version number 
 * 17.2.0 (19/07/2024) - Added disablerebuild test

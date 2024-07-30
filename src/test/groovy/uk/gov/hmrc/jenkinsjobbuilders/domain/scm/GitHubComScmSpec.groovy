@@ -4,6 +4,7 @@ import javaposse.jobdsl.dsl.Job
 import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubScm.gitHubScm
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.scm.GitHubScm.gitHubScmWithTimeout
 
 class GitHubComScmSpec extends AbstractJobSpec {
     private JobBuilder jobBuilder
@@ -95,7 +96,7 @@ class GitHubComScmSpec extends AbstractJobSpec {
 
     def "Timeout configured"() {
         given:
-        jobBuilder.withScm(gitHubScm("host", "repository", "branch", "ssh", "refspec", "credentials", "name", 0, false, false, 20))
+        jobBuilder.withScm(gitHubScmWithTimeout("host", "repository", "branch", "ssh", "refspec", "credentials", "name", 0, false, false, 20))
 
         when:
         Job job = jobBuilder.build(JOB_PARENT)
