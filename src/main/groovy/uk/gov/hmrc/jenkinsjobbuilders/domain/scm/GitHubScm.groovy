@@ -13,7 +13,7 @@ final class GitHubScm implements Scm {
     private final boolean pullTags
     private final int timeout
 
-    private GitHubScm(String host, String repository, String branch, String protocol, String refspec, String credentials, String name, int depth, boolean honorRefspec, boolean pullTags, int timeout = 0) {
+    private GitHubScm(String host, String repository, String branch, String protocol, String refspec, String credentials, String name, int depth, boolean honorRefspec, boolean pullTags, int timeout) {
         this.branch = branch
         this.host = host
         this.protocol = protocol
@@ -33,10 +33,10 @@ final class GitHubScm implements Scm {
     }
 
     static GitHubScm gitHubScm(String host, String repository, String branch, String protocol, String refspec, String credentials, String name = null, int depth = 0, boolean honorRefspec = false, boolean pullTags = true) {
-        new GitHubScm(host, repository, branch, protocol, refspec, credentials, name, depth, honorRefspec, pullTags)
+        new GitHubScm(host, repository, branch, protocol, refspec, credentials, name, depth, honorRefspec, pullTags, 0)
     }
 
-    static GitHubScm gitHubScmWithTimeout(String host, String repository, String branch, String protocol, String refspec, String credentials, String name = null, int depth = 0, boolean honorRefspec = false, boolean pullTags = true, int timeout) {
+    static GitHubScm gitHubScm(String host, String repository, String branch, String protocol, String refspec, String credentials, int timeout, String name = null, int depth = 0, boolean honorRefspec = false, boolean pullTags = true) {
         new GitHubScm(host, repository, branch, protocol, refspec, credentials, name, depth, honorRefspec, pullTags, timeout)
     }
 

@@ -96,7 +96,7 @@ class GitHubComScmSpec extends AbstractJobSpec {
 
     def "Timeout configured"() {
         given:
-        jobBuilder.withScm(gitHubScmWithTimeout("host", "repository", "branch", "ssh", "refspec", "credentials", "name", 0, false, false, 20))
+        jobBuilder.withScm(gitHubScm("host", "repository", "branch", "ssh", "refspec", "credentials", 20, "name", 0, false, false))
 
         when:
         Job job = jobBuilder.build(JOB_PARENT)
