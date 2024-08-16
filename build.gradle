@@ -36,9 +36,19 @@ sourceSets {
 }
 
 repositories {
-    maven { url 'https://repo.jenkins-ci.org/public/' }
-    maven { url 'https://repo.jenkins-ci.org/releases/' }
-    jcenter()
+    if (artifactoryUri) {
+        maven { url "${artifactoryUri}/hmrc-releases" }
+        maven { url "${artifactoryUri}/hmrc-snapshots" }
+        maven { url "${artifactoryUri}/third-party-maven-releases" }
+        maven { url 'https://repo.jenkins-ci.org/public/' }
+        maven { url "${artifactoryUri}/jenkins-ci-releases/" }
+        maven { url "https://open.artefacts.tax.service.gov.uk/maven2/" }
+    } else {
+        maven { url 'https://repo.jenkins-ci.org/public/' }
+        maven { url 'https://repo.jenkins-ci.org/releases/' }
+    }
+    mavenLocal()
+    mavenCentral()
 }
 
 dependencies {
