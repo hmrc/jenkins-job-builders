@@ -89,7 +89,7 @@ dependencies {
     testPlugins 'org.jenkins-ci.plugins:matrix-auth:3.1.6'
     testPlugins 'org.jenkins-ci.plugins:matrix-project:789.v57a_725b_63c79'
     testPlugins 'org.jenkins-ci.plugins:nodejs:1.6.1'
-    testPlugins 'org.jenkins-ci.plugins:Parameterized-Remote-Trigger:3.1.6.3'
+    testPlugins 'org.jenkins-ci.plugins:Parameterized-Remote-Trigger:3.1.5.1'
     testPlugins 'org.jenkins-ci.plugins:parameterized-trigger:2.45'
     testPlugins 'org.jenkins-ci.plugins:postbuildscript:3.2.0-460.va_fda_0fa_26720'
     testPlugins 'org.jenkins-ci.plugins:preSCMbuildstep:44.v6ef4fd97f56e'
