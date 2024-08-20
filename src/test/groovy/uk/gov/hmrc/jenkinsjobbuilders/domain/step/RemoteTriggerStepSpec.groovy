@@ -9,7 +9,7 @@ class RemoteTriggerStepSpec extends AbstractJobSpec {
     void 'test XML output'() {
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
-                withSteps(RemoteTriggerStep.remoteTriggerStep("https://example.com", "test-job", [id: "test-id"], false))
+                withSteps(RemoteTriggerStep.remoteTriggerStep("https://example.com", "test-job", [DB_NAME: "test-id"], false))
 
         when:
         Job job = jobBuilder.build(JOB_PARENT)
@@ -19,7 +19,7 @@ class RemoteTriggerStepSpec extends AbstractJobSpec {
             builders.'org.jenkinsci.plugins.ParameterizedRemoteTrigger.RemoteBuildConfiguration'
             builders.'org.jenkinsci.plugins.ParameterizedRemoteTrigger.RemoteBuildConfiguration'.remoteJenkinsName.text() == "https://example.com"
             builders.'org.jenkinsci.plugins.ParameterizedRemoteTrigger.RemoteBuildConfiguration'.job.text() == "test-job"
-            builders.'org.jenkinsci.plugins.ParameterizedRemoteTrigger.RemoteBuildConfiguration'.parameters.text() == "id=test-id"
+            builders.'org.jenkinsci.plugins.ParameterizedRemoteTrigger.RemoteBuildConfiguration'.parameters.text() == "DB_NAME=test-id"
             builders.'org.jenkinsci.plugins.ParameterizedRemoteTrigger.RemoteBuildConfiguration'.shouldNotFailBuild.text() == "true"
         }
     }
