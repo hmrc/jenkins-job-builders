@@ -40,7 +40,7 @@ class RemoteTriggerStep implements Step {
         return {
             remoteTrigger(this.remoteHost, this.remoteJob) {
                 pollInterval(10)
-                parameters(this.parameterMap)
+                parameters([this.parameterMap])
                 blockBuildUntilComplete()
                 shouldNotFailBuild(!failIfRemoteBuildFails)
             }
