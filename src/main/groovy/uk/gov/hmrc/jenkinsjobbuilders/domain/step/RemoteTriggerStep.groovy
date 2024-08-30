@@ -21,17 +21,17 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.step.Step
 class RemoteTriggerStep implements Step {
     private final String remoteHost
     private final String remoteJob
-    private final Map<String, Object> parameterMap
+    private final Map<String, String> parameterMap
     private final boolean failIfRemoteBuildFails
 
-    private RemoteTriggerStep(String remoteHost, String remoteJob, Map<String, Object> parameters, boolean failIfRemoteBuildFails) {
+    private RemoteTriggerStep(String remoteHost, String remoteJob, Map<String, String> parameters, boolean failIfRemoteBuildFails) {
         this.remoteHost = remoteHost
         this.remoteJob = remoteJob
         this.parameterMap = parameters
         this.failIfRemoteBuildFails = failIfRemoteBuildFails
     }
 
-    static Step remoteTriggerStep(String remoteHost, String remoteJob, Map<String, Object> parameters, boolean failIfRemoteBuildFails = true) {
+    static Step remoteTriggerStep(String remoteHost, String remoteJob, Map<String, String> parameters, boolean failIfRemoteBuildFails = true) {
         new RemoteTriggerStep(remoteHost, remoteJob, parameters, failIfRemoteBuildFails)
     }
 
