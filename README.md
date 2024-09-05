@@ -74,6 +74,7 @@ This will build the artefact and push it to Live Artifactory
 This will kick off `seed-jenkins` in Live.
 
 ## Release Notes
+* 18.5.0 (05/09/2024) - Add config class for remote parameterized trigger version 3.1.6.2+
 * 18.4.0 (20/08/2024) - Update remote parameterized plugin
 * 18.2.0 (30/07/2024) - Updated Methods for handling timeout value
 * 18.1.0 (23/07/2024) - Added in Git Timeout option
