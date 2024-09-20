@@ -18,7 +18,7 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
 import javaposse.jobdsl.dsl.Job
 import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
-import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission
+import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.GroupPermission
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.configure.InheritanceStrategy.NON_INHERITING_STRATEGY
@@ -27,17 +27,17 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.configure.ProjectBasedSecuri
 class ProjectBasedSecurityPropertySpec extends AbstractJobSpec {
 
     void 'test default XML output'() {
-        final Set<Permission> desiredPermissions = [Permission.permissionSetting("viewer", "hudson.model.Item.Read"),
-                                                    Permission.permissionSetting("admin", "hudson.model.Item.Build"),
-                                                    Permission.permissionSetting("admin", "hudson.model.Item.Cancel"),
-                                                    Permission.permissionSetting("admin", "hudson.model.Item.Configure"),
-                                                    Permission.permissionSetting("admin", "hudson.model.Item.Delete"),
-                                                    Permission.permissionSetting("admin", "hudson.model.Item.Discover"),
-                                                    Permission.permissionSetting("admin", "hudson.model.Item.Read"),
-                                                    Permission.permissionSetting("admin", "hudson.model.Item.Workspace"),
-                                                    Permission.permissionSetting("admin", "hudson.model.Run.Delete"),
-                                                    Permission.permissionSetting("admin", "hudson.model.Run.Update"),
-                                                    Permission.permissionSetting("admin", "hudson.scm.SCM.Tag")]
+        final Set<GroupPermission> desiredPermissions = [GroupPermission.permissionSetting("viewer", "hudson.model.Item.Read"),
+                                                    GroupPermission.permissionSetting("admin", "hudson.model.Item.Build"),
+                                                    GroupPermission.permissionSetting("admin", "hudson.model.Item.Cancel"),
+                                                    GroupPermission.permissionSetting("admin", "hudson.model.Item.Configure"),
+                                                    GroupPermission.permissionSetting("admin", "hudson.model.Item.Delete"),
+                                                    GroupPermission.permissionSetting("admin", "hudson.model.Item.Discover"),
+                                                    GroupPermission.permissionSetting("admin", "hudson.model.Item.Read"),
+                                                    GroupPermission.permissionSetting("admin", "hudson.model.Item.Workspace"),
+                                                    GroupPermission.permissionSetting("admin", "hudson.model.Run.Delete"),
+                                                    GroupPermission.permissionSetting("admin", "hudson.model.Run.Update"),
+                                                    GroupPermission.permissionSetting("admin", "hudson.scm.SCM.Tag")]
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
                                                withConfigures(enableProjectBasedSecurity(NON_INHERITING_STRATEGY,
@@ -49,10 +49,12 @@ class ProjectBasedSecurityPropertySpec extends AbstractJobSpec {
         then:
         with(job.node) {
             def authorizationMatrixProperty  = properties.'hudson.security.AuthorizationMatrixProperty'
+            print("HELLO WORLD")
+            print(authorizationMatrixProperty)
             authorizationMatrixProperty.inheritanceStrategy.'@class'.text() == 'org.jenkinsci.plugins.matrixauth.inheritance.NonInheritingStrategy'
-            desiredPermissions.size() == authorizationMatrixProperty.permission.size()
+            desiredPermissions.size() == authorizationMatrixProperty.groupPermission.size()
             desiredPermissions.each { expectedPermission ->
-                assert authorizationMatrixProperty.permission.find() { actualPermission ->
+                assert authorizationMatrixProperty.groupPermission.find() { actualPermission ->
                     "${expectedPermission.permission}:${expectedPermission.ldapIdentifier}" == actualPermission.text()
                 }
             }

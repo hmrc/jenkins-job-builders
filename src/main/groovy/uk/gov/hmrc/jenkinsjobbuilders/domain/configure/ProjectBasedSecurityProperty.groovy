@@ -16,21 +16,21 @@
 
 package uk.gov.hmrc.jenkinsjobbuilders.domain.configure
 
-import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission
+import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.GroupPermission
 
 class ProjectBasedSecurityProperty implements Configure {
 
   private final InheritanceStrategy inheritanceStrategy
-  private final Set<Permission> permissions
+  private final Set<GroupPermission> permissions
 
   private ProjectBasedSecurityProperty(final InheritanceStrategy inheritanceStrategy,
-                                       final Set<Permission> permissions) {
+                                       final Set<GroupPermission> permissions) {
     this.inheritanceStrategy = inheritanceStrategy
     this.permissions = permissions
   }
 
   static ProjectBasedSecurityProperty enableProjectBasedSecurity(final InheritanceStrategy inheritanceStrategy,
-                                                                 final Set<Permission> permissions) {
+                                                                 final Set<GroupPermission> permissions) {
     return new ProjectBasedSecurityProperty(inheritanceStrategy,
                                             permissions)
   }
@@ -41,7 +41,8 @@ class ProjectBasedSecurityProperty implements Configure {
       it / 'properties' / 'hudson.security.AuthorizationMatrixProperty' {
         'inheritanceStrategy'('class': inheritanceStrategy.className)
         permissions.each { permission ->
-          delegate.permission("${permission.permission}:${permission.ldapIdentifier}")
+          //delegate.permission("${permission.permission}:${permission.ldapIdentifier}")
+          delegate.groupPermission("${permission.permission}:${permission.ldapIdentifier}")
         }
       }
     }
