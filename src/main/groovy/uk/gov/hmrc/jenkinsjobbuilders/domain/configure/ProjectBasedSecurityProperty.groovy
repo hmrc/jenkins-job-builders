@@ -40,9 +40,7 @@ class ProjectBasedSecurityProperty implements Configure {
     return {
       it / 'properties' / 'hudson.security.AuthorizationMatrixProperty' {
         'inheritanceStrategy'('class': inheritanceStrategy.className)
-        permissions.each { permission ->
-          delegate.permission("${permission.permission}:${permission.ldapIdentifier}")
-        }
+        permissions.each { it.toDsl() }
       }
     }
   }
