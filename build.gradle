@@ -6,7 +6,7 @@ apply plugin: 'groovy'
 apply plugin: 'maven-publish'
 
 project.ext {
-    jobDslVersion = '1.87'
+    jobDslVersion = '1.88'
     jenkinsCoreVersion = '2.440.3'
     jenkinsTestHarnessVersion = '2193.v71b_f09ec6d46'
 
