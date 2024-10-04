@@ -20,6 +20,7 @@ import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.DslScriptException
 import javaposse.jobdsl.dsl.Folder
 import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission
+import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.GroupPermission
 import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.Configure
 
 final class FolderBuilder implements Builder<Folder> {
@@ -30,6 +31,7 @@ final class FolderBuilder implements Builder<Folder> {
     private String description
     private String primaryView
     private final Set<Permission> permissions = []
+    private final Set<GroupPermission> groupPermissions = []
     private final List<Configure> configures = []
 
     /**
@@ -63,11 +65,16 @@ final class FolderBuilder implements Builder<Folder> {
         return this
     }
 
+    FolderBuilder withGroupPermissions(final Set<GroupPermission> perms) {
+        this.groupPermissions.addAll(perms)
+        return this
+    }
+
     FolderBuilder withConfigures(final List<Configure> configures) {
         this.configures.addAll(configures)
         return this
     }
-
+    
     @Override
     Folder build(DslFactory dslFactory) {
         dslFactory.folder(this.name) {
@@ -78,6 +85,14 @@ final class FolderBuilder implements Builder<Folder> {
                     }
                     catch (DslScriptException e) {
                         throw new DslScriptException("Could not assign permission: ${perm.permission} to LDAP identifier: ${perm.ldapIdentifier}", e)
+                    }
+                }
+                this.groupPermissions.each { GroupPermission groupPerm ->
+                    try {
+                        groupPermission(groupPerm.permission, groupPerm.ldapIdentifier)
+                    }
+                    catch (DslScriptException e) {
+                        throw new DslScriptException("Could not assign group permission: ${groupPerm.permission} to LDAP identifier: ${groupPerm.ldapIdentifier}", e)
                     }
                 }
             }
