@@ -2,10 +2,12 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.Job
 import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
+import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.GroupPermission
 
 
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission.permissionSetting
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.GroupPermission.permissionSetting as groupPermissionSetting
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.ChoiceParameter.choiceParameter
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.StringParameter.stringParameter
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.ArtifactsPublisher.artifactsPublisher
@@ -27,6 +29,9 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.ColorizeOutputWrappe
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.UserVariablesWrapper.userVariablesWrapper
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.NodeJsWrapper.nodeJsWrapper
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreBuildCleanupWrapper.preBuildCleanUpWrapper
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.configure.ProjectBasedSecurityProperty.enableProjectBasedSecurity
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.configure.InheritanceStrategy.NON_INHERITING_STRATEGY
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.configure.InheritanceStrategy.INHERIT_PARENT_STRATEGY
 
 class JobBuilderSpec extends AbstractJobSpec {
 
@@ -156,10 +161,33 @@ class JobBuilderSpec extends AbstractJobSpec {
         then:
         job.name == 'test-job'
 
-        println(job.node)
-
         with(job.node) {
             description.text() == 'test-job-description - appended'
+        }
+    }
+
+    void 'test Group permissions'() {
+        given:
+        List<GroupPermission> groupPerms = [groupPermissionSetting("dev-tools", "hudson.model.Item.Discover"), groupPermissionSetting("dev-tools", "hudson.model.Item.Read")]
+        JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
+                                            withConfigures(enableProjectBasedSecurity(INHERIT_PARENT_STRATEGY, Collections.emptySet())).
+                                            withGroupPermissions(groupPerms)
+
+        when:
+        Job job = jobBuilder.build(JOB_PARENT)
+
+        then:
+        job.name == 'test-job'
+
+        with(job.node) {
+            name() == 'project'
+            description.text() == 'test-job-description'
+
+            def authorizationMatrixProperty  = properties.'hudson.security.AuthorizationMatrixProperty'
+            authorizationMatrixProperty.inheritanceStrategy.'@class'.text() == 'org.jenkinsci.plugins.matrixauth.inheritance.InheritParentStrategy'
+            2 == authorizationMatrixProperty.permission.size()
+            "GROUP:hudson.model.Item.Discover:dev-tools" == authorizationMatrixProperty.permission[0].text()
+            "GROUP:hudson.model.Item.Read:dev-tools" == authorizationMatrixProperty.permission[1].text()
         }
     }
 
