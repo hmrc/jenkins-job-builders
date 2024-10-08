@@ -4,7 +4,6 @@ import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
 import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission
 import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.GroupPermission
-import uk.gov.hmrc.jenkinsjobbuilders.domain.authorization.Authorization
 import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.Configure
 import uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.Parameter
 import uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.Publisher
@@ -47,7 +46,6 @@ final class JobBuilder implements Builder<Job> {
     private boolean disabled = false
     private final List<Permission> permissions = []
     private final List<GroupPermission> groupPermissions = []
-    private final List<Authorization> authorizations = []
     private ThrottleConfiguration throttle
     private Publisher postBuildWorkspaceCleanup
 
@@ -200,16 +198,6 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
-    JobBuilder withAuthorizations(Authorization ... authorizations) {
-        withAuthorizations(asList(authorizations))
-        this
-    }
-
-    JobBuilder withAuthorizations(List<Authorization> authorizations) {
-        this.authorizations.addAll(authorizations)
-        this
-    }
-
     JobBuilder withThrottle(List<String> categories, int maxConcurrentPerNode, int maxConcurrentTotal, boolean throttleDisabled) {
         this.throttle = throttleConfiguration(categories, maxConcurrentPerNode, maxConcurrentTotal, throttleDisabled)
         this
@@ -277,9 +265,6 @@ final class JobBuilder implements Builder<Job> {
                 authorization(it.toDsl())
             }
             this.groupPermissions.each {
-                authorization(it.toDsl())
-            }
-            this.authorizations.each {
                 authorization(it.toDsl())
             }
             if (this.throttle != null) {
