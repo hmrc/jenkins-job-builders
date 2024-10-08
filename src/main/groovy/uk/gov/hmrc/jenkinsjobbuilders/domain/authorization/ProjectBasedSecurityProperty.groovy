@@ -17,31 +17,38 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.authorization
 
 import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.GroupPermission
+import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.InheritanceStrategy
 
 class ProjectBasedSecurityProperty implements Authorization {
 
-  private final boolean blockInheritance = false
+  private final InheritanceStrategy inheritanceStrategy
   private final Set<GroupPermission> permissions
 
-  private ProjectBasedSecurityProperty(final boolean blockInheritance,
+  private ProjectBasedSecurityProperty(final InheritanceStrategy inheritanceStrategy,
                                        final Set<GroupPermission> permissions) {
-    this.blockInheritance = blockInheritance
+    this.inheritanceStrategy = inheritanceStrategy
     this.permissions = permissions
   }
 
-  static ProjectBasedSecurityProperty enableProjectBasedSecurity(final boolean blockInheritance,
+  static ProjectBasedSecurityProperty enableProjectBasedSecurity(final InheritanceStrategy inheritanceStrategy,
                                                                  final Set<GroupPermission> permissions) {
-    return new ProjectBasedSecurityProperty(blockInheritance,
+    return new ProjectBasedSecurityProperty(inheritanceStrategy,
                                             permissions)
   }
 
-  @Override
+ @Override
   Closure toDsl() {
-        return {
-            blocksInheritance(this.blockInheritance)
-            this.permissions.each { permission ->
-                delegate.groupPermission(permission.permission, permission.ldapIdentifier)
-            }
+    return {
+        println(it)
+        permissions.each { permission ->
+          delegate.groupPermission(permission.permission, permission.ldapIdentifier)
         }
+    //   it / 'properties' / 'hudson.security.AuthorizationMatrixProperty' {
+    //     'inheritanceStrategy'('class': inheritanceStrategy.className)
+    //     permissions.each { permission ->
+    //       delegate.groupPermission(permission.permission, permission.ldapIdentifier)
+    //     }
+    //   }
     }
+  }
 }

@@ -21,6 +21,7 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 import uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.GroupPermission
 import uk.gov.hmrc.jenkinsjobbuilders.domain.builder.JobBuilder
 
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.configure.InheritanceStrategy.INHERIT_PARENT_STRATEGY
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.authorization.ProjectBasedSecurityProperty.enableProjectBasedSecurity
 
 class ProjectBasedSecurityPropertySpec extends AbstractJobSpec {
@@ -39,7 +40,7 @@ class ProjectBasedSecurityPropertySpec extends AbstractJobSpec {
                                                     GroupPermission.permissionSetting("admin", "hudson.scm.SCM.Tag")]
         given:
         JobBuilder jobBuilder = new JobBuilder('test-job', 'test-job-description').
-                                               withAuthorizations(enableProjectBasedSecurity(true, desiredPermissions))
+                                               withAuthorizations(enableProjectBasedSecurity(INHERIT_PARENT_STRATEGY, desiredPermissions))
 
         when:
         Job job = jobBuilder.build(JOB_PARENT)
@@ -47,7 +48,7 @@ class ProjectBasedSecurityPropertySpec extends AbstractJobSpec {
         then:
         with(job.node) {
             def authorizationMatrixProperty  = properties.'hudson.security.AuthorizationMatrixProperty'
-            authorizationMatrixProperty.blocksInheritance.text() == "true"
+            authorizationMatrixProperty.inheritanceStrategy.'@class'.text() == 'org.jenkinsci.plugins.matrixauth.inheritance.InheritParentStrategy'
             desiredPermissions.size() == authorizationMatrixProperty.permission.size()
             desiredPermissions.each { expectedPermission ->
                 assert authorizationMatrixProperty.permission.find() { actualPermission ->
