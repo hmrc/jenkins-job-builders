@@ -39,7 +39,7 @@ class ProjectBasedGroupSecurityProperty implements Configure {
   @Override
   Closure toDsl() {
         return {
-            it / 'properties' / 'hudson.security.AuthorizationMatrixProperty' {
+            /* it / 'properties' / 'hudson.security.AuthorizationMatrixProperty' {
                 inheritanceStrategy {
                     switch (inheritanceStrategy) {
                         case InheritanceStrategy.INHERIT_PARENT_STRATEGY:
@@ -53,6 +53,12 @@ class ProjectBasedGroupSecurityProperty implements Configure {
                             break
                     }
                 }
+                permissions.each { permission ->
+                    delegate.permission("GROUP:${permission.permission}:${permission.ldapIdentifier}")
+                }
+            } */
+            it / 'properties' / 'hudson.security.AuthorizationMatrixProperty' {
+                'inheritanceStrategy'('class': inheritanceStrategy.className)
                 permissions.each { permission ->
                     delegate.permission("GROUP:${permission.permission}:${permission.ldapIdentifier}")
                 }

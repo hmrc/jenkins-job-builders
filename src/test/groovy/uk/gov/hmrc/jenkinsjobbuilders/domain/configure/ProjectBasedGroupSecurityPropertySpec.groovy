@@ -52,7 +52,8 @@ class ProjectBasedGroupSecurityPropertySpec extends AbstractJobSpec {
         then:
         with(job.node) {
             def authorizationMatrixProperty  = properties.'hudson.security.AuthorizationMatrixProperty'
-            assert !authorizationMatrixProperty.inheritanceStrategy.nonInheriting.isEmpty()
+            //assert !authorizationMatrixProperty.inheritanceStrategy.nonInheriting.isEmpty()
+            authorizationMatrixProperty.inheritanceStrategy.'@class'.text() == 'org.jenkinsci.plugins.matrixauth.inheritance.NonInheritingStrategy'
             desiredPermissions.size() == authorizationMatrixProperty.permission.size()
             desiredPermissions.each { expectedPermission ->
                 assert authorizationMatrixProperty.permission.find() { actualPermission ->
@@ -74,7 +75,7 @@ class ProjectBasedGroupSecurityPropertySpec extends AbstractJobSpec {
         then:
         with(job.node) {
             def authorizationMatrixProperty  = properties.'hudson.security.AuthorizationMatrixProperty'
-            assert !authorizationMatrixProperty.inheritanceStrategy.inheriting.isEmpty()
+            authorizationMatrixProperty.inheritanceStrategy.'@class'.text() == 'org.jenkinsci.plugins.matrixauth.inheritance.InheritParentStrategy'
             desiredPermissions.size() == authorizationMatrixProperty.permission.size()
             desiredPermissions.each { expectedPermission ->
                 assert authorizationMatrixProperty.permission.find() { actualPermission ->
@@ -96,7 +97,7 @@ class ProjectBasedGroupSecurityPropertySpec extends AbstractJobSpec {
         then:
         with(job.node) {
             def authorizationMatrixProperty  = properties.'hudson.security.AuthorizationMatrixProperty'
-            assert !authorizationMatrixProperty.inheritanceStrategy.inheritingGlobal.isEmpty()
+            authorizationMatrixProperty.inheritanceStrategy.'@class'.text() == 'org.jenkinsci.plugins.matrixauth.inheritance.InheritGlobalStrategy'
             0 == authorizationMatrixProperty.permission.size()
         }
     }
@@ -116,7 +117,7 @@ class ProjectBasedGroupSecurityPropertySpec extends AbstractJobSpec {
         then:
         with(job.node) {
             def authorizationMatrixProperty  = properties.'hudson.security.AuthorizationMatrixProperty'
-            assert !authorizationMatrixProperty.inheritanceStrategy.inheritingGlobal.isEmpty()
+            authorizationMatrixProperty.inheritanceStrategy.'@class'.text() == 'org.jenkinsci.plugins.matrixauth.inheritance.InheritGlobalStrategy'
             1 == authorizationMatrixProperty.permission.size()
             authorizationMatrixProperty.permission[0].text() ==  "GROUP:hudson.model.Item.Cancel:viewer"
         }
