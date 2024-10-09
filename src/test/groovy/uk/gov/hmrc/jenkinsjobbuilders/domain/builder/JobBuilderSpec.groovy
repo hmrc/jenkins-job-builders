@@ -59,8 +59,6 @@ class JobBuilderSpec extends AbstractJobSpec {
         then:
         job.name == 'test-job'
 
-        println(job.node)
-
         with(job.node) {
             name() == 'project'
             description.text() == 'test-job-description'
