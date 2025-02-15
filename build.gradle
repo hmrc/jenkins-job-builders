@@ -128,6 +128,7 @@ task resolveTestPlugins(type: Copy) {
 }
 
 task writePluginIndexFile(type: DefaultTask, dependsOn: resolveTestPlugins) {
+    outputs.file "$resolveTestPlugins.destinationDir/index"
     doFirst {
         def baseNames = resolveTestPlugins.source.collect {
             it.name[0..it.name.lastIndexOf('.') - 1]
