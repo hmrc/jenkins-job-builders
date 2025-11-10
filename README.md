@@ -47,7 +47,7 @@ The [open HMRC Jenkins jobs](https://github.com/hmrc/jenkins-jobs) are one examp
 
 1. Complete development:
    * Make changes
-   Ensure tests are passing locally by running `./gradlew clean test build -info`
+   Ensure tests are passing locally by running `task docker-test`
    * Merge changes to main
 
 2. The `jenkins-job-builders` Jenkins job will be triggered by the merge to main
