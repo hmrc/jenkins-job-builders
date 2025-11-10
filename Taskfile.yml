@@ -1,0 +1,16 @@
+version: '3'
+
+env:
+  ARTIFACTORY_URI: "https://artefacts.tax.service.gov.uk/artifactory"
+
+tasks:
+  local-test:
+    desc: Run gradlew clean test and build command locally
+    cmds:
+    - ./gradlew clean test build -info
+
+  docker-test:
+    desc: Run gradlew clean test and build command in docker container
+    cmds:
+    - docker build . --platform linux/arm64 -t jenkins-job-builders
+    - docker run -it jenkins-job-builders
