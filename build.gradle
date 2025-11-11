@@ -127,6 +127,13 @@ task resolveTestPlugins(type: Copy) {
     mustRunAfter compileJava
 }
 
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+
 task writePluginIndexFile(type: DefaultTask, dependsOn: resolveTestPlugins) {
     doFirst {
         def baseNames = resolveTestPlugins.source.collect {

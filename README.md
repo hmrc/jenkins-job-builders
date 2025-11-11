@@ -75,6 +75,7 @@ This will build the artefact and push it to Live Artifactory
 This will kick off `seed-jenkins` in Live.
 
 ## Release Notes
+* 18.9.1 (21/11/2025) - Setting package compatibility to java 11.
 * 18.9.0 (10/11/2025) - Allow update of job description for failed jobs
 * 18.8.0 (09/09/2024) - Reverts Group Permissions into Configure block
 * 18.7.0 (05/09/2024) - Added Group permissions into the Authorization block in job builder
