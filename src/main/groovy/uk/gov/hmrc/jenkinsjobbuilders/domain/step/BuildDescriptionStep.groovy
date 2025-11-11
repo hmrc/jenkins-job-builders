@@ -1,8 +1,8 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.step;
 
-import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractBuildDescription
+import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractBuildDescriptionStep
 
-final class BuildDescriptionStep extends AbstractBuildDescription implements Step {
+final class BuildDescriptionStep extends AbstractBuildDescriptionStep implements Step {
 
     protected BuildDescriptionStep(String regex, String description) {
         super(regex, description)
