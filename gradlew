@@ -246,4 +246,13 @@ eval "set -- $(
         tr '\n' ' '
     )" '"$@"'
 
-exec "$JAVACMD" "$@"
+# Run Java and also save its console output to a file
+"$JAVACMD" "$@" | tee gradlew.log
+e=$?
+# Search for and show Jenkins plugin problems
+if grep -E "(needs to be installed|Failed to load|Update required)" gradlew.log; then
+    [ 0 = "$e" ] && e=1
+    printf '\n%s\n' "FAILED due to Jenkins plugin problems above."
+fi
+rm -f gradlew.log
+exit "$e"

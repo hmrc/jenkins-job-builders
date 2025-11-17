@@ -1,4 +1,7 @@
+// As a general guide, when upgrading all the versions in this file, use the versions from the build-jenkins-primary repo, in files build.gradle and plugins/build.txt
+
 plugins {
+    // Versions after 4.33.1 have removed the publishArtifacts and publishPom options
     id "com.jfrog.artifactory" version "4.33.1"
 }
 
@@ -6,9 +9,9 @@ apply plugin: 'groovy'
 apply plugin: 'maven-publish'
 
 project.ext {
-    jobDslVersion = '1.88'
-    jenkinsCoreVersion = '2.440.3'
-    jenkinsTestHarnessVersion = '2193.v71b_f09ec6d46'
+    jobDslVersion = '1.93'
+    jenkinsCoreVersion = '2.528.1'
+    jenkinsTestHarnessVersion = '2520.v0559e74fcf96'
 
     testDependenciesOutputDirectory = new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
     artifactoryUri = System.getenv("ARTIFACTORY_URI")
@@ -53,7 +56,7 @@ repositories {
 
 dependencies {
     implementation 'org.codehaus.groovy:groovy-all:2.5.+'
-    implementation ('com.google.guava:guava:11.0.1') {
+    implementation ('com.google.guava:guava:33.5.0-jre') {
         exclude module: 'jsr305'
     }
     implementation ("org.jenkins-ci.plugins:job-dsl-core:${jobDslVersion}") {
@@ -72,7 +75,8 @@ dependencies {
      * the JUnit platform to JUnit 4
      */
     testImplementation("junit:junit:4.13.2")
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.9.3")
+
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:6.0.1")
 
     // Jenkins test harness dependencies
     testImplementation "org.jenkins-ci.main:jenkins-test-harness:${jenkinsTestHarnessVersion}"
@@ -81,34 +85,39 @@ dependencies {
     // Job DSL plugin including plugin dependencies
     testImplementation "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}"
     testImplementation "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}@jar"
-    testImplementation 'org.jenkins-ci.plugins:structs:1.6@jar'
+    testImplementation 'org.jenkins-ci.plugins:structs:353.v261ea_40a_80fb_@jar'
 
     // plugins to install in test instance
-    testPlugins 'com.coravy.hudson.plugins.github:github:1.37.3'
-    testPlugins 'io.jenkins.plugins:caffeine-api:3.1.8-133.v17b_1ff2e0599'
-    testPlugins 'org.jenkins-ci.plugins:ansicolor:1.0.2'
-    testPlugins 'org.jenkins-ci.plugins:build-monitor-plugin:1.14-653.va_1c684a_30b_ff'
-    testPlugins 'org.jenkins-ci.plugins:build-timeout:1.28'
-    testPlugins 'org.jenkins-ci.plugins:build-user-vars-plugin:1.9'
-    testPlugins 'org.jenkins-ci.plugins:claim:516.v36293563731d'
-    testPlugins 'org.jenkins-ci.plugins:cloudbees-folder:6.848.ve3b_fd7839a_81'
-    testPlugins 'org.jenkins-ci.plugins:envinject:2.901.v0038b_6471582'
-    testPlugins 'org.jenkins-ci.plugins:git:5.2.0'
-    testPlugins 'org.jenkins-ci.plugins:htmlpublisher:1.32'
-    testPlugins 'org.jenkins-ci.plugins:junit:1240.vf9529b_881428'
-    testPlugins 'org.jenkins-ci.plugins:matrix-auth:3.1.6'
-    testPlugins 'org.jenkins-ci.plugins:matrix-project:789.v57a_725b_63c79'
-    testPlugins 'org.jenkins-ci.plugins:nodejs:1.6.1'
-    testPlugins 'org.jenkins-ci.plugins:Parameterized-Remote-Trigger:3.1.6.3'
-    testPlugins 'org.jenkins-ci.plugins:parameterized-trigger:2.45'
-    testPlugins 'org.jenkins-ci.plugins:postbuildscript:3.2.0-460.va_fda_0fa_26720'
-    testPlugins 'org.jenkins-ci.plugins:preSCMbuildstep:44.v6ef4fd97f56e'
-    testPlugins 'org.jenkins-ci.plugins:timestamper:1.26'
-    testPlugins 'org.jenkins-ci.plugins:throttle-concurrents:2.14'
-    testPlugins 'org.jenkins-ci.plugins:urltrigger:1.02'
-    testPlugins 'org.jvnet.hudson.plugins:postbuild-task:1.9'
-    testPlugins 'org.jenkins-ci.plugins:ws-cleanup:0.44'
-    testPlugins 'com.sonyericsson.hudson.plugins.rebuild:rebuild:332.va_1ee476d8f6d'
+    testPlugins 'com.coravy.hudson.plugins.github:github:1.45.0'
+    testPlugins 'io.jenkins.plugins:caffeine-api:3.2.3-194.v31a_b_f7a_b_5a_81'
+    testPlugins 'org.jenkins-ci.plugins:ansicolor:1.0.6'
+    testPlugins 'org.jenkins-ci.plugins:build-monitor-plugin:1.14-985.v7b_f37b_3d0b_f5'
+    testPlugins 'org.jenkins-ci.plugins:build-timeout:1.38'
+    testPlugins 'org.jenkins-ci.plugins:build-user-vars-plugin:195.v8c35f9d5c3dc'
+    testPlugins 'org.jenkins-ci.plugins:claim:617.v149399f86b_de'
+    testPlugins 'org.jenkins-ci.plugins:cloudbees-folder:6.1062.v2877b_d6b_b_eeb_'
+    testPlugins 'org.jenkins-ci.plugins:credentials:1447.v4cb_b_539b_5321'
+    testPlugins 'org.jenkins-ci.plugins:envinject:2.926.v69c9b_3896a_96'
+    testPlugins 'org.jenkins-ci.plugins:git:5.8.0'
+    testPlugins 'org.jenkins-ci.plugins:htmlpublisher:427'
+    testPlugins 'org.jenkins-ci.plugins:junit:1369.v15da_00283f06'
+    testPlugins 'org.jenkins-ci.plugins:matrix-auth:3.2.8'
+    testPlugins 'org.jenkins-ci.plugins:matrix-project:870.v9db_fcfc2f45b_'
+    testPlugins 'org.jenkins-ci.plugins:nodejs:1.6.5'
+    testPlugins 'org.jenkins-ci.plugins:Parameterized-Remote-Trigger:3.2.2'
+    testPlugins 'org.jenkins-ci.plugins:parameterized-trigger:873.v8b_e37dd8418f'
+    testPlugins 'org.jenkins-ci.plugins:postbuildscript:3.4.1-695.vf6b_0b_8053979'
+    testPlugins 'org.jenkins-ci.plugins:preSCMbuildstep:115.vf9808414429d'
+    testPlugins 'org.jenkins-ci.plugins:ssh-credentials:361.vb_f6760818e8c'
+    testPlugins 'org.jenkins-ci.plugins:timestamper:1.30'
+    testPlugins 'org.jenkins-ci.plugins:throttle-concurrents:2.18'
+    testPlugins 'org.jenkins-ci.plugins:urltrigger:1.05'
+    testPlugins 'org.jvnet.hudson.plugins:postbuild-task:78.v24529f1f5cdb_'
+    testPlugins 'org.jenkins-ci.plugins:ws-cleanup:0.49'
+    testPlugins 'com.sonyericsson.hudson.plugins.rebuild:rebuild:338.va_0a_b_50e29397'
+    testPlugins 'org.jenkins-ci.plugins:bouncycastle-api:2.30.1.82-277.v70ca_0b_877184'
+    // Avoiding token-macro incompatible version 444.v52de7e9c573d
+    testPlugins 'org.jenkins-ci.plugins:token-macro:477.vd4f0dc3cb_cf1'
 
     // Plugins which ideally we would install, but they cause other plugins to downgrade and tests to break
     // testPlugins 'org.jenkins-ci.plugins:description-setter:1.10'
@@ -129,8 +138,8 @@ task resolveTestPlugins(type: Copy) {
 
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 
