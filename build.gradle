@@ -61,7 +61,6 @@ dependencies {
     }
     implementation ("org.jenkins-ci.plugins:job-dsl-core:${jobDslVersion}") {
         exclude module: 'ivy'
-        exclude module: 'xstream'
     }
 
     testImplementation 'org.spockframework:spock-junit4:2.3-groovy-2.5'

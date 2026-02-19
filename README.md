@@ -75,6 +75,7 @@ This will build the artefact and push it to Live Artifactory
 This will kick off `seed-jenkins` in Live.
 
 ## Release Notes
+* 18.9.3 (19/02/2026) - Removed the exclusion of xstream, to check whether it helps with keepLongStdio (JUnit 4) exceptions in build-jobs
 * 18.9.2 (17/11/2025) - Setting package compatibility to java 21. Synced Jenkins plugin versions with build-jenkins-primary repo. Will fail if Jenkins shows plugin warnings.
 * 18.9.1 (11/11/2025) - Setting package compatibility to java 11.
 * 18.9.0 (10/11/2025) - Allow update of job description for failed jobs
