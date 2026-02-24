@@ -6,4 +6,5 @@ WORKDIR /app
 
 COPY . /app/
 
-CMD ["/bin/bash", "-c", "./gradlew clean test build -info"]
+# Using "--info" to see plugin versions, and errors
+CMD ["/bin/bash", "-c", "./gradlew clean build --info --console=plain"]

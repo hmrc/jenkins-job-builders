@@ -5,12 +5,20 @@ env:
 
 tasks:
   local-test:
-    desc: Run gradlew clean test and build command locally
+    desc: Run gradlew clean build command locally
     cmds:
-    - ./gradlew clean test build -info
+    # "build" includes running tests
+    # Using "--info" to see plugin versions, and errors
+    # Using "--console=plain" to avoid colour escape codes in output when diverting to a log file
+    - ./gradlew clean build --info --console=plain
 
   docker-test:
-    desc: Run gradlew clean test and build command in docker container
+    desc: Run gradlew clean build command in docker container
+    vars:
+      MACHINE:
+        # Will be arm64 or x86_64
+        sh: uname -m
     cmds:
-    - docker build . --platform linux/arm64 -t jenkins-job-builders
-    - docker run -it jenkins-job-builders
+    # Is much faster on native Mac arm64 when compiled for arm64
+    - docker build . --platform "linux/{{.MACHINE}}" -t jenkins-job-builders
+    - docker run jenkins-job-builders

@@ -21,7 +21,7 @@ This can be solved in Jenkins by using the Jenkins Job DSL plugin, which allows 
 
 ## Building
 
-1. Run `./gradlew clean test` locally to test your changes. The test suite will ensure the Builders are capable of producing the expected config XML for Jenkins.
+1. Run `./gradlew clean build` locally to test your changes. The test suite will ensure the Builders are capable of producing the expected config XML for Jenkins.
 
 ## Installing
 
@@ -75,6 +75,10 @@ This will build the artefact and push it to Live Artifactory
 This will kick off `seed-jenkins` in Live.
 
 ## Release Notes
+
+Note: Use x.y.0 or x.0.0 version numbering, for releases which are intended to be referenced in other repositories.
+
+* 19.0.0 (24/02/2026) - Use CPU-specific Docker image for testing. Bumping version to 19 due to previous switch to java 21.
 * 18.9.3 (19/02/2026) - Removed the exclusion of xstream, to check whether it helps with keepLongStdio (JUnit 4) exceptions in build-jobs
 * 18.9.2 (17/11/2025) - Setting package compatibility to java 21. Synced Jenkins plugin versions with build-jenkins-primary repo. Will fail if Jenkins shows plugin warnings.
 * 18.9.1 (11/11/2025) - Setting package compatibility to java 11.
