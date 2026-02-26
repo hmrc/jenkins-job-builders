@@ -78,6 +78,7 @@ This will kick off `seed-jenkins` in Live.
 
 Note: Use x.y.0 or x.0.0 version numbering, for releases which are intended to be referenced in other repositories.
 
+* 20.0.0 (26/02/2026) - Add PublisherContext.groovy from job-dsl plugin, to remove obsolete call to keepLongStdio
 * 19.0.0 (24/02/2026) - Use CPU-specific Docker image for testing. Bumping version to 19 due to previous switch to java 21.
 * 18.9.3 (19/02/2026) - Removed the exclusion of xstream, to check whether it helps with keepLongStdio (JUnit 4) exceptions in build-jobs
 * 18.9.2 (17/11/2025) - Setting package compatibility to java 21. Synced Jenkins plugin versions with build-jenkins-primary repo. Will fail if Jenkins shows plugin warnings.
