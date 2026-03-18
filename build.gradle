@@ -12,6 +12,8 @@ project.ext {
     jobDslVersion = '1.93'
     jenkinsCoreVersion = '2.528.1'
     jenkinsTestHarnessVersion = '2520.v0559e74fcf96'
+    claimPluginVersion = '617.v149399f86b_de'
+    junitPluginVersion = '1369.v15da_00283f06'
 
     testDependenciesOutputDirectory = new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
     artifactoryUri = System.getenv("ARTIFACTORY_URI")
@@ -63,6 +65,9 @@ dependencies {
         exclude module: 'ivy'
     }
 
+
+    implementation "org.jenkins-ci.plugins:junit:${junitPluginVersion}"
+    implementation "org.jenkins-ci.plugins:claim:${claimPluginVersion}"
     testImplementation 'org.spockframework:spock-junit4:2.3-groovy-2.5'
 
     /**
@@ -93,13 +98,13 @@ dependencies {
     testPlugins 'org.jenkins-ci.plugins:build-monitor-plugin:1.14-985.v7b_f37b_3d0b_f5'
     testPlugins 'org.jenkins-ci.plugins:build-timeout:1.38'
     testPlugins 'org.jenkins-ci.plugins:build-user-vars-plugin:195.v8c35f9d5c3dc'
-    testPlugins 'org.jenkins-ci.plugins:claim:617.v149399f86b_de'
+    testPlugins "org.jenkins-ci.plugins:claim:${claimPluginVersion}"
     testPlugins 'org.jenkins-ci.plugins:cloudbees-folder:6.1062.v2877b_d6b_b_eeb_'
     testPlugins 'org.jenkins-ci.plugins:credentials:1447.v4cb_b_539b_5321'
     testPlugins 'org.jenkins-ci.plugins:envinject:2.926.v69c9b_3896a_96'
     testPlugins 'org.jenkins-ci.plugins:git:5.8.0'
     testPlugins 'org.jenkins-ci.plugins:htmlpublisher:427'
-    testPlugins 'org.jenkins-ci.plugins:junit:1369.v15da_00283f06'
+    testPlugins "org.jenkins-ci.plugins:junit:${junitPluginVersion}"
     testPlugins 'org.jenkins-ci.plugins:matrix-auth:3.2.8'
     testPlugins 'org.jenkins-ci.plugins:matrix-project:870.v9db_fcfc2f45b_'
     testPlugins 'org.jenkins-ci.plugins:nodejs:1.6.5'
