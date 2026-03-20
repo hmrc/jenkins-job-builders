@@ -15,9 +15,13 @@ final class JUnitReportsPublisher implements Publisher {
     @Override
     Closure toDsl() {
         return {
-            archiveJunit(junitReportsPattern) {
+            jUnitResultArchiver {
+                testResults(junitReportsPattern)
+                stdioRetention('failed')
                 testDataPublishers {
-                    allowClaimingOfFailedTests()
+                    claimTestDataPublisher {
+                        displayClaimActionsInTestResultsTable(true)
+                    }
                 }
             }
         }
