@@ -17,6 +17,7 @@ final class JUnitReportsPublisher implements Publisher {
         return {
             jUnitResultArchiver {
                 testResults(junitReportsPattern)
+                allowEmptyResults(true)
                 stdioRetention('failed')
                 testDataPublishers {
                     claimTestDataPublisher {
