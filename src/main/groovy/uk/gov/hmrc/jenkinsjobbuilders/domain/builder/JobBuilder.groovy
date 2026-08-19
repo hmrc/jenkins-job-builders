@@ -11,6 +11,7 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.Scm
 import uk.gov.hmrc.jenkinsjobbuilders.domain.throttle.ThrottleConfiguration
 import uk.gov.hmrc.jenkinsjobbuilders.domain.trigger.Trigger
 import uk.gov.hmrc.jenkinsjobbuilders.domain.step.Step
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
 import uk.gov.hmrc.jenkinsjobbuilders.domain.variable.EnvironmentVariable
 import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.CredentialsBindings
 import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.Wrapper
@@ -208,6 +209,13 @@ final class JobBuilder implements Builder<Job> {
         this
     }
 
+    private static Step createReportDirsStep(List<String> reportDirs) {
+        String command = reportDirs
+                .collect { "mkdir -p \"\${WORKSPACE}/${it}\"" }
+                .join('\n')
+        shellStep(command)
+    }
+
     @Override
     Job build(DslFactory dslFactory) {
         if (!this.environmentVariables.isEmpty()) {
@@ -221,6 +229,15 @@ final class JobBuilder implements Builder<Job> {
 
         if (this.postBuildWorkspaceCleanup != null) {
             this.publishers.add(this.postBuildWorkspaceCleanup)
+        }
+
+        List<String> reportDirs = this.publishers
+            .findAll { it.respondsTo('htmlReportDirsPaths') }
+            .collectMany { it.htmlReportDirsPaths() }
+            .unique()
+
+        if (!reportDirs.isEmpty()) {
+            this.steps.add(0, createReportDirsStep(reportDirs))
         }
 
         dslFactory.freeStyleJob(this.name) {

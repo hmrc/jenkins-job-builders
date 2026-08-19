@@ -1,6 +1,5 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.publisher
 
-
 final class HtmlReportsPublisher implements Publisher {
     private final Map<String, String> htmlReportDirs
     private boolean keep
@@ -14,6 +13,10 @@ final class HtmlReportsPublisher implements Publisher {
 
     static HtmlReportsPublisher htmlReportsPublisher(Map<String, String> htmlReportDirs, boolean keep = false, boolean alwaysLinkLatest = false) {
         new HtmlReportsPublisher(htmlReportDirs, keep, alwaysLinkLatest)
+    }
+
+    List<String> htmlReportDirsPaths() {
+        htmlReportDirs.keySet().toList()
     }
 
     @Override
