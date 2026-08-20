@@ -3,6 +3,7 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 import javaposse.jobdsl.dsl.Job
 import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
 
+
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission.permissionSetting
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.parameters.ChoiceParameter.choiceParameter
