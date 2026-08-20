@@ -2,7 +2,6 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.Job
 import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
-import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.BaseSCoverageReportsPublisher
 
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission.permissionSetting
@@ -44,7 +43,6 @@ class JobBuilderSpec extends AbstractJobSpec {
                                                withEnvironmentVariablesGroovyScript("println \"Hello\"").
                                                withWrappers(nodeJsWrapper(), colorizeOutputWrapper(), preBuildCleanUpWrapper(), userVariablesWrapper()).
                                                withLabel('single-executor').
-                                               withConfigures(BaseSCoverageReportsPublisher.versionAgnosticSCoverageReportsPublisher()).
                                                withParameters(stringParameter('STRING-PARAM', 'STRING-VALUE'), choiceParameter('CHOICE-PARAM', asList('CHOICE-VALUE-1', 'CHOICE-VALUE-2'), 'CHOICE-DESC')).
                                                withPublishers(claimBrokenBuildsPublisher(),
                                                               jUnitReportsPublisher('test-junit'),
