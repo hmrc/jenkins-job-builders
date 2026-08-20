@@ -11,7 +11,6 @@ import uk.gov.hmrc.jenkinsjobbuilders.domain.scm.Scm
 import uk.gov.hmrc.jenkinsjobbuilders.domain.throttle.ThrottleConfiguration
 import uk.gov.hmrc.jenkinsjobbuilders.domain.trigger.Trigger
 import uk.gov.hmrc.jenkinsjobbuilders.domain.step.Step
-import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
 import uk.gov.hmrc.jenkinsjobbuilders.domain.variable.EnvironmentVariable
 import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.CredentialsBindings
 import uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.Wrapper
@@ -22,6 +21,7 @@ import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.CredentialsBindings.
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.EnvironmentVariablesWrapper.environmentVariablesWrapper
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.wrapper.PreScmStepsWrapper.preScmStepsWrapper
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.publisher.PostBuildCleanWsPublisher.postBuildCleanWsPublisher
+import static uk.gov.hmrc.jenkinsjobbuilders.domain.step.ShellStep.shellStep
 
 final class JobBuilder implements Builder<Job> {
     private final String name
