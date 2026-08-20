@@ -100,7 +100,6 @@ class JobBuilderSpec extends AbstractJobSpec {
             buildWrappers.'EnvInjectBuildWrapper'.info.scriptContent.text().contains("mkdir -p \${TMP}") == true
             buildWrappers.'EnvInjectBuildWrapper'.info.groovyScriptContent.text().contains("println \"Hello\"") == true
             buildWrappers.'org.jenkinsci.plugins.preSCMbuildstep.PreSCMBuildStepsWrapper'.buildSteps.'hudson.tasks.Shell' [0].command.text().contains('echo prescm')
-            builders.'hudson.tasks.Shell' [0].command[0].text().contains('mkdir -p "${WORKSPACE}/target/scoverage-report"')
             builders.'hudson.tasks.Shell' [0].command.text().contains('mkdir -p "${WORKSPACE}/target/test-reports/html-report"')
             builders.'hudson.tasks.Shell' [1].command.text().contains('test-shell1')
             builders.'hudson.tasks.Shell' [2].command.text().contains('ls test')

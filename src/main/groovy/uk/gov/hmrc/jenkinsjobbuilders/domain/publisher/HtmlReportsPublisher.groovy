@@ -1,5 +1,6 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.publisher
 
+
 final class HtmlReportsPublisher implements Publisher {
     private final Map<String, String> htmlReportDirs
     private boolean keep

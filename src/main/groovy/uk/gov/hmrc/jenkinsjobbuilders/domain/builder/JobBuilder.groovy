@@ -235,16 +235,10 @@ final class JobBuilder implements Builder<Job> {
             .findAll { it.respondsTo('htmlReportDirsPaths') }
             .collectMany { it.htmlReportDirsPaths() }
             .unique()
-
-        List<String> scoverageReportDirs = this.configures
-            .findAll { it.respondsTo('scoverageReportDirsPaths') }
-            .collectMany { it.scoverageReportDirsPaths() }
-            .unique()
         
-        List<String> allReportDirs = (reportDirs + scoverageReportDirs).unique()
 
-        if (!allReportDirs.isEmpty()) {
-            this.steps.add(0, createReportDirsStep(allReportDirs))
+        if (!reportDirs.isEmpty()) {
+            this.steps.add(0, createReportDirsStep(reportDirs))
         }
 
 
