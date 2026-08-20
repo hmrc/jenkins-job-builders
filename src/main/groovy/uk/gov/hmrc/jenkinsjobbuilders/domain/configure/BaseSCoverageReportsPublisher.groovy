@@ -18,6 +18,10 @@ final class BaseSCoverageReportsPublisher implements Configure {
         this.coverageReportFile = coverageReportFile
     }
 
+    List<String> scoverageReportDirsPaths() {
+        [coverageReportDir]
+    }
+
     @Override
     Closure toDsl() {
         return {

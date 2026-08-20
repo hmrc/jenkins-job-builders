@@ -210,10 +210,10 @@ final class JobBuilder implements Builder<Job> {
     }
 
     private static Step createReportDirsStep(List<String> reportDirs) {
-        String command = reportDirs
+        String reportDirCommand = reportDirs
                 .collect { "mkdir -p \"\${WORKSPACE}/${it}\"" }
                 .join('\n')
-        shellStep(command)
+        shellStep(reportDirCommand)
     }
 
     @Override
@@ -236,9 +236,17 @@ final class JobBuilder implements Builder<Job> {
             .collectMany { it.htmlReportDirsPaths() }
             .unique()
 
-        if (!reportDirs.isEmpty()) {
-            this.steps.add(0, createReportDirsStep(reportDirs))
+        List<String> scoverageReportDirs = this.configures
+            .findAll { it.respondsTo('scoverageReportDirsPaths') }
+            .collectMany { it.scoverageReportDirsPaths() }
+            .unique()
+        
+        List<String> allReportDirs = (reportDirs + scoverageReportDirs).unique()
+
+        if (!allReportDirs.isEmpty()) {
+            this.steps.add(0, createReportDirsStep(allReportDirs))
         }
+
 
         dslFactory.freeStyleJob(this.name) {
             it.description this.description

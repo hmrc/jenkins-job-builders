@@ -2,7 +2,7 @@ package uk.gov.hmrc.jenkinsjobbuilders.domain.builder
 
 import javaposse.jobdsl.dsl.Job
 import uk.gov.hmrc.jenkinsjobbuilders.domain.AbstractJobSpec
-
+import uk.gov.hmrc.jenkinsjobbuilders.domain.configure.BaseSCoverageReportsPublisher
 
 import static java.util.Arrays.asList
 import static uk.gov.hmrc.jenkinsjobbuilders.domain.authorisation.Permission.permissionSetting
@@ -44,6 +44,7 @@ class JobBuilderSpec extends AbstractJobSpec {
                                                withEnvironmentVariablesGroovyScript("println \"Hello\"").
                                                withWrappers(nodeJsWrapper(), colorizeOutputWrapper(), preBuildCleanUpWrapper(), userVariablesWrapper()).
                                                withLabel('single-executor').
+                                               withConfigures(BaseSCoverageReportsPublisher.versionAgnosticSCoverageReportsPublisher()).
                                                withParameters(stringParameter('STRING-PARAM', 'STRING-VALUE'), choiceParameter('CHOICE-PARAM', asList('CHOICE-VALUE-1', 'CHOICE-VALUE-2'), 'CHOICE-DESC')).
                                                withPublishers(claimBrokenBuildsPublisher(),
                                                               jUnitReportsPublisher('test-junit'),
@@ -99,6 +100,7 @@ class JobBuilderSpec extends AbstractJobSpec {
             buildWrappers.'EnvInjectBuildWrapper'.info.scriptContent.text().contains("mkdir -p \${TMP}") == true
             buildWrappers.'EnvInjectBuildWrapper'.info.groovyScriptContent.text().contains("println \"Hello\"") == true
             buildWrappers.'org.jenkinsci.plugins.preSCMbuildstep.PreSCMBuildStepsWrapper'.buildSteps.'hudson.tasks.Shell' [0].command.text().contains('echo prescm')
+            builders.'hudson.tasks.Shell' [0].command[0].text().contains('mkdir -p "${WORKSPACE}/target/scoverage-report"')
             builders.'hudson.tasks.Shell' [0].command.text().contains('mkdir -p "${WORKSPACE}/target/test-reports/html-report"')
             builders.'hudson.tasks.Shell' [1].command.text().contains('test-shell1')
             builders.'hudson.tasks.Shell' [2].command.text().contains('ls test')
