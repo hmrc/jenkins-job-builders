@@ -99,11 +99,12 @@ class JobBuilderSpec extends AbstractJobSpec {
             buildWrappers.'EnvInjectBuildWrapper'.info.scriptContent.text().contains("mkdir -p \${TMP}") == true
             buildWrappers.'EnvInjectBuildWrapper'.info.groovyScriptContent.text().contains("println \"Hello\"") == true
             buildWrappers.'org.jenkinsci.plugins.preSCMbuildstep.PreSCMBuildStepsWrapper'.buildSteps.'hudson.tasks.Shell' [0].command.text().contains('echo prescm')
-            builders.'hudson.tasks.Shell' [0].command.text().contains('test-shell1')
-            builders.'hudson.tasks.Shell' [1].command.text().contains('ls test')
-            builders.'hudson.tasks.Shell' [1].command.text().contains('mkdir -p /tmp')
-            builders.'hudson.tasks.Shell' [1].command.text().contains('sbt clean test -Djava.io.tmpdir=/tmp')
-            builders.'hudson.tasks.Shell' [1].command.text().contains('sbt dist publish -Djava.io.tmpdir=/tmp')
+            builders.'hudson.tasks.Shell' [0].command.text().contains('mkdir -p "${WORKSPACE}/target/test-reports/html-report"')
+            builders.'hudson.tasks.Shell' [1].command.text().contains('test-shell1')
+            builders.'hudson.tasks.Shell' [2].command.text().contains('ls test')
+            builders.'hudson.tasks.Shell' [2].command.text().contains('mkdir -p /tmp')
+            builders.'hudson.tasks.Shell' [2].command.text().contains('sbt clean test -Djava.io.tmpdir=/tmp')
+            builders.'hudson.tasks.Shell' [2].command.text().contains('sbt dist publish -Djava.io.tmpdir=/tmp')
             publishers.'hudson.plugins.claim.ClaimPublisher'.text() == ''
             publishers.'hudson.tasks.junit.JUnitResultArchiver'.testResults.text() == 'test-junit'
             publishers.'htmlpublisher.HtmlPublisher'.reportTargets.'htmlpublisher.HtmlPublisherTarget'.reportDir[0].text() == 'target/test-reports/html-report'

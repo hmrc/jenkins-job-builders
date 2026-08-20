@@ -16,6 +16,10 @@ final class HtmlReportsPublisher implements Publisher {
         new HtmlReportsPublisher(htmlReportDirs, keep, alwaysLinkLatest)
     }
 
+    List<String> htmlReportDirsPaths() {
+        htmlReportDirs.keySet().toList()
+    }
+
     @Override
     Closure toDsl() {
         return {
