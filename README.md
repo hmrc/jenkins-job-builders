@@ -21,6 +21,8 @@ This can be solved in Jenkins by using the Jenkins Job DSL plugin, which allows 
 
 ## Building
 
+If building locally ensure you set `export ARTIFACTORY_URI=https://artefacts.tax.service.gov.uk/artifactory`. Failure to do so will result in a failure to resolve test plugins. 
+
 1. Run `./gradlew clean build` locally to test your changes. The test suite will ensure the Builders are capable of producing the expected config XML for Jenkins.
 
 ## Installing
