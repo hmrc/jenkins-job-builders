@@ -68,6 +68,7 @@ dependencies {
 
     implementation "org.jenkins-ci.plugins:junit:${junitPluginVersion}"
     implementation "org.jenkins-ci.plugins:claim:${claimPluginVersion}"
+    compileOnly "org.jenkins-ci.main:jenkins-core:${jenkinsCoreVersion}"
     testImplementation 'org.spockframework:spock-junit4:2.3-groovy-2.5'
 
     /**

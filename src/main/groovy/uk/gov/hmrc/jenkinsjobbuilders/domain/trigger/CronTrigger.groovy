@@ -1,4 +1,5 @@
 package uk.gov.hmrc.jenkinsjobbuilders.domain.trigger
+import hudson.scheduler.CronTabList
 
 
 final class CronTrigger implements Trigger {
@@ -9,6 +10,7 @@ final class CronTrigger implements Trigger {
     }
 
     static CronTrigger cronTrigger(String cronPattern) {
+        validate(cronPattern)
         new CronTrigger(cronPattern)
     }
 
@@ -16,6 +18,17 @@ final class CronTrigger implements Trigger {
     Closure toDsl() {
         return {
             cron(cronPattern)
+        }
+    }
+
+    private static void validate(String cronPattern) {
+        try {
+            CronTabList.create(cronPattern)
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                "Invalid Jenkins cron spec '${cronPattern}': ${e.message}.",
+                e
+            )
         }
     }
 }

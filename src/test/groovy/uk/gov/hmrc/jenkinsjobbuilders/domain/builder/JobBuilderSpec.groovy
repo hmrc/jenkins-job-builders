@@ -36,7 +36,7 @@ class JobBuilderSpec extends AbstractJobSpec {
                                                withPermissions(permissionSetting("dev-tools", "hudson.model.Item.Read")).
                                                withLogRotator(14, 10).
                                                withScm(gitHubComScm('example/example-repo', 'test-credentials')).
-                                               withTriggers(cronTrigger('test-cron'), gitHubPushTrigger(), bintrayArtifactTrigger("H * * * *", "hmrc", "release-candidates", ["test", "test-frontend"])).
+                                               withTriggers(cronTrigger('H 4 * * 1-5'), gitHubPushTrigger(), bintrayArtifactTrigger("H * * * *", "hmrc", "release-candidates", ["test", "test-frontend"])).
                                                withSteps(shellStep('test-shell1'), sbtStep("ls test", ['clean test', 'dist publish'], '/tmp')).
                                                withPreScmSteps(shellStep('echo prescm')).
                                                withEnvironmentVariables(stringEnvironmentVariable('ENV_KEY', 'ENV_VALUE')).
@@ -79,7 +79,7 @@ class JobBuilderSpec extends AbstractJobSpec {
             scm.userRemoteConfigs.'hudson.plugins.git.UserRemoteConfig'.url.text() == 'git@github.com:example/example-repo.git'
             scm.branches.'hudson.plugins.git.BranchSpec'.name.text() == 'master'
             triggers.'com.cloudbees.jenkins.gitHubPushTrigger'.spec.text() == ''
-            triggers.'hudson.triggers.TimerTrigger'.spec.text() == 'test-cron'
+            triggers.'hudson.triggers.TimerTrigger'.spec.text() == 'H 4 * * 1-5'
             triggers.'org.jenkinsci.plugins.urltrigger.URLTrigger'.spec.text().contains('H * * * *')
             triggers.'org.jenkinsci.plugins.urltrigger.URLTrigger'.entries.'org.jenkinsci.plugins.urltrigger.URLTriggerEntry' [0].
                     url.text().contains('https://api.bintray.com/packages/hmrc/release-candidates/test/')
