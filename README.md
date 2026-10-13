@@ -79,6 +79,7 @@ This will kick off `seed-jenkins` in Live.
 ## Release Notes
 
 Note: Use x.y.0 or x.0.0 version numbering, for releases which are intended to be referenced in other repositories.
+* 21.0.0 (13/10/2026) - `cronTrigger` validates cron specs and fails fast on invalid or Quartz syntax, instead of Jenkins silently dropping the trigger. Requires jenkins-core on the runtime classpath (provided by Jenkins).
 * 20.1.2 (21/08/2026) - Direcotries are created for htmlPublisher at the start of a build so we don't recieve errors should the build fail before they are created. 
 * 20.1.1 (17/08/2026) - Ensure `jUnitResultArchiver` doesn't mask real build failures with 'no test results' error.
 * 20.1.0 (19/03/2026) - Replacing `archiveJunit` with `jUnitResultArchiver` so that we can remove `PublisherContext.groovy`.
