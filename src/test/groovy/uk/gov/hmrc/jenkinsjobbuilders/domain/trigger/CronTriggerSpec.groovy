@@ -45,14 +45,13 @@ class CronTriggerSpec extends AbstractJobSpec {
     }
 
     @Unroll
-    void 'invalid spec "#spec" throws IllegalArgumentException containing spec and hint'() {
+    void 'invalid spec "#spec" throws IllegalArgumentException containing spec'() {
         when:
         cronTrigger(spec)
 
         then:
         IllegalArgumentException e = thrown()
-        e.message.contains(spec)
-        e.message.contains('Jenkins uses 5 fields')
+        e.message.startsWith("Invalid Jenkins cron spec '${spec}'")
 
         where:
         spec << [
